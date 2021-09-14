@@ -12,3 +12,14 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+li {
+  list-style-type : none;
+}
+
+img {
+  width: 180px;
+  aspect-ratio: auto 180 / 135;
+  height: 135px;
+  margin-right: 10px;
+}

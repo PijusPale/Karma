@@ -34,7 +34,7 @@ namespace Karma.Controllers
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new Listing
             {
-                Id = "RN4564654",
+                Id = rng.Next(1000, 9999).ToString(),
                 Name = Names[rng.Next(Names.Length)],
                 Description = "tis a description",
                 Quantity = rng.Next(1,5),
