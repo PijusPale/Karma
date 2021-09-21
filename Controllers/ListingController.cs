@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Karma.Models;
+using Karma.Repositories;
 
 namespace Karma.Controllers
 {
@@ -14,37 +15,31 @@ namespace Karma.Controllers
     [Route("[controller]")]
     public class ListingController : ControllerBase
     {
-        private static readonly string FilePath = Path.Combine("data", "ListingsData.json");
-
         private readonly ILogger<ListingController> _logger;
 
-        public ListingController(ILogger<ListingController> logger)
+        private readonly IListingRepository _listingRepository;
+
+        public ListingController(ILogger<ListingController> logger, IListingRepository listingRepository)
         {
             _logger = logger;
+            _listingRepository = listingRepository;
         }
 
         [HttpPost]
         public void Post(Listing listing) {
-            string jsonString = System.IO.File.ReadAllText(FilePath);
-            List<Listing> listings = JsonSerializer.Deserialize<List<Listing>>(jsonString);
-            listings.Add(listing);
-            string newJsonString = JsonSerializer.Serialize(listings);
-            System.IO.File.WriteAllText(FilePath, newJsonString);
+            _listingRepository.AddListing(listing);
         }
 
         [HttpGet]
         public IEnumerable<Listing> GetAllListings()
         {
-            string jsonString = System.IO.File.ReadAllText(FilePath);
-            return JsonSerializer.Deserialize<List<Listing>>(jsonString);
+            return _listingRepository.GetAllListings();
         }
 
         [HttpGet("{id}")]
         public Listing GetListingById(string id) 
         {
-            string jsonString = System.IO.File.ReadAllText(FilePath);
-            List<Listing> listings = JsonSerializer.Deserialize<List<Listing>>(jsonString);
-            return listings.FirstOrDefault(x => x.Id == id);
+            return _listingRepository.GetListingById(id);
         }
     }
 }
