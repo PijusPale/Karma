@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Karma
+namespace Karma.Models
 {
 	public class Comment
 	{
