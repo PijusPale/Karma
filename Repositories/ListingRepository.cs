@@ -18,8 +18,7 @@ namespace Karma.Repositories
         {
             List<Listing> listings = GetAllListings().ToList();
             listings.Add(listing);
-            string newJsonString = JsonSerializer.Serialize(listings);
-            System.IO.File.WriteAllText(_filePath, newJsonString);
+            writeListingsToFile(listings);
         }
 
         public IEnumerable<Listing> GetAllListings()
@@ -32,6 +31,18 @@ namespace Karma.Repositories
         {            
             List<Listing> listings = GetAllListings().ToList();
             return listings.FirstOrDefault(x => x.Id == id);
+        }
+
+        public void DeleteListingById(string id) 
+        {
+            List<Listing> listings = GetAllListings().ToList();
+            listings.Remove(listings.Find(x => x.Id == id));
+            writeListingsToFile(listings);
+        }
+
+        private void writeListingsToFile(List<Listing> listings) {
+            string jsonString = JsonSerializer.Serialize(listings);
+            System.IO.File.WriteAllText(_filePath, jsonString);
         }
     }
 }

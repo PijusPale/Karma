@@ -41,5 +41,10 @@ namespace Karma.Controllers
         {
             return _listingRepository.GetListingById(id);
         }
+
+        [HttpDelete("{id}")]
+        public void DeleteListing(string id) {
+            _listingRepository.DeleteListingById(id);
+        }
     }
 }
