@@ -33,10 +33,18 @@ namespace Karma.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Listing> Get()
+        public IEnumerable<Listing> GetAllListings()
         {
             string jsonString = System.IO.File.ReadAllText(FilePath);
             return JsonSerializer.Deserialize<List<Listing>>(jsonString);
+        }
+
+        [HttpGet("{id}")]
+        public Listing GetListingById(string id) 
+        {
+            string jsonString = System.IO.File.ReadAllText(FilePath);
+            List<Listing> listings = JsonSerializer.Deserialize<List<Listing>>(jsonString);
+            return listings.FirstOrDefault(x => x.Id == id);
         }
     }
 }
