@@ -22,11 +22,20 @@ namespace Karma.Controllers
             _logger = logger;
         }
 
+        [HttpPost]
+        public void Post(Listing listing) {
+            string jsonString = System.IO.File.ReadAllText(FilePath);
+            List<Listing> listings = JsonSerializer.Deserialize<List<Listing>>(jsonString);
+            listings.Add(listing);
+            string newJsonString = JsonSerializer.Serialize(listings);
+            System.IO.File.WriteAllText(FilePath, newJsonString);
+        }
+
         [HttpGet]
         public IEnumerable<Listing> Get()
         {
             string jsonString = System.IO.File.ReadAllText(FilePath);
-            return JsonSerializer.Deserialize<Listing[]>(jsonString);
+            return JsonSerializer.Deserialize<List<Listing>>(jsonString);
         }
     }
 }
