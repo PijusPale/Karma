@@ -7,7 +7,7 @@ namespace Karma.Models
 {
 	public class Listing
 	{
-		public string Id { get; set; }
+        public string? Id { get; set; }
 
 		[Required]
 		[StringLength(20)]
@@ -23,11 +23,12 @@ namespace Karma.Models
 		[Required]
 		public string Location { get; set; }
 
+		[Required]
 		public string Category { get; set; }
 
 		[Display(Name = "Date Published")]
 		public DateTime DatePublished { get; set; }
 
-		public string ImagePath { get; set; }
+		public string? ImagePath { get; set; }
 	}	
 }

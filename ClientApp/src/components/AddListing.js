@@ -4,9 +4,7 @@ import { useForm } from "react-hook-form";
 export default function AddListing(){
     const { register, handleSubmit } = useForm({mode: 'onBlur', defaultValues: {Quantity: 1, Location: "Lithuania"}, shouldUseNativeValidation: true});
     const onSubmit = data => {
-        data.Id = "0";
-        //data.Category = null;
-        data.ImagePath = "wowow";
+        data.ImagePath = '/img/default.png';
         console.log(JSON.stringify(data));
         fetch('listing', {
           mode: 'cors',
@@ -40,7 +38,7 @@ export default function AddListing(){
                 <input type = "number" {...register("Quantity", {required: "Quantity of minimum 1 is required.", min: 1, max: 100})} />
             <p>Location:</p>
                 <input {...register("Location", {required: true})} />
-            <p>Images:</p>
+                <p>Images:</p>
                 <input type ="file" name="temp-image" accept="image/*"{...register("ImagePath")} />
             </div>
         <input type = "submit" value="Submit listing"/>
