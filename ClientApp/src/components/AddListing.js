@@ -4,11 +4,11 @@ import { useForm } from "react-hook-form";
 export default function AddListing(){
     const { register, handleSubmit } = useForm({mode: 'onBlur', defaultValues: {Quantity: 1, Location: "Lithuania"}, shouldUseNativeValidation: true});
     const onSubmit = data => {
-        data.Id = null;
-        data.Category = null;
-        data.DatePublished = Date().toLocaleString();
+        data.Id = "0";
+        //data.Category = null;
+        data.ImagePath = "wowow";
         console.log(JSON.stringify(data));
-        fetch('test', {
+        fetch('listing', {
           mode: 'cors',
           method: 'POST',
           headers: { 'Content-type' : 'application/json'},
@@ -35,7 +35,7 @@ export default function AddListing(){
             <p>Description:</p>
                 <textarea {...register("Description", {
                     maxLength: { value: 200, message: "Maximum length of 500 characters exceeded."},
-                    pattern: {value: /^[a-zA-Z0-9!+]+$/, message: "Please enter only A-Z letters, 0-9 numbers or !+ signs."} })} />
+                    pattern: {value: /^[a-zA-Z0-9!+ ]+$/, message: "Please enter only A-Z letters, 0-9 numbers or !+ signs."} })} />
             <p>Quantity:</p>    
                 <input type = "number" {...register("Quantity", {required: "Quantity of minimum 1 is required.", min: 1, max: 100})} />
             <p>Location:</p>

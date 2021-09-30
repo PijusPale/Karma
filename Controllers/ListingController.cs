@@ -27,6 +27,7 @@ namespace Karma.Controllers
 
         [HttpPost]
         public void Post(Listing listing) {
+            listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
             _listingRepository.AddListing(listing);
         }
 
