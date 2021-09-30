@@ -18,6 +18,6 @@ namespace Karma	{
 
 		public DateTime DatePublished { get; set; }
 
-		public string ImagePath { get; set;}
+		public string ImagePath { get; set; }
 	}	
 }

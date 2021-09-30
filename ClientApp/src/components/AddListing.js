@@ -4,14 +4,17 @@ import { useForm } from "react-hook-form";
 export default function AddListing(){
     const { register, handleSubmit } = useForm({mode: 'onBlur', defaultValues: {Quantity: 1, Location: "Lithuania"}, shouldUseNativeValidation: true});
     const onSubmit = data => {
+        data.Id = null;
+        data.Category = null;
+        data.DatePublished = Date().toLocaleString();
         console.log(JSON.stringify(data));
         fetch('test', {
           mode: 'cors',
           method: 'POST',
-          headers: { "Content-Type" : "application/json"},
+          headers: { 'Content-type' : 'application/json'},
           body: JSON.stringify(data),
         }).then(function(response) {
-            return response.json();
+            return response;
         }).then(function(){
         });
     };

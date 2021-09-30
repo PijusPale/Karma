@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -20,16 +16,17 @@ namespace Karma.Controllers
         }
 
         [HttpPost]
-        public string Get(string data)
+        public ActionResult PostListing([FromBody]Listing listing)
         { 
         Console.WriteLine("HTTP Post");
-        Console.WriteLine(data);
-            if(data != null){
+        Console.WriteLine(listing);
+            if (listing != null)
+            {
                 Console.WriteLine("ok");
-                return "success";
+                return Ok();
             }
             else
-                return "failed";
+                return BadRequest("Not good");
         }
     }
 }
