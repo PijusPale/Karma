@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Karma.Models;
@@ -26,9 +27,10 @@ namespace Karma.Controllers
         }
 
         [HttpPost]
-        public void Post(Listing listing) {
+        public ActionResult Post(Listing listing) {
             listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
             _listingRepository.AddListing(listing);
+            return StatusCode(StatusCodes.Status200OK);
         }
 
         [HttpGet]

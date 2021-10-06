@@ -28,7 +28,7 @@ namespace Karma.Controllers
         {   
             try
             {
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", file.FileName);
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", file.Name);
                 
                 using (Stream stream = new FileStream(path, FileMode.Create))
                 {

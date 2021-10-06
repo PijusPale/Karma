@@ -10,7 +10,7 @@ namespace Karma.Models
 {
     public class FileModel
     {
-        public string FileName { get; set; }
+        public string Name { get; set; }
         public IFormFile FormFile { get; set; }
     }
 }
