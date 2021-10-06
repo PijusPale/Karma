@@ -6,13 +6,14 @@ import { Redirect } from 'react-router';
 export default function AddListing() {
     const { register, handleSubmit, formState } = useForm({ mode: 'onBlur', defaultValues: { Quantity: 1, Location: "Lithuania" }, shouldUseNativeValidation: true });
     const { isSubmitting, isSubmitted } = formState;
+    const maxTitleLength = 20, maxDescriptionLength = 200; 
 
     const onSubmit = data => {
         var imageAttached = false;
         const formData = new FormData();
         if (data.ImagePath.length > 0) {
             formData.append('FormFile', data.ImagePath[0]);
-            formData.append('FileName', data.ImagePath[0].name);
+            formData.append('Name', data.ImagePath[0].name);
             data.ImagePath = 'images/' + data.ImagePath[0].name;
             imageAttached = true;
         }
@@ -24,12 +25,12 @@ export default function AddListing() {
             method: 'POST',
             headers: { 'Content-type': 'application/json' },
             body: JSON.stringify(data),
-        }).then(function () {
-            if (imageAttached) {
+        }).then(function (response) {
+            console.log(response.ok);
+            if (imageAttached && response.ok) { 
                 const res = axios.post('image', formData);
                 console.log(res);
             }
-        }).then(function () {
         });
     };
 
@@ -38,9 +39,9 @@ export default function AddListing() {
             <div><p>Title:</p>
                 <input {...register("Name", {
                     required: "Title is required.",
-                    maxLength: { value: 20, message: "Maximum length of 20 characters exceeded." },
-                    pattern: { value: /^[a-zA-Z0-9)]+$/, message: "Please enter only A-Z letters, 0-9 numbers or ! sign." }
-                })} />
+                    maxLength: { value: maxTitleLength, message: "Maximum length of " + {maxTitleLength} + " characters exceeded." },
+                    pattern: { value: /^[a-zA-Z0-9! ]+$/, message: "Please enter only A-Z letters, 0-9 numbers or ! sign." }
+                })} />      
                 <p>Category:</p>
                 <select {...register("Category", { required: true })}>
                     <option value="Vehicles">Vehicles</option>
@@ -50,7 +51,7 @@ export default function AddListing() {
                 </select>
                 <p>Description:</p>
                 <textarea {...register("Description", {
-                    maxLength: { value: 200, message: "Maximum length of 500 characters exceeded." },
+                    maxLength: { value: maxDescriptionLength, message: "Maximum length of " + {maxDescriptionLength} + " characters exceeded." },
                     pattern: { value: /^[a-zA-Z0-9!+, ]+$/, message: "Please enter only A-Z letters, 0-9 numbers or !+ signs." }
                 })} />
                 <p>Quantity:</p>
