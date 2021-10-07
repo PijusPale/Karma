@@ -20,8 +20,8 @@ namespace Karma.Services
     public class UserService : IUserService
     {
         private List<User> _users = new List<User> {
-            new User { Id = 1, FirstName = "First", LastName = "Test"},
-            new User { Id = 2, FirstName = "Second", LastName = "Test"}
+            new User { Username = "First", Id = 1, FirstName = "First", LastName = "Test"},
+            new User { Username = "Second", Id = 2, FirstName = "Second", LastName = "Test"}
         };
         private readonly JwtSettings _jwtSettings;
 
@@ -32,7 +32,7 @@ namespace Karma.Services
 
         public User Authenticate(UserCredentials request)
         {
-            var user = _users.SingleOrDefault(u => request.Username == u.FirstName + u.LastName);
+            var user = _users.SingleOrDefault(u => request.Username == u.Username);
             if (user == null)
                 return null;
 
