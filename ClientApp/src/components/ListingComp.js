@@ -4,7 +4,9 @@ import React from 'react';
 export const ListingComp = (props) =>
 (<div className="row" style={{ borderStyle: "solid", borderWidth: "2px", marginTop: "10px" }}>
   <div>
-    <img src={props.imagePath} alt="defaultImage" />
+    <a href={'/' + props.id} target="_blank">
+      <img src={props.imagePath} alt="defaultImage" />
+    </a>
     <p>Location: {props.location}</p>
   </div>
   <div>
