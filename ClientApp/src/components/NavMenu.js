@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
+import { AccountComp } from './AccountComp';
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
@@ -41,6 +42,9 @@ export class NavMenu extends Component {
                 </NavItem>
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/add-listing">Add New Listing</NavLink>
+                </NavItem>
+                <NavItem>
+                  <AccountComp />
                 </NavItem>
               </ul>
             </Collapse>
