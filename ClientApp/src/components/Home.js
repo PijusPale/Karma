@@ -1,10 +1,15 @@
 import React from 'react';
+import Search from './Search';
 import { ListingsComp } from './ListingsComp';
 
 export const Home = () => {
   //static displayName = Home.name;
 
-  return (<div><ListingsComp /></div>);
+  return (
+    <div>
+      <ListingsComp/>
+      <Search details={'listing'}/>
+    </div>);
   /*<div>
     <h1>Hello, world!</h1>
     <p>Welcome to your new single-page application, built with:</p>
