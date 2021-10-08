@@ -5,13 +5,17 @@ import { Button } from 'reactstrap';
 
 export const AccountComp = () => {
     const [modal, setModal] = useState(false);
-    const toggle = () => setModal(!modal);
-
+    
     const [username, setUsername] = useState('');
     const [incorrectUsername, setIncorrectUsername] = useState(false);
     const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('currentUser')));
-
+    
     const [loggedIn, setLoggedIn] = useState(!!currentUser);
+    
+    const toggle = () => {
+        setModal(!modal);
+        setIncorrectUsername(false);
+    };
 
     const onLogIn = async () => {
         const response = await fetch('user/authenticate', {
@@ -48,10 +52,11 @@ export const AccountComp = () => {
         </div>
         : <div>
             <Button className="text-dark" onClick={toggle}>Log in</Button>
-            <Modal isOpen={modal} toggle={toggle}>
+            <Modal autoFocus={false} isOpen={modal} toggle={toggle}>
                 <ModalHeader><Label>Log in</Label></ModalHeader>
                 <ModalBody>
-                    <Input onChange={e => setUsername(e.target.value)} type="text" placeholder="Write your username" />
+                    <Input autoFocus={true} onChange={e => setUsername(e.target.value)} 
+                    onKeyPress={(t) => t.key === 'Enter' && onLogIn()} type="text" placeholder="Write your username" />
                     <Label hidden={!incorrectUsername}>Username not found</Label>
                 </ModalBody>
                 <ModalFooter>
