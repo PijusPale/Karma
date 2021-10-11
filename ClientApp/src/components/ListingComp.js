@@ -9,6 +9,17 @@ export const ListingComp = (props) => {
 
   const toggleModal = () => setUpdate(!update);
 
+  const onDelete = async () => {
+    const res = await fetch(`listing/${props.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    res.ok && props.refresh();
+  };
+
   return (
     <div>
       <div className="row" style={{ borderStyle: "solid", borderWidth: "2px", marginTop: "10px" }}>
@@ -23,7 +34,7 @@ export const ListingComp = (props) => {
           <p>Date: {props.datePublished.slice(0, 10)}</p>
           {user && user.id === props.ownerId &&
             <>
-              <Button onClick={() => props.onDelete(props.id)}>Delete</Button>
+              <Button onClick={onDelete}>Delete</Button>
               <Button onClick={() => setUpdate(true)}>Update</Button>
             </>}
         </div>
