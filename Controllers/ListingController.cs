@@ -73,7 +73,8 @@ namespace Karma.Controllers
             string userId = User.FindFirst(ClaimTypes.Name)?.Value;
             if (old.OwnerId != userId) return Unauthorized();
 
-
+            listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
+            listing.OwnerId = userId;
             _listingRepository.UpdateListing(listing);
             return Ok();
         }

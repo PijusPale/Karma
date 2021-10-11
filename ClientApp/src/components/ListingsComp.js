@@ -10,7 +10,7 @@ export const ListingsComp = () => {
     const data = await response.json();
     setListingsData(data);
     setLoading(false);
-  }
+  };
 
   const onDelete = async (listingId) => {
     const res = await fetch(`listing/${listingId}`, {
@@ -21,7 +21,7 @@ export const ListingsComp = () => {
       }
     });
     res.ok && fetchData();
-  }
+  };
 
   useEffect(() => {
     fetchData();
@@ -31,7 +31,7 @@ export const ListingsComp = () => {
     <div>
       {loading
         ? <p><em>Loading...</em></p>
-        : <ul> {listingsData.map(data => <li key={data.id}><ListingComp {...data} onDelete={onDelete} /></li>)} </ul>
+        : <ul> {listingsData.map(data => <li key={data.id}><ListingComp {...data} onDelete={onDelete} refresh={fetchData} /></li>)} </ul>
       }
     </div>
   );
