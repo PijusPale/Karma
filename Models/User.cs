@@ -12,7 +12,7 @@ namespace Karma.Models
             this.Comments = new List<Comment>();
         }
 
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Username { get; set; }
         public string FirstName { get; set; }
 

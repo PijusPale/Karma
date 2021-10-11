@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Input, Label, NavLink } from 'reactstrap';
 import { Button } from 'reactstrap';
+import { UserContext } from '../UserContext';
 
 export const AccountComp = () => {
     const [modal, setModal] = useState(false);
     
     const [username, setUsername] = useState('');
     const [incorrectUsername, setIncorrectUsername] = useState(false);
-    const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('currentUser')));
-    
-    const [loggedIn, setLoggedIn] = useState(!!currentUser);
+
+    const { loggedIn, setLoggedIn, user: currentUser, setUser: setCurrentUser } = useContext(UserContext);
     
     const toggle = () => {
         setModal(!modal);
@@ -26,10 +26,10 @@ export const AccountComp = () => {
 
         if (response.ok) {
             setIncorrectUsername(false);
-            const user = await response.text();
-            setCurrentUser(JSON.parse(user));
+            const user = JSON.parse(await response.text());
+            setCurrentUser(user);
             setLoggedIn(true);
-            localStorage.setItem('currentUser', user);
+            localStorage.setItem('token', user.token);
             toggle();
         }
         else {
@@ -40,7 +40,7 @@ export const AccountComp = () => {
     const onLogOut = () => {
         setLoggedIn(false);
         setCurrentUser(null);
-        localStorage.removeItem('currentUser');
+        localStorage.removeItem('token');
     }
 
     return (loggedIn ?

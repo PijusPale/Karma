@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Karma.Models;
 using Karma.Repositories;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Karma.Controllers
 {
@@ -27,8 +25,14 @@ namespace Karma.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult Post(Listing listing) {
+            var random = new Random();
+            listing.Id = random.Next(9999).ToString(); // temp fix for id generation, later this should be assigned in DB.
             listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
+            
+            string userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            listing.OwnerId = userId;
             _listingRepository.AddListing(listing);
             return StatusCode(StatusCodes.Status200OK);
         }
@@ -46,6 +50,7 @@ namespace Karma.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public void DeleteListing(string id) {
             _listingRepository.DeleteListingById(id);
         }

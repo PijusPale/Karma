@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Karma.Services;
 using Karma.Models.Authentication;
+using System.Security.Claims;
 
 namespace Karma.Controllers
 {
@@ -33,9 +34,13 @@ namespace Karma.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetCurrentUser()
         {
-            return Ok(_userService.GetAll());
+            string userid = User.FindFirst(ClaimTypes.Name)?.Value;
+            if (userid == null) {
+                return NoContent();
+            }
+            return Ok(_userService.GetUserById(userid));
         }
     }
 }

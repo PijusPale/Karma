@@ -16,12 +16,13 @@ namespace Karma.Services
     {
         User Authenticate(UserCredentials request);
         IEnumerable<User> GetAll();
+        User GetUserById(string id);
     }
     public class UserService : IUserService
     {
         private List<User> _users = new List<User> {
-            new User { Username = "First", Id = 1, FirstName = "First", LastName = "Test"},
-            new User { Username = "Second", Id = 2, FirstName = "Second", LastName = "Test"}
+            new User { Username = "First", Id = "448", FirstName = "First", LastName = "Test"},
+            new User { Username = "Second", Id = "9909", FirstName = "Second", LastName = "Test"}
         };
         private readonly JwtSettings _jwtSettings;
 
@@ -56,6 +57,11 @@ namespace Karma.Services
         public IEnumerable<User> GetAll()
         {
             return _users;
+        }
+
+        public User GetUserById(string id)
+        {
+            return _users.FirstOrDefault(u => u.Id == id);
         }
     }
 }
