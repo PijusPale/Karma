@@ -41,7 +41,8 @@ namespace Karma.Repositories
         }
 
         private void writeListingsToFile(List<Listing> listings) {
-            string jsonString = JsonSerializer.Serialize(listings);
+            var jsonOptions = new JsonSerializerOptions() { WriteIndented = true };
+            string jsonString = JsonSerializer.Serialize(listings, jsonOptions);
             System.IO.File.WriteAllText(_filePath, jsonString);
         }
     }

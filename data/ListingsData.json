@@ -1,6 +1,7 @@
 [
   {
     "Id": "2522",
+    "OwnerId": 448,
     "Name": "Bacon",
     "Description": "tis a description",
     "Quantity": 3,
@@ -11,6 +12,7 @@
   },
   {
     "Id": "5580",
+    "OwnerId": 9909,
     "Name": "James",
     "Description": "tis a description",
     "Quantity": 2,
@@ -21,6 +23,7 @@
   },
   {
     "Id": "4159",
+    "OwnerId": 448,
     "Name": "Kenny",
     "Description": "tis a description",
     "Quantity": 1,
@@ -31,6 +34,7 @@
   },
   {
     "Id": "8975",
+    "OwnerId": 9909,
     "Name": "Kenny",
     "Description": "tis a description",
     "Quantity": 2,
@@ -41,6 +45,7 @@
   },
   {
     "Id": "1232",
+    "OwnerId": 448,
     "Name": "Bob",
     "Description": "Added via POST",
     "Quantity": 1,
