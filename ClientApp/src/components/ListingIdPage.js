@@ -1,34 +1,37 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import PageNotFound from './PageNotFound';
 
 export const ListingIdPage = () => {
 
     const [loading, setLoading] = useState(true);
     const [Data, setData] = useState([]);
+    const { id } = useParams();
   
     useEffect(() => {
-      const fetchData = async () => {
-        const response = await fetch('listing/2522'); // #TODO add proper id
-        const data = await response.json();
-        setData(data);
-        setLoading(false);
-      }
+        const fetchData = async () => {
+            const response = await fetch('listing/' + id);
+            const data = await response.json();
+            setData(data);
+            setLoading(false);
+        }
       fetchData();
     }, []);
-  
+
     return (
       <div>
         {loading
           ? <p><em>Loading...</em></p>
-          : PageLayout (Data) 
+          : ListingPageLayout (Data) 
         }
       </div>
     );
-  }
+}
 
-export const PageLayout = (props) =>
+export const ListingPageLayout = (props) =>
 (<div>
     <div>
-        <img src={props.imagePath} alt="defaultImage" width="500"/>
+        <img src={props.imagePath} alt="defaultImage" width="500" />
         <h2>{props.name}</h2>
     </div>
     <div>
@@ -37,3 +40,4 @@ export const PageLayout = (props) =>
         <p>Quantity: {props.quantity}</p>
     </div>
 </div>);
+
