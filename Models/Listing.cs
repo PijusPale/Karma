@@ -7,6 +7,10 @@ namespace Karma.Models
 {
 	public class Listing
 	{
+		public Listing()
+		{
+			this.RequestedUserIDs = new List<String>();
+		}
         public string? Id { get; set; }
 		public string OwnerId { get; set; }
 
@@ -31,5 +35,7 @@ namespace Karma.Models
 		public DateTime DatePublished { get; set; }
 
 		public string? ImagePath { get; set; }
+
+		public virtual List<String> RequestedUserIDs { get; set; }
 	}	
 }

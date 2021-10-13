@@ -50,6 +50,24 @@ namespace Karma.Controllers
             return _listingRepository.GetListingById(id);
         }
 
+        [HttpGet("request/{id}")]
+        [Authorize]
+        public IActionResult RequestListing(string id)
+        {
+            string userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            var listing = _listingRepository.GetListingById(id);
+            if (listing.OwnerId == userId)
+                return Forbid();
+            
+            if(listing.RequestedUserIDs.Contains(userId))
+                return Conflict();
+
+            listing.RequestedUserIDs.Add(userId);
+            _listingRepository.UpdateListing(listing);
+            
+            return Ok();
+        }
+
         [HttpDelete("{id}")]
         [Authorize]
         public IActionResult DeleteListing(string id)

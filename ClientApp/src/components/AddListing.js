@@ -41,7 +41,8 @@ export default function AddListing(props) {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div class="form-group"><label>Title</label>
+            <div class="form-group">
+                <label>Title</label>
                 <input defaultValue={props.name} class="form-control form-control-lg" {...register("Name", {
                     required: "Title is required.",
                     maxLength: { value: maxTitleLength, message: "Maximum length of " + { maxTitleLength } + " characters exceeded." },
