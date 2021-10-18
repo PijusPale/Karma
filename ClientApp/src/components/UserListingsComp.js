@@ -31,8 +31,8 @@ export const UserListingsComp = () => {
         user &&
         <div>
             <div class="btn-group" role="group" aria-label="options">
-                <input type="button" class="btn btn-secondary" value="Posted Listings" checked="true" onClick={() => setListingsType('posted')} />
-                <input type="button" class="btn btn-secondary" value="Requested Listings" onClick={() => setListingsType('requested')} />
+                <input type="button" className="btn btn-secondary" value="Posted Listings" onClick={() => setListingsType('posted')} />
+                <input type="button" className="btn btn-secondary" value="Requested Listings" onClick={() => setListingsType('requested')} />
             </div>
             <div>
                 {loading
