@@ -58,16 +58,8 @@ export const ListingComp = (props) => {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
     });
-    if(res.status === 200)
-      setResponse(200);
-    if(res.status === 403)
-      setResponse(403);
-    if(res.status === 409)
-      setResponse(409);
+    setResponse(res.status);  
     setShow(true);
-    //console.log(requestResponse);
-    //console.log(res.status);
-    //console.log(show);
   };
 
   return (

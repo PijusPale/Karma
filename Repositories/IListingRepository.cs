@@ -7,7 +7,7 @@ namespace Karma.Repositories
     {
         IEnumerable<Listing> GetAllListings();
 
-        IEnumerable<Listing> GetAllListings(string id);
+        IEnumerable<Listing> GetAllUserListings(string userId);
 
         IEnumerable<Listing> GetRequestedListings(string userId);
 

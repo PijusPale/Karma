@@ -25,7 +25,7 @@ export const UserListingsComp = () => {
             fetchData(`listing/userId=${user.id}`);
         if(listingsType === 'requested')
             fetchData(`listing/requesteeId=${user.id}`);
-    }, [listingsType]);
+    }, [listingsType, user.id]);
 
     return (
         user &&
