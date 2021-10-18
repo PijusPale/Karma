@@ -8,6 +8,7 @@ namespace Karma.Models
 	public class Listing
 	{
         public string? Id { get; set; }
+		public string OwnerId { get; set; }
 
 		[Required]
 		[StringLength(20)]
