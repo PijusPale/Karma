@@ -28,16 +28,16 @@ namespace Karma.Repositories
             return JsonSerializer.Deserialize<List<Listing>>(jsonString);
         }
 
-        public IEnumerable<Listing> GetAllListings(string id)
+        public IEnumerable<Listing> GetAllUserListings(string userId)
         {
             List<Listing> listings = GetAllListings().ToList();
-            return listings.Where(a => a.OwnerId == id).ToList();
+            return listings.Where(a => a.OwnerId == userId);
         }
 
         public IEnumerable<Listing> GetRequestedListings(string userId)
         {
             List<Listing> listings = GetAllListings().ToList();
-            return listings.Where(a => a.RequestedUserIDs.Contains(userId)).ToList();
+            return listings.Where(a => a.RequestedUserIDs.Contains(userId));
         }
 
         public Listing GetListingById(string id)

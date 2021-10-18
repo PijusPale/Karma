@@ -20,13 +20,13 @@ namespace Karma.Controllers
 
         private readonly IListingRepository _listingRepository;
 
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
 
         public ListingController(ILogger<ListingController> logger, IListingRepository listingRepository, IUserService userService)
         {
             _logger = logger;
             _listingRepository = listingRepository;
-            _userService = (UserService)userService;
+            _userService = userService;
         }
 
         [HttpPost]
@@ -57,7 +57,7 @@ namespace Karma.Controllers
             if(id != userId)
                 return Unauthorized();
 
-            return _listingRepository.GetAllListings(id).ToList();
+            return _listingRepository.GetAllUserListings(id).ToList();
         }
 
         [HttpGet("requesteeId={id}")]

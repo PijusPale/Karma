@@ -41,31 +41,31 @@ export default function AddListing(props) {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div class="form-group">
+            <div className="form-group">
                 <label>Title</label>
-                <input defaultValue={props.name} class="form-control form-control-lg" {...register("Name", {
+                <input defaultValue={props.name} className="form-control form-control-lg" {...register("Name", {
                     required: "Title is required.",
                     maxLength: { value: maxTitleLength, message: "Maximum length of " + { maxTitleLength } + " characters exceeded." },
                     pattern: { value: /^[a-zA-Z0-9! ]+$/, message: "Please enter only A-Z letters, 0-9 numbers or ! sign." }
                 })} />      
                 <label>Category</label>
-                <select defaultValue={props.category} class="custom-select" {...register("Category", { required: true })}>
+                <select defaultValue={props.category} className="custom-select" {...register("Category", { required: true })}>
                     <option value="Vehicles">Vehicles</option>
                     <option value="Apparel">Apparel</option>
                     <option value="Electronics">Electronics</option>
                     <option value="Entertainment">Entertainment</option>
                 </select>
                 <label>Description</label>
-                <textarea defaultValue={props.description} class="form-control" {...register("Description", {
+                <textarea defaultValue={props.description} className="form-control" {...register("Description", {
                     maxLength: { value: maxDescriptionLength, message: "Maximum length of " + {maxDescriptionLength} + " characters exceeded." },
                     pattern: { value: /^[a-zA-Z0-9!+, ]+$/, message: "Please enter only A-Z letters, 0-9 numbers or !+ signs." }
                 })} />
                 <label>Quantity</label>
-                <input type="number" class="form-control" {...register("Quantity", { required: "Quantity of minimum 1 is required.", min: 1, max: 100 })} />
+                <input type="number" className="form-control" {...register("Quantity", { required: "Quantity of minimum 1 is required.", min: 1, max: 100 })} />
                 <label>Location</label>
-                <input defaultValue={props.location} class="form-control"{...register("Location", { required: true })} />
+                <input defaultValue={props.location} className="form-control"{...register("Location", { required: true })} />
                 <label>Images</label>
-                <input asp-for="FileUpload.FormFile" type="file" class="form-control-file" name="temp-image" accept="image/*"{...register("ImagePath")} />
+                <input asp-for="FileUpload.FormFile" type="file" className="form-control-file" name="temp-image" accept="image/*"{...register("ImagePath")} />
             </div>
             <button disabled={isSubmitting} className="btn btn-primary mr-1">
                 {isSubmitting && <span className="spinner-border spinner-border-sm mr-1"></span>}
