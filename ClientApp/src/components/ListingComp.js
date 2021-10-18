@@ -90,7 +90,7 @@ export const ListingComp = (props) => {
             </>}
           {user && user.id !== props.ownerId && !requestResponse &&
             <>
-              <Button onClick={onRequest}>Request Item</Button>
+              <Button color="secondary" onClick={onRequest}>Request Item</Button>
             </>}
           {CustomAlert()}
         </div>
