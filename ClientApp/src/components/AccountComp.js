@@ -3,15 +3,16 @@ import { Link } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Input, Label, NavLink } from 'reactstrap';
 import { Button } from 'reactstrap';
 import { UserContext } from '../UserContext';
+import { ConfirmationButton } from './ConfirmationButton';
 
 export const AccountComp = () => {
     const [modal, setModal] = useState(false);
-    
+
     const [username, setUsername] = useState('');
     const [incorrectUsername, setIncorrectUsername] = useState(false);
 
     const { loggedIn, setLoggedIn, user: currentUser, setUser: setCurrentUser } = useContext(UserContext);
-    
+
     const toggle = () => {
         setModal(!modal);
         setIncorrectUsername(false);
@@ -48,15 +49,16 @@ export const AccountComp = () => {
             <NavLink tag={Link} className="text-dark" to="/profile">
                 {`${currentUser.firstName} ${currentUser.lastName}`}
             </NavLink>
-            <Button className="text-dark" onClick={onLogOut}>Log out</Button>
+            <ConfirmationButton onSubmit={onLogOut} submitLabel={'Log out'}
+                prompt={'Are you sure you want to log out?'}>Log out</ConfirmationButton>
         </div>
         : <div>
-            <Button className="text-dark" onClick={toggle}>Log in</Button>
+            <Button color="primary" onClick={toggle}>Log in</Button>
             <Modal autoFocus={false} isOpen={modal} toggle={toggle}>
                 <ModalHeader><Label>Log in</Label></ModalHeader>
                 <ModalBody>
-                    <Input autoFocus={true} onChange={e => setUsername(e.target.value)} 
-                    onKeyPress={(t) => t.key === 'Enter' && onLogIn()} type="text" placeholder="Write your username" />
+                    <Input autoFocus={true} onChange={e => setUsername(e.target.value)}
+                        onKeyPress={(t) => t.key === 'Enter' && onLogIn()} type="text" placeholder="Write your username" />
                     <Label hidden={!incorrectUsername}>Username not found</Label>
                 </ModalBody>
                 <ModalFooter>

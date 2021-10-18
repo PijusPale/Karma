@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Button, Label, Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { UserContext } from '../UserContext';
 import AddListing from './AddListing';
+import { ConfirmationButton } from './ConfirmationButton';
 
 export const ListingComp = (props) => {
   const { user } = useContext(UserContext);
@@ -83,8 +84,9 @@ export const ListingComp = (props) => {
           <p>Date: {props.datePublished.slice(0, 10)}</p>
           {user && user.id === props.ownerId &&
             <>
-              <Button onClick={onDelete}>Delete</Button>
-              <Button onClick={() => setUpdate(true)}>Update</Button>
+              <ConfirmationButton color='danger' onSubmit={onDelete} submitLabel={'Delete'}
+                prompt={'Are you sure you want to delete this listing?'}>Delete</ConfirmationButton>
+              <Button color="primary" onClick={() => setUpdate(true)}>Update</Button>
             </>}
           {user && user.id !== props.ownerId && !requestResponse &&
             <>
@@ -93,10 +95,10 @@ export const ListingComp = (props) => {
           {CustomAlert()}
         </div>
       </div>
-      {update && <Modal isOpen={update} toggle={toggleModal}>
+      <Modal isOpen={update} toggle={toggleModal}>
         <ModalHeader><Label>Update</Label></ModalHeader>
         <ModalBody><AddListing {...props} update={true}
           afterSubmit={() => { toggleModal(); props.refresh(); }} /></ModalBody>
-      </Modal>}
+      </Modal>
     </div>);
 };
