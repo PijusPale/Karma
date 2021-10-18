@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,6 +26,18 @@ namespace Karma.Repositories
         {
             string jsonString = System.IO.File.ReadAllText(_filePath);
             return JsonSerializer.Deserialize<List<Listing>>(jsonString);
+        }
+
+        public IEnumerable<Listing> GetAllListings(string id)
+        {
+            List<Listing> listings = GetAllListings().ToList();
+            return listings.Where(a => a.OwnerId == id).ToList();
+        }
+
+        public IEnumerable<Listing> GetRequestedListings(string userId)
+        {
+            List<Listing> listings = GetAllListings().ToList();
+            return listings.Where(a => a.RequestedUserIDs.Contains(userId)).ToList();
         }
 
         public Listing GetListingById(string id)

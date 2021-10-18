@@ -7,6 +7,10 @@ namespace Karma.Repositories
     {
         IEnumerable<Listing> GetAllListings();
 
+        IEnumerable<Listing> GetAllListings(string id);
+
+        IEnumerable<Listing> GetRequestedListings(string userId);
+
         Listing GetListingById(string id);
 
         void AddListing(Listing listing);
