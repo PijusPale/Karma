@@ -1,5 +1,4 @@
 import React from 'react';
-import Search from './Search';
 import { ListingsComp } from './ListingsComp';
 
 export const Home = () => {
@@ -8,7 +7,6 @@ export const Home = () => {
   return (
     <div>
       <ListingsComp/>
-      <Search details={'listing'}/>
     </div>);
   /*<div>
     <h1>Hello, world!</h1>
