@@ -26,20 +26,20 @@ export const ListingComp = (props) => {
       <div className="row" style={{ borderStyle: "solid", borderWidth: "2px", marginTop: "10px" }}>
         <div>
           <img src={props.imagePath} alt="defaultImage" />
-          <p>Location: {props.location}</p>
+          <p>{props.location.country}, {props.location.city}, {props.location.radiusKM}km</p>
         </div>
         <div>
           <h2>{props.name}</h2>
           <p>{props.description}</p>
           <p>Quantity: {props.quantity}</p>
           <p>Date: {props.datePublished.slice(0, 10)}</p>
-          {user && user.id === props.ownerId &&
-            <>
-              <ConfirmationButton color='danger' onSubmit={onDelete} submitLabel={'Delete'}
-                prompt={'Are you sure you want to delete this listing?'}>Delete</ConfirmationButton>
-              <Button color="primary" onClick={() => setUpdate(true)}>Update</Button>
-            </>}
         </div>
+        {user && user.id === props.ownerId &&
+          <div>
+            <ConfirmationButton color='danger' onSubmit={onDelete} submitLabel={'Delete'}
+              prompt={'Are you sure you want to delete this listing?'}>Delete</ConfirmationButton>
+            <Button color="primary" onClick={() => setUpdate(true)}>Update</Button>
+          </div>}
       </div>
       <Modal isOpen={update} toggle={toggleModal}>
         <ModalHeader><Label>Update</Label></ModalHeader>

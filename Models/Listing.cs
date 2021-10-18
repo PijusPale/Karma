@@ -5,6 +5,20 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Karma.Models
 {
+	public struct Location {
+        public Location(string country, string district, string city, int radiusKM)
+        {
+            Country = country;
+            District = district;
+            City = city;
+            RadiusKM = radiusKM;
+        }
+
+        public string Country { get; set; }
+		public string District { get; set; }
+		public string City { get; set; }
+		public int RadiusKM { get; set; }
+	}
 	public class Listing
 	{
         public string? Id { get; set; }
@@ -22,7 +36,7 @@ namespace Karma.Models
 		public int Quantity { get; set; }
 		
 		[Required]
-		public string Location { get; set; }
+		public Location Location { get; set; }
 
 		[Required]
 		public string Category { get; set; }
