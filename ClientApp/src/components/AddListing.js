@@ -4,7 +4,16 @@ import axios from "axios";
 import { Redirect } from 'react-router';
 
 export default function AddListing(props) {
-    const { register, handleSubmit, formState } = useForm({ mode: 'onBlur', defaultValues: { Quantity: 1, Location: "Lithuania" }, shouldUseNativeValidation: true });
+    const { register, handleSubmit, formState } = useForm({
+        mode: 'onBlur',
+        defaultValues: {
+            Quantity: props.quantity || 1,
+            "Location.Country": (props.location && props.location.country) || "Lithuania",
+            "Location.District": (props.location && props.location.district) || "Zemaitija",
+            "Location.City": (props.location && props.location.city) || "Šiauliai",
+            "Location.RadiusKM": (props.location && props.location.radiusKM) || 5,
+        }, shouldUseNativeValidation: true
+    });
     const { isSubmitting, isSubmitted } = formState;
     const maxTitleLength = 20, maxDescriptionLength = 200;
 
@@ -61,8 +70,15 @@ export default function AddListing(props) {
                 })} />
                 <p>Quantity:</p>
                 <input type="number" {...register("Quantity", { required: "Quantity of minimum 1 is required.", min: 1, max: 100 })} />
-                <p>Location:</p>
-                <input defaultValue={props.location} {...register("Location", { required: true })} />
+                <p>Country:</p>
+                <input {...register("Location.Country", { required: true })} />
+                <p>District:</p>
+                <input {...register("Location.District", { required: true })} />
+                <p>Country:</p>
+                <input {...register("Location.City", { required: true })} />
+                <p>Radius:</p>
+                <input type="number" {...register("Location.RadiusKM", { required: "Radius of minimum 1 km is required.", min: 1, max: 100 })} />
+                
                 <p>Images:</p>
                 <input asp-for="FileUpload.FormFile" type="file" name="temp-image" accept="image/*"{...register("ImagePath")} />
             </div>
