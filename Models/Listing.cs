@@ -11,14 +11,18 @@ namespace Karma.Models
 		{
 			this.RequestedUserIDs = new List<String>();
 		}
+
         public string? Id { get; set; }
+		
 		public string OwnerId { get; set; }
 
 		[Required]
+        [RegularExpression(@"^[a-zA-Z0-9! ]+$")]
 		[StringLength(20)]
 		public string Name { get; set; }
 
 		[StringLength(200)]
+		[RegularExpression(@"^[a-zA-Z0-9!+, ]+$")]
 		public string Description { get; set; }
 
 		[Required]
