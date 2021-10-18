@@ -25,12 +25,12 @@ export const UserListingsComp = () => {
             fetchData(`listing/userId=${user.id}`);
         if(listingsType === 'requested')
             fetchData(`listing/requesteeId=${user.id}`);
-    }, [listingsType, user.id]);
+    }, [listingsType, user]);
 
     return (
         user &&
         <div>
-            <div class="btn-group" role="group" aria-label="options">
+            <div className="btn-group" role="group" aria-label="options">
                 <input type="button" className="btn btn-secondary" value="Posted Listings" onClick={() => setListingsType('posted')} />
                 <input type="button" className="btn btn-secondary" value="Requested Listings" onClick={() => setListingsType('requested')} />
             </div>
