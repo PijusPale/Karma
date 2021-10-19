@@ -5,7 +5,7 @@ export const ListingsComp = () => {
   // Declare a new state variable, which we'll call "count"
   const [loading, setLoading] = useState(true);
   const [listingsData, setListingsData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('')
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,6 +16,27 @@ export const ListingsComp = () => {
     }
     fetchData();
   }, []);
+
+    const sortArray = type => {
+        switch (type) {
+            case 'dateDesc':
+                setListingsData(
+                    [...listingsData].sort((a, b) => {
+                        return new Date(b['datePublished']) - new Date(a['datePublished'])
+                    })
+                )
+                break;
+            case 'dateAsc':
+                setListingsData(
+                    [...listingsData].sort((a, b) => {
+                        return new Date(b['datePublished']) - new Date(a['datePublished'])
+                    }).reverse()
+                )
+                break;
+            default:
+                break;
+        }
+    }
 
   return (
       <div style={{ overflow: 'hidden' }}>
@@ -28,6 +49,12 @@ export const ListingsComp = () => {
                       setSearchTerm(event.target.value);
                   } }
               />
+                  <select onChange={(e) => sortArray(e.target.value)}>
+                      <option>Sort by...</option>
+                      <option value="dateDesc">Date DESC</option>
+                      <option value="dateAsc">Date ASC</option>
+                  </select>
+
                   <ul> {listingsData.filter((val) => {
                       if (searchTerm == "") {
                           return val
