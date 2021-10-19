@@ -5,7 +5,7 @@ import AddListing from './AddListing';
 import { ConfirmationButton } from './ConfirmationButton';
 
 export const ListingComp = (props) => {
-  const { user } = useContext(UserContext);
+  const { user, loggedIn } = useContext(UserContext);
   const [update, setUpdate] = useState(false);
   const [show, setShow] = useState(false);
   const [requestResponse, setResponse] = useState(0);
@@ -74,13 +74,13 @@ export const ListingComp = (props) => {
           <p>{props.description}</p>
           <p>Quantity: {props.quantity}</p>
           <p>Date: {props.datePublished.slice(0, 10)}</p>
-          {user && user.id === props.ownerId &&
+          {loggedIn && user.id === props.ownerId &&
             <>
               <ConfirmationButton color='danger' onSubmit={onDelete} submitLabel={'Delete'}
                 prompt={'Are you sure you want to delete this listing?'}>Delete</ConfirmationButton>
               <Button color="primary" onClick={() => setUpdate(true)}>Update</Button>
             </>}
-          {user && user.id !== props.ownerId && !requestResponse &&
+          {loggedIn && user.id !== props.ownerId && !requestResponse &&
             <>
               <Button color="secondary" onClick={onRequest}>Request Item</Button>
             </>}
