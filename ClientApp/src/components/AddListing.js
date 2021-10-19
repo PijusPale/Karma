@@ -69,16 +69,17 @@ export default function AddListing(props) {
                     pattern: { value: /^[a-zA-Z0-9!+, ]+$/, message: "Please enter only A-Z letters, 0-9 numbers or !+ signs." }
                 })} />
                 <p>Quantity:</p>
-                <input type="number" {...register("Quantity", { required: "Quantity of minimum 1 is required.", min: 1, max: 100 })} />
+                <input type="number" {...register("Quantity", { required: true, message: "Quantity of minimum 1 is required.", min: 1, max: 100 })} />
                 <p>Country:</p>
-                <input {...register("Location.Country", { required: true })} />
+                <input {...register("Location.Country", { required: true, message: "Country is required." })} />
                 <p>District:</p>
-                <input {...register("Location.District", { required: true })} />
-                <p>Country:</p>
-                <input {...register("Location.City", { required: true })} />
-                <p>Radius:</p>
-                <input type="number" {...register("Location.RadiusKM", { required: "Radius of minimum 1 km is required.", min: 1, max: 100 })} />
-                
+                <input {...register("Location.District")} />
+                <p>City:</p>
+                <input {...register("Location.City", { required: true, message: "City is required."} )} />
+                <p>Radius in kilometers:</p>
+                <input type="number" {...register("Location.RadiusKM", { required: true, message: "Radius of minimum 1 km is required.", min: 1, max: 100 })} />
+                <p>Radius describes how close you are located from the city center.</p>
+
                 <p>Images:</p>
                 <input asp-for="FileUpload.FormFile" type="file" name="temp-image" accept="image/*"{...register("ImagePath")} />
             </div>
