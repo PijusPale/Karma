@@ -7,21 +7,24 @@ export const ListingIdPage = () => {
     const [loading, setLoading] = useState(true);
     const [Data, setData] = useState([]);
     const { id } = useParams();
-    const [Response, setResponse] = useState(false);
+    const [notFound, setNotFound] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
             const response = await fetch('listing/' + id);
-            const data = await response.json();
-            setData(data);
-            setLoading(false);
-            setResponse(true);
+            if (response.ok) {
+                const data = await response.json();
+                setData(data);
+                setLoading(false);
+                setNotFound(false);
+            }
         }
       fetchData();
-    }, [id]);
+    }, []);
 
-    if (!Response)
+    if (notFound)
         return <PageNotFound />;
+
 
     return (
       <div>
