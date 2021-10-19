@@ -9,7 +9,7 @@ import { UserContext } from './UserContext';
 import './custom.css'
 
 export default function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
