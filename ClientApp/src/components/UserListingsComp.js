@@ -5,7 +5,7 @@ import { ListingComp } from './ListingComp';
 export const UserListingsComp = () => {
     const [loading, setLoading] = useState(true);
     const [listingsData, setListingsData] = useState([]);
-    const [listingsType, setListingsType] = useState(['posted']);
+    const [listingsType, setListingsType] = useState('posted');
     const { user, loggedIn } = useContext(UserContext);
 
     const fetchData = async (url) => {
@@ -22,10 +22,6 @@ export const UserListingsComp = () => {
             setLoading(false);
         }
     };
-    
-    useEffect(() => {
-        fetchData(`listing/userId=${user.id}`);
-    }, [user]);
 
     useEffect(() => {
         if(listingsType === 'posted')
