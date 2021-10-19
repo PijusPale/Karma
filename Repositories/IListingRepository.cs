@@ -12,5 +12,7 @@ namespace Karma.Repositories
         void AddListing(Listing listing);
 
         void DeleteListingById(string id);    
+
+        void UpdateListing(Listing listing);
     }
 }
