@@ -3,12 +3,13 @@ import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import AddListing from './components/AddListing';
+import { UserListingsComp } from './components/UserListingsComp';
 import { UserContext } from './UserContext';
 
 import './custom.css'
 
 export default function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -39,6 +40,7 @@ export default function App() {
       <Layout>
         <Route exact path='/' component={Home} />
         <Route path='/add-listing' component={AddListing} />
+        <Route path='/user-listings' component={UserListingsComp} />
       </Layout>
     </UserContext.Provider>
   );
