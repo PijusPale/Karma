@@ -45,9 +45,10 @@ namespace Karma.Controllers
         }
 
         [HttpGet("{id}")]
-        public Listing GetListingById(string id)
+        public IActionResult GetListingById(string id)
         {
-            return _listingRepository.GetListingById(id);
+            var listing =  _listingRepository.GetListingById(id);
+            return listing != null ? Ok(listing) : NotFound();
         }
 
         [HttpDelete("{id}")]
