@@ -81,8 +81,11 @@ export const ListingComp = (props) => {
               <Button color="primary" onClick={() => setUpdate(true)}>Update</Button>
             </>}
           {loggedIn && user.id !== props.ownerId && !requestResponse &&
-            <>
-              <Button color="secondary" onClick={onRequest}>Request Item</Button>
+            <> 
+            {props.requestedUserIDs.includes(user.id) 
+            ? <Button color="secondary" disabled>You have already requested this item</Button>
+            : <Button color="secondary" onClick={onRequest}>Request Item</Button> 
+            }
             </>}
           {CustomAlert()}
         </div>
