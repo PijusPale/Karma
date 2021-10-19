@@ -41,14 +41,12 @@ export default function App() {
   return (
     <UserContext.Provider value={{ loggedIn, setLoggedIn, user, setUser }}>
       <Layout>   
-        <Router>
           <Switch>
            <Route exact path='/' component={Home} />
            <Route path='/add-listing' component={AddListing} />
            <Route exact path='/details/:id' component={ListingIdPage} />
            <Route component={PageNotFound}/>
           </Switch>
-        </Router>
       </Layout>
     </UserContext.Provider>
   );
