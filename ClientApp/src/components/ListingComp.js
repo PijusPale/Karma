@@ -25,7 +25,7 @@ export const ListingComp = (props) => {
     <div>
       <div className="row" style={{ borderStyle: "solid", borderWidth: "2px", marginTop: "10px" }}>
         <div>
-          <a href={'/details/' + props.id} target="_blank">      
+          <a href={'/details/' + props.id} target="_blank" rel ="noopener noreferrer" >      
             <img src={props.imagePath} alt="defaultImage" />
           </a>
           <p>Location: {props.location}</p>
