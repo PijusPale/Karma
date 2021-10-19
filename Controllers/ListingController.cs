@@ -34,20 +34,20 @@ namespace Karma.Controllers
 
             string userId = User.FindFirst(ClaimTypes.Name)?.Value;
             listing.OwnerId = userId;
-            _listingRepository.AddListing(listing);
+            _listingRepository.Add(listing);
             return StatusCode(StatusCodes.Status200OK);
         }
 
         [HttpGet]
         public IEnumerable<Listing> GetAllListings()
         {
-            return _listingRepository.GetAllListings();
+            return _listingRepository.GetAll();
         }
 
         [HttpGet("{id}")]
         public Listing GetListingById(string id)
         {
-            return _listingRepository.GetListingById(id);
+            return _listingRepository.GetById(id);
         }
 
         [HttpDelete("{id}")]
@@ -55,10 +55,10 @@ namespace Karma.Controllers
         public IActionResult DeleteListing(string id)
         {
             string userId = User.FindFirst(ClaimTypes.Name)?.Value;
-            var listing = _listingRepository.GetListingById(id);
+            var listing = _listingRepository.GetById(id);
             if (listing.OwnerId != userId)
                 return Unauthorized();
-            _listingRepository.DeleteListingById(id);
+            _listingRepository.DeleteById(id);
             return Ok();
         }
 
@@ -67,7 +67,7 @@ namespace Karma.Controllers
         public IActionResult UpdateListing(string id, [FromBody] Listing listing)
         {
 
-            var old = _listingRepository.GetListingById(listing.Id);
+            var old = _listingRepository.GetById(listing.Id);
             if (old == null) return NotFound();
 
             string userId = User.FindFirst(ClaimTypes.Name)?.Value;
@@ -75,7 +75,7 @@ namespace Karma.Controllers
 
             listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
             listing.OwnerId = userId;
-            _listingRepository.UpdateListing(listing);
+            _listingRepository.Update(listing);
             return Ok();
         }
     }

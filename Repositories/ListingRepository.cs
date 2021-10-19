@@ -14,35 +14,35 @@ namespace Karma.Repositories
         {
             _filePath = filePath;
         }
-        public void AddListing(Listing listing)
+        public void Add(Listing listing)
         {
-            List<Listing> listings = GetAllListings().ToList();
+            List<Listing> listings = GetAll().ToList();
             listings.Add(listing);
             writeListingsToFile(listings);
         }
 
-        public IEnumerable<Listing> GetAllListings()
+        public IEnumerable<Listing> GetAll()
         {
             string jsonString = System.IO.File.ReadAllText(_filePath);
             return JsonSerializer.Deserialize<List<Listing>>(jsonString);
         }
 
-        public Listing GetListingById(string id)
+        public Listing GetById(string id)
         {
-            List<Listing> listings = GetAllListings().ToList();
+            List<Listing> listings = GetAll().ToList();
             return listings.FirstOrDefault(x => x.Id == id);
         }
 
-        public void DeleteListingById(string id)
+        public void DeleteById(string id)
         {
-            List<Listing> listings = GetAllListings().ToList();
+            List<Listing> listings = GetAll().ToList();
             listings.Remove(listings.Find(x => x.Id == id));
             writeListingsToFile(listings);
         }
 
-        public void UpdateListing(Listing listing)
+        public void Update(Listing listing)
         {
-            List<Listing> listings = GetAllListings().ToList();
+            List<Listing> listings = GetAll().ToList();
             listings[listings.FindIndex(l => l.Id == listing.Id)] = listing;
             writeListingsToFile(listings);
         }
