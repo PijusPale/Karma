@@ -3,10 +3,8 @@ using System.Collections.Generic;
 
 namespace Karma.Models
 {
-	public class Comment
+	public class Comment: Entity
 	{
-		public string Id { get; set; }
-
 		public string Content { get; set; }
 
 		public string ListingId { get; set; }

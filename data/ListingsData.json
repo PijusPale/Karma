@@ -1,6 +1,5 @@
 [
   {
-    "Id": "2522",
     "OwnerId": "448",
     "Name": "Bacon",
     "Description": "tis a description",
@@ -8,10 +7,10 @@
     "Location": "Lithuania",
     "Category": null,
     "DatePublished": "2021-09-15T14:45:29.3073786+03:00",
-    "ImagePath": "https://guide-images.cdn.ifixit.com/igi/o4OjCNmNeOhvsS1P.large"
+    "ImagePath": "https://guide-images.cdn.ifixit.com/igi/o4OjCNmNeOhvsS1P.large",
+    "Id": "2522"
   },
   {
-    "Id": "5580",
     "OwnerId": "9909",
     "Name": "James",
     "Description": "tis a description",
@@ -19,10 +18,10 @@
     "Location": "Poland",
     "Category": null,
     "DatePublished": "2021-09-15T14:45:29.3073864+03:00",
-    "ImagePath": "https://guide-images.cdn.ifixit.com/igi/o4OjCNmNeOhvsS1P.large"
+    "ImagePath": "https://guide-images.cdn.ifixit.com/igi/o4OjCNmNeOhvsS1P.large",
+    "Id": "5580"
   },
   {
-    "Id": "4159",
     "OwnerId": "448",
     "Name": "Kenny",
     "Description": "tis a description",
@@ -30,10 +29,10 @@
     "Location": "Poland",
     "Category": null,
     "DatePublished": "2021-09-15T14:45:29.3073879+03:00",
-    "ImagePath": "https://i.pinimg.com/474x/28/7b/9a/287b9a35afe88d4c52eeb83fedaeabdf.jpg"
+    "ImagePath": "https://i.pinimg.com/474x/28/7b/9a/287b9a35afe88d4c52eeb83fedaeabdf.jpg",
+    "Id": "4159"
   },
   {
-    "Id": "8975",
     "OwnerId": "9909",
     "Name": "Kenny",
     "Description": "tis a description",
@@ -41,10 +40,10 @@
     "Location": "Latvia",
     "Category": null,
     "DatePublished": "2021-09-15T14:45:29.3073884+03:00",
-    "ImagePath": "https://i.pinimg.com/474x/28/7b/9a/287b9a35afe88d4c52eeb83fedaeabdf.jpg"
+    "ImagePath": "https://i.pinimg.com/474x/28/7b/9a/287b9a35afe88d4c52eeb83fedaeabdf.jpg",
+    "Id": "8975"
   },
   {
-    "Id": "1232",
     "OwnerId": "448",
     "Name": "Bob",
     "Description": "Added via POST",
@@ -52,10 +51,10 @@
     "Location": "Lithuania",
     "Category": null,
     "DatePublished": "2021-09-17T00:00:00",
-    "ImagePath": "https://guide-images.cdn.ifixit.com/igi/o4OjCNmNeOhvsS1P.large"
+    "ImagePath": "https://guide-images.cdn.ifixit.com/igi/o4OjCNmNeOhvsS1P.large",
+    "Id": "1232"
   },
   {
-    "Id": "3273",
     "OwnerId": "448",
     "Name": "Tower",
     "Description": "Tall tower",
@@ -63,6 +62,7 @@
     "Location": "Lithuania",
     "Category": "Entertainment",
     "DatePublished": "2021-10-11T16:04:07.9326898Z",
-    "ImagePath": "images/tower.jpg"
+    "ImagePath": "images/tower.jpg",
+    "Id": "3273"
   }
 ]

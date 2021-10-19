@@ -4,15 +4,13 @@ using System.Collections.Generic;
 
 namespace Karma.Models
 {
-    public class User
+    public class User: Entity
     {
         public User()
         {
             this.Listings = new List<Listing>();
             this.Comments = new List<Comment>();
         }
-
-        public string Id { get; set; }
         public string Username { get; set; }
         public string FirstName { get; set; }
 

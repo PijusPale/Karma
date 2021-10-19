@@ -5,9 +5,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Karma.Models
 {
-	public class Listing
+	public class Listing: Entity
 	{
-        public string? Id { get; set; }
 		public string OwnerId { get; set; }
 
 		[Required]
