@@ -8,7 +8,8 @@ namespace Karma.Models
     {
         public User()
         {
-            this.Listings = new List<Listing>();
+            this.Listings = new List<String>();
+            this.RequestedListings = new List<String>();
             this.Comments = new List<Comment>();
         }
         public string Username { get; set; }
@@ -16,8 +17,10 @@ namespace Karma.Models
 
         public string LastName { get; set; }
 
-        public virtual List<Listing> Listings { get; set; }
+        public virtual List<String> Listings { get; set; }
 
+        public virtual List<String> RequestedListings { get; set; }
+        
         public virtual List<Comment> Comments { get; set; }
 
         public string AvatarPath { get; set; }
