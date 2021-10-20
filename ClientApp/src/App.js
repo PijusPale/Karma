@@ -7,12 +7,13 @@ import { Home } from './components/Home';
 import AddListing from './components/AddListing';
 import { ListingIdPage } from './components/ListingIdPage';
 import PageNotFound from './components/PageNotFound';
+import { UserListingsComp } from './components/UserListingsComp';
 import { UserContext } from './UserContext';
 
 import './custom.css'
 
 export default function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -44,6 +45,7 @@ export default function App() {
           <Switch>
            <Route exact path='/' component={Home} />
            <Route path='/add-listing' component={AddListing} />
+           <Route path='/user-listings' component={UserListingsComp} />
            <Route exact path='/details/:id' component={ListingIdPage} />
            <Route component={PageNotFound}/>
           </Switch>

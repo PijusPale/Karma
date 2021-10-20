@@ -24,6 +24,7 @@ export const NavMenu = () => {
               </NavItem>
               {loggedIn && <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/add-listing">Add New Listing</NavLink>
+                <NavLink tag={Link} className="text-dark" to="/user-listings">My Listings</NavLink>
               </NavItem>}
               <NavItem>
                 <AccountComp />
