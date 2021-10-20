@@ -43,7 +43,7 @@ export const ListingPageLayout = (props) =>
         <h2>{props.name}</h2>
     </div>
     <div>
-        <p>Location: {props.location}</p>
+        <p>{props.location.country}, {props.location.city}, {props.location.radiusKM}km</p>
         <p>{props.description}</p>
         <p>Quantity: {props.quantity}</p>
     </div>
