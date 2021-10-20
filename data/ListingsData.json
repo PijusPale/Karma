@@ -13,7 +13,10 @@
     },
     "Category": null,
     "DatePublished": "2021-09-15T14:45:29.3073786+03:00",
-    "ImagePath": "https://guide-images.cdn.ifixit.com/igi/o4OjCNmNeOhvsS1P.large"
+    "ImagePath": "https://guide-images.cdn.ifixit.com/igi/o4OjCNmNeOhvsS1P.large",
+    "RequestedUserIDs": [
+      "9909"
+    ]
   },
   {
     "Id": "5580",
@@ -29,7 +32,10 @@
     },
     "Category": null,
     "DatePublished": "2021-09-15T14:45:29.3073864+03:00",
-    "ImagePath": "https://guide-images.cdn.ifixit.com/igi/o4OjCNmNeOhvsS1P.large"
+    "ImagePath": "https://guide-images.cdn.ifixit.com/igi/o4OjCNmNeOhvsS1P.large",
+    "RequestedUserIDs": [
+      "448"
+    ]
   },
   {
     "Id": "4159",
@@ -45,7 +51,10 @@
     },
     "Category": null,
     "DatePublished": "2021-09-15T14:45:29.3073879+03:00",
-    "ImagePath": "https://i.pinimg.com/474x/28/7b/9a/287b9a35afe88d4c52eeb83fedaeabdf.jpg"
+    "ImagePath": "https://i.pinimg.com/474x/28/7b/9a/287b9a35afe88d4c52eeb83fedaeabdf.jpg",
+    "RequestedUserIDs": [
+      "9909"
+    ]
   },
   {
     "Id": "8975",
@@ -61,7 +70,10 @@
     },
     "Category": null,
     "DatePublished": "2021-09-15T14:45:29.3073884+03:00",
-    "ImagePath": "https://i.pinimg.com/474x/28/7b/9a/287b9a35afe88d4c52eeb83fedaeabdf.jpg"
+    "ImagePath": "https://i.pinimg.com/474x/28/7b/9a/287b9a35afe88d4c52eeb83fedaeabdf.jpg",
+    "RequestedUserIDs": [
+      "448"
+    ]
   },
   {
     "Id": "1232",
@@ -77,7 +89,10 @@
     },
     "Category": null,
     "DatePublished": "2021-09-17T00:00:00",
-    "ImagePath": "https://guide-images.cdn.ifixit.com/igi/o4OjCNmNeOhvsS1P.large"
+    "ImagePath": "https://guide-images.cdn.ifixit.com/igi/o4OjCNmNeOhvsS1P.large",
+    "RequestedUserIDs": [
+      "9909"
+    ]
   },
   {
     "Id": "3273",
@@ -86,13 +101,34 @@
     "Description": "Tall tower",
     "Quantity": 1,
     "Location": {
-      "Country": "France",
-      "District": "Island of France",
-      "City": "Paris",
-      "RadiusKM": 2
+      "Country": "Lithuania",
+      "District": "",
+      "City": "Vilnius",
+      "RadiusKM": 10
     },
     "Category": "Entertainment",
     "DatePublished": "2021-10-11T16:04:07.9326898Z",
-    "ImagePath": "images/tower.jpg"
+    "ImagePath": "images/tower.jpg",
+    "RequestedUserIDs": [
+      "9909"
+    ]
+  },
+  {
+    "Id": "7646",
+    "OwnerId": "9909",
+    "Name": "Test",
+    "Description": "TEST",
+    "Quantity": 1,
+    "Location": {
+      "Country": "Latvia",
+      "City": "Daugavpils",
+      "RadiusKM": 12
+    },
+    "Category": "Vehicles",
+    "DatePublished": "2021-10-12T17:27:43.0064015Z",
+    "ImagePath": "images/default.png",
+    "RequestedUserIDs": [
+      "448"
+    ]
   }
 ]

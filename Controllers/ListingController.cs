@@ -5,8 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Karma.Models;
 using Karma.Repositories;
+using Karma.Services;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using System.Linq;
 
 namespace Karma.Controllers
 {
@@ -18,10 +20,13 @@ namespace Karma.Controllers
 
         private readonly IListingRepository _listingRepository;
 
-        public ListingController(ILogger<ListingController> logger, IListingRepository listingRepository)
+        private readonly IUserService _userService;
+
+        public ListingController(ILogger<ListingController> logger, IListingRepository listingRepository, IUserService userService)
         {
             _logger = logger;
             _listingRepository = listingRepository;
+            _userService = userService;
         }
 
         [HttpPost]
@@ -44,10 +49,53 @@ namespace Karma.Controllers
             return _listingRepository.GetAllListings();
         }
 
+        [HttpGet("userId={id}")]
+        [Authorize]
+        public ActionResult<IEnumerable<Listing>> GetListingsOfUser(string id)
+        {   
+            string userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            if(id != userId)
+                return Unauthorized();
+
+            return _listingRepository.GetAllUserListings(id).ToList();
+        }
+
+        [HttpGet("requesteeId={id}")]
+        [Authorize]
+        public ActionResult<IEnumerable<Listing>> GetRequestedListingsOfUser(string id)
+        {
+            string userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            if (id != userId)
+                return Unauthorized();
+
+            return _listingRepository.GetRequestedListings(id).ToList();
+        }
+
         [HttpGet("{id}")]
         public Listing GetListingById(string id)
         {
             return _listingRepository.GetListingById(id);
+        }
+
+        [HttpGet("request/{id}")]
+        [Authorize]
+        public IActionResult RequestListing(string id)
+        {
+            string userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            var listing = _listingRepository.GetListingById(id);
+            var user = _userService.GetUserById(userId);
+            if (listing.OwnerId == userId)
+                return Forbid();
+            
+            if(listing.RequestedUserIDs.Contains(userId) || user.RequestedListings.Contains(id))
+                return Conflict();
+
+            listing.RequestedUserIDs.Add(userId);
+            _listingRepository.UpdateListing(listing);
+
+            user.RequestedListings.Add(listing.Id);
+            
+            return Ok();
         }
 
         [HttpDelete("{id}")]
