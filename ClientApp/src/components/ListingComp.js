@@ -63,7 +63,9 @@ export const ListingComp = (props) => {
     <div>
       <div className="row" style={{ borderStyle: "solid", borderWidth: "2px", marginTop: "10px" }}>
         <div>
-          <img src={props.imagePath} alt="defaultImage" />
+          <a href={'/details/' + props.id} target="_blank" rel ="noopener noreferrer" >      
+            <img src={props.imagePath} alt="defaultImage" />
+          </a>
           <p>{props.location.country}, {props.location.city}, {props.location.radiusKM}km</p>
         </div>
         <div>
