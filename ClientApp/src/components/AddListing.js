@@ -87,7 +87,7 @@ export default function AddListing(props) {
                 <input className="form-control" {...register("Location.City", { required: true, message: "City is required." })} />
                 <label>Radius in kilometers</label>
                 <input type="number" className="form-control" {...register("Location.RadiusKM", { required: true, message: "Radius of minimum 1 km is required.", min: 1, max: 100 })} />
-                <small class="form-text text-muted"> Radius describes how close you are located from the city center.</small>
+                <small className="form-text text-muted"> Radius describes how close you are located from the city center.</small>
             </div>
             <div className="form-group">
                 <label>Images</label>

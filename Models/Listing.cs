@@ -12,13 +12,18 @@ namespace Karma.Models
             Country = country;
             District = district;
             City = city;
-            RadiusKM = radiusKM;
+            this.radiusKM = radiusKM < 0 ? 0 : radiusKM;
         }
 
         public string Country { get; set; }
         public string District { get; set; }
         public string City { get; set; }
-        public int RadiusKM { get; set; }
+        private int radiusKM;
+        public int RadiusKM
+        {
+            get => radiusKM;
+            set => radiusKM = value < 0 ? 0 : value;
+        }
     }
     public class Listing
     {
@@ -32,7 +37,7 @@ namespace Karma.Models
         public string OwnerId { get; set; }
 
         [Required]
-        [RegularExpression(@"^[a-zA-Z0-9! ]+$")]
+        [RegularExpression(@"^[a-zA-Z0-9! ]+$")] 
         [StringLength(20)]
         public string Name { get; set; }
 
