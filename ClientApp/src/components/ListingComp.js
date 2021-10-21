@@ -33,7 +33,7 @@ export const ListingComp = (props) => {
 
     if(show) {
       return(
-        <div class={variant} role="alert">
+        <div className={variant} role="alert">
           {description}
         </div> 
       );
