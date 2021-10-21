@@ -7,7 +7,7 @@ import '../chat.css';
 
 //TODO: RegEx expression for messages, save messages and load up on render.
 
-export const Chat = () => {
+export const Chat = (props) => {
     const [message, setMessage] = useState([]);
     const [messages, setMessages] = useState([]); //array of objects with message.type, message.nick, message.text
     const [hubConnection, setHubConnection] = useState();
@@ -19,14 +19,15 @@ export const Chat = () => {
                 .withUrl("/ChatHub")
                 .build();
 
-            connection.on("SendMessage", (nick, receivedMessage) => receiveMessage(nick, receivedMessage));
+            connection.on("ReceiveGroupMessage", (nick, receivedMessage) => receiveMessage(nick, receivedMessage));
 
             connection.logging = true;
-
             connection
                 .start()
                 .then(() => console.log('Connection established.'))
-                .catch(err => console.log(`Error while establishing connection: ${err}`));
+                .catch(err => console.log(`Error while establishing connection: ${err}`))
+                .then(() => connection.invoke("AddToGroup", props.groupId))
+                .catch(err => console.error(`Error while adding to group: ${err}`));
 
             setHubConnection(connection);
         }
@@ -35,7 +36,7 @@ export const Chat = () => {
     const sendMessage = async () => {
         if (message !== '') {
             await hubConnection
-                .invoke('SendMessage', user.firstName, message)
+                .invoke('SendGroupMessage', props.groupId, user.firstName, message)
                 .catch(err => console.error(`Error while sending message: ${err}`));
 
             setMessage('');

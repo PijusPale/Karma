@@ -45,10 +45,9 @@ namespace Karma.Controllers
             return Ok();
         }
 
-
-        [HttpPost("id={id}/reserve={reserve}")]
+        [HttpPost("id={id}/reserve={reserve}/for={receiverId}")]
         [Authorize]
-        public ActionResult ReserveListing(string id, bool reserve)
+        public ActionResult ReserveListing(string id, bool reserve, string receiverId)
         {
             string userId = this.TryGetUserId();
             var listing = _listingRepository.GetById(id);
@@ -56,7 +55,9 @@ namespace Karma.Controllers
                 return Unauthorized();
 
             listing.isReserved = reserve;
+            listing.reservedForUserId = receiverId;
             _listingRepository.Update(listing);
+            
             return Ok();
         }
 

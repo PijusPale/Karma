@@ -2,6 +2,7 @@
   {
     "OwnerId": "448",
     "isReserved": true,
+    "reservedForUserId": null,
     "Name": "Bacon",
     "Description": "tis a description",
     "Quantity": 3,
@@ -24,6 +25,7 @@
   {
     "OwnerId": "9909",
     "isReserved": false,
+    "reservedForUserId": null,
     "Name": "James",
     "Description": "tis a description",
     "Quantity": 2,
@@ -45,6 +47,7 @@
   {
     "OwnerId": "448",
     "isReserved": true,
+    "reservedForUserId": null,
     "Name": "Kenny",
     "Description": "tis a description",
     "Quantity": 1,
@@ -66,6 +69,7 @@
   {
     "OwnerId": "9909",
     "isReserved": false,
+    "reservedForUserId": null,
     "Name": "Kenny",
     "Description": "tis a description",
     "Quantity": 2,
@@ -87,6 +91,7 @@
   {
     "OwnerId": "448",
     "isReserved": false,
+    "reservedForUserId": null,
     "Name": "Bob",
     "Description": "Added via POST",
     "Quantity": 1,
@@ -108,6 +113,7 @@
   {
     "OwnerId": "448",
     "isReserved": false,
+    "reservedForUserId": null,
     "Name": "Tower",
     "Description": "Tall tower",
     "Quantity": 1,
@@ -129,6 +135,7 @@
   {
     "OwnerId": "9909",
     "isReserved": false,
+    "reservedForUserId": null,
     "Name": "Test",
     "Description": "TEST",
     "Quantity": 1,
@@ -146,24 +153,5 @@
       "448"
     ],
     "Id": null
-  },
-  {
-    "OwnerId": "448",
-    "isReserved": false,
-    "Name": "TTTTT",
-    "Description": "TTTTTTTT",
-    "Quantity": 1,
-    "Location": {
-      "Country": "Lithuania",
-      "District": "Zemaitija",
-      "City": "\u0160iauliai",
-      "RadiusKM": 5
-    },
-    "Category": "Vehicles",
-    "DatePublished": "2021-10-21T19:46:21.5443551Z",
-    "ImagePath": "images/default.png",
-    "Condition": 0,
-    "RequestedUserIDs": [],
-    "Id": "7646"
   }
 ]

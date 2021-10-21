@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { UserContext } from '../UserContext';
 import PageNotFound from './PageNotFound';
+import { Chat } from './Chat';
+import md5 from 'md5';
 
 //TODO: display selected user's name.
 
@@ -43,7 +45,8 @@ export const ListingPageLayout = (props) => {
   const { user, loggedIn } = useContext(UserContext);
   const [users, setUsers] = useState([]);
   const [listingReservedResponse, setListingReservedResponse] = useState(false);
-  const history = useHistory();
+  const [chatShow, setChatShow] = useState(false);
+  const [receiverId, setReceiverId] = useState();
 
   useEffect(() => {
     if(props.isReserved)
@@ -70,11 +73,11 @@ export const ListingPageLayout = (props) => {
     const sendData = async () => {
       var reserve = true;
       if(loggedIn && (user.id === props.ownerId)) {
-        const response = await fetch(`listing/id=${props.id}/reserve=${reserve}`, {
+        const response = await fetch(`listing/id=${props.id}/reserve=${reserve}/for=${receiverId}`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
+          },
         });
 
         if(response.ok) {
@@ -86,7 +89,7 @@ export const ListingPageLayout = (props) => {
   };
 
   const redirectToChat = () => {
-    history.push('/chat')
+    setChatShow(true);
   };
 
   return (<div>
@@ -99,12 +102,12 @@ export const ListingPageLayout = (props) => {
       <p>{props.description}</p>
       <p>Quantity: {props.quantity}</p>
     </div>
-    {loggedIn && user.id === props.ownerId && !listingReservedResponse && 
+    {loggedIn && user.id === props.ownerId && !listingReservedResponse && !chatShow &&
       <div align="center">
         <h4>Select user to donate the item to:</h4>
-        <select class ="form-select">
+        <select class ="form-select" onChange={e => setReceiverId(e.target.value)}>
           <option selected>None</option>
-          {users.map( (data, index) => <option key={index}>{data.firstName} {data.secondName}</option>)}
+          {users.map( (data, index) => <option key={index} value={data.id}>{data.firstName} {data.secondName}</option>)}
         </select>
         <br/>
         <div class="text-center">
@@ -116,12 +119,13 @@ export const ListingPageLayout = (props) => {
         </div> 
       </div>
     }
-    {listingReservedResponse &&
+    {listingReservedResponse && !chatShow &&
       <div align="center">
         <div class="alert alert-success" role="alert">Listing reserved for the selected user!</div>
         <button class="btn btn-outline-dark" onClick={redirectToChat}>Chat with user</button>
       </div>
-      }
+    }
+    {chatShow && <Chat groupId={md5(props.OwnerId + receiverId + props.Id)}/>}
   </div>
   );
 }

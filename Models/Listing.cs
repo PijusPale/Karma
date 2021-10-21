@@ -49,6 +49,8 @@ namespace Karma.Models
 
         public bool isReserved { get; set; }
 
+        public string? reservedForUserId { get; set; }
+
         [Required]
         [RegularExpression(@"^[a-zA-Z0-9! ]+$")]
         [StringLength(20)]
