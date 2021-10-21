@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { UserContext } from '../UserContext';
 import PageNotFound from './PageNotFound';
 
@@ -43,6 +43,7 @@ export const ListingPageLayout = (props) => {
   const { user, loggedIn } = useContext(UserContext);
   const [users, setUsers] = useState([]);
   const [listingReservedResponse, setListingReservedResponse] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     if(props.isReserved)
@@ -84,6 +85,10 @@ export const ListingPageLayout = (props) => {
     sendData();
   };
 
+  const redirectToChat = () => {
+    history.push('/chat')
+  };
+
   return (<div>
     <div>
       <img src={props.imagePath} alt="defaultImage" width="500" />
@@ -104,15 +109,19 @@ export const ListingPageLayout = (props) => {
         <br/>
         <div class="text-center">
           {(users && users.length)
-            ? <button align="center" class="btn btn-outline-dark" onClick={onDonate}>Donate</button>
-            : <button align="center" class="btn btn-outline-dark" disabled>Donate</button>
+            ? <button class="btn btn-outline-dark" onClick={onDonate}>Donate</button>
+            : <button class="btn btn-outline-dark" disabled>Donate</button>
           }
           <br/>
         </div> 
       </div>
     }
     {listingReservedResponse &&
-      <div class="alert alert-success" role="alert">Listing reserved for the selected user!</div>}
+      <div align="center">
+        <div class="alert alert-success" role="alert">Listing reserved for the selected user!</div>
+        <button class="btn btn-outline-dark" onClick={redirectToChat}>Chat with user</button>
+      </div>
+      }
   </div>
   );
 }
