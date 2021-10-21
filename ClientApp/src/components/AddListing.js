@@ -4,7 +4,16 @@ import axios from "axios";
 import { Redirect } from 'react-router';
 
 export default function AddListing(props) {
-    const { register, handleSubmit, formState } = useForm({ mode: 'onBlur', defaultValues: { Quantity: 1, Location: "Lithuania" }, shouldUseNativeValidation: true });
+    const { register, handleSubmit, formState } = useForm({
+        mode: 'onBlur',
+        defaultValues: {
+            Quantity: props.quantity || 1,
+            "Location.Country": (props.location && props.location.country) || "Lithuania",
+            "Location.District": (props.location && props.location.district) || "Zemaitija",
+            "Location.City": (props.location && props.location.city) || "Šiauliai",
+            "Location.RadiusKM": (props.location && props.location.radiusKM) || 5,
+        }, shouldUseNativeValidation: true
+    });
     const { isSubmitting, isSubmitted } = formState;
     const maxTitleLength = 20, maxDescriptionLength = 200;
 
@@ -47,7 +56,9 @@ export default function AddListing(props) {
                     required: "Title is required.",
                     maxLength: { value: maxTitleLength, message: "Maximum length of " + { maxTitleLength } + " characters exceeded." },
                     pattern: { value: /^[a-zA-Z0-9! ]+$/, message: "Please enter only A-Z letters, 0-9 numbers or ! sign." }
-                })} />      
+                })} />
+            </div>
+            <div className="form-group">
                 <label>Category</label>
                 <select defaultValue={props.category} className="custom-select" {...register("Category", { required: true })}>
                     <option value="Vehicles">Vehicles</option>
@@ -55,15 +66,30 @@ export default function AddListing(props) {
                     <option value="Electronics">Electronics</option>
                     <option value="Entertainment">Entertainment</option>
                 </select>
+            </div>
+            <div className="form-group">
                 <label>Description</label>
                 <textarea defaultValue={props.description} className="form-control" {...register("Description", {
-                    maxLength: { value: maxDescriptionLength, message: "Maximum length of " + {maxDescriptionLength} + " characters exceeded." },
+                    maxLength: { value: maxDescriptionLength, message: "Maximum length of " + { maxDescriptionLength } + " characters exceeded." },
                     pattern: { value: /^[a-zA-Z0-9!+, ]+$/, message: "Please enter only A-Z letters, 0-9 numbers or !+ signs." }
                 })} />
+            </div>
+            <div className="form-group">
                 <label>Quantity</label>
                 <input type="number" className="form-control" {...register("Quantity", { required: "Quantity of minimum 1 is required.", min: 1, max: 100 })} />
-                <label>Location</label>
-                <input defaultValue={props.location} className="form-control"{...register("Location", { required: true })} />
+            </div>
+            <div className="form-group">
+                <label>Country</label>
+                <input className="form-control" {...register("Location.Country", { required: true, message: "Country is required." })} />
+                <label>District</label>
+                <input className="form-control" {...register("Location.District")} />
+                <label>City</label>
+                <input className="form-control" {...register("Location.City", { required: true, message: "City is required." })} />
+                <label>Radius in kilometers</label>
+                <input type="number" className="form-control" {...register("Location.RadiusKM", { required: true, message: "Radius of minimum 1 km is required.", min: 1, max: 100 })} />
+                <small className="form-text text-muted"> Radius describes how close you are located from the city center.</small>
+            </div>
+            <div className="form-group">
                 <label>Images</label>
                 <input asp-for="FileUpload.FormFile" type="file" className="form-control-file" name="temp-image" accept="image/*"{...register("ImagePath")} />
             </div>

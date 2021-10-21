@@ -1,8 +1,12 @@
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+
 import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import AddListing from './components/AddListing';
+import { ListingIdPage } from './components/ListingIdPage';
+import PageNotFound from './components/PageNotFound';
 import { UserListingsComp } from './components/UserListingsComp';
 import { UserContext } from './UserContext';
 
@@ -37,10 +41,14 @@ export default function App() {
 
   return (
     <UserContext.Provider value={{ loggedIn, setLoggedIn, user, setUser }}>
-      <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path='/add-listing' component={AddListing} />
-        <Route path='/user-listings' component={UserListingsComp} />
+      <Layout>   
+          <Switch>
+           <Route exact path='/' component={Home} />
+           <Route path='/add-listing' component={AddListing} />
+           <Route path='/user-listings' component={UserListingsComp} />
+           <Route exact path='/details/:id' component={ListingIdPage} />
+           <Route component={PageNotFound}/>
+          </Switch>
       </Layout>
     </UserContext.Provider>
   );
