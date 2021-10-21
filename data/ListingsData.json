@@ -121,6 +121,7 @@
     "Quantity": 1,
     "Location": {
       "Country": "Latvia",
+      "District": null,
       "City": "Daugavpils",
       "RadiusKM": 12
     },
@@ -130,5 +131,22 @@
     "RequestedUserIDs": [
       "448"
     ]
+  },
+  {
+    "Id": "5455",
+    "OwnerId": "448",
+    "Name": "TTTTT",
+    "Description": "TTTTTTTT",
+    "Quantity": 1,
+    "Location": {
+      "Country": "Lithuania",
+      "District": "Zemaitija",
+      "City": "\u0160iauliai",
+      "RadiusKM": 5
+    },
+    "Category": "Vehicles",
+    "DatePublished": "2021-10-21T19:46:21.5443551Z",
+    "ImagePath": "images/default.png",
+    "RequestedUserIDs": []
   }
 ]

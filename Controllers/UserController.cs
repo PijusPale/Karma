@@ -4,6 +4,11 @@ using Microsoft.AspNetCore.Authorization;
 using Karma.Services;
 using Karma.Models.Authentication;
 using System.Security.Claims;
+using Karma.Repositories;
+using System.Collections.Generic;
+using Karma.Models;
+using System.Linq;
+using System;
 
 namespace Karma.Controllers
 {
@@ -16,10 +21,13 @@ namespace Karma.Controllers
 
         private readonly IUserService _userService;
 
-        public UserController(ILogger<ListingController> logger, IUserService userService)
+        private readonly IListingRepository _listingRepository;
+
+        public UserController(ILogger<ListingController> logger, IListingRepository listingRepository, IUserService userService)
         {
             _logger = logger;
             _userService = userService;
+            _listingRepository = listingRepository;
         }
 
         [AllowAnonymous]
@@ -41,6 +49,23 @@ namespace Karma.Controllers
                 return NoContent();
             }
             return Ok(_userService.GetUserById(userid));
+        }
+
+        [HttpGet("getByListingId={id}")]
+        public IActionResult GetRequestedUsersOfListing(string id)
+        {
+            if(id == null)
+                return NoContent();
+
+            var listing = _listingRepository.GetListingById(id);
+            var listOfUsers = new List<User>();
+
+            foreach(string requesteeId in listing.RequestedUserIDs)
+            {
+                listOfUsers.Add(_userService.GetUserById(requesteeId));
+            }
+            
+            return Ok(listOfUsers);   
         }
     }
 }
