@@ -58,7 +58,8 @@ export const ListingsComp = () => {
                           return val
                       }
                       else if (val.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          val.location.country.toLowerCase().includes(searchTerm.toLowerCase())) {
+                          val.location.country.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          val.location.city.toLowerCase().includes(searchTerm.toLowerCase())) {
                           return val
                       }
                   }).map(data => <li key={data.id}><ListingComp {...data} /></li>)} </ul></>
