@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import { UserContext } from '../UserContext';
 import PageNotFound from './PageNotFound';
 
+//TODO: display selected user's name.
+
 export const ListingIdPage = () => {
 
   const [loading, setLoading] = useState(true);
@@ -40,8 +42,11 @@ export const ListingIdPage = () => {
 export const ListingPageLayout = (props) => {
   const { user, loggedIn } = useContext(UserContext);
   const [users, setUsers] = useState([]);
+  const [listingReservedResponse, setListingReservedResponse] = useState(false);
 
   useEffect(() => {
+    if(props.isReserved)
+      setListingReservedResponse(true);
     const fetchData = async () => {
       if (loggedIn && (user.id === props.ownerId)) {
         const response = await fetch(`user/getByListingId=${props.id}`, {
@@ -58,11 +63,25 @@ export const ListingPageLayout = (props) => {
       }
     }
     fetchData();
-    console.log(users);
   }, [loggedIn]);
 
   const onDonate = async () => {
+    const sendData = async () => {
+      var reserve = true;
+      if(loggedIn && (user.id === props.ownerId)) {
+        const response = await fetch(`listing/id=${props.id}/reserve=${reserve}`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
 
+        if(response.ok) {
+          setListingReservedResponse(true);
+        }
+      }
+    }
+    sendData();
   };
 
   return (<div>
@@ -75,12 +94,12 @@ export const ListingPageLayout = (props) => {
       <p>{props.description}</p>
       <p>Quantity: {props.quantity}</p>
     </div>
-    {loggedIn && user.id === props.ownerId &&
+    {loggedIn && user.id === props.ownerId && !listingReservedResponse && 
       <div align="center">
         <h4>Select user to donate the item to:</h4>
         <select class ="form-select">
           <option selected>None</option>
-          {users.map( (data, index) => <option id={index}>{data.firstName} {data.secondName}</option>)}
+          {users.map( (data, index) => <option key={index}>{data.firstName} {data.secondName}</option>)}
         </select>
         <br/>
         <div class="text-center">
@@ -88,9 +107,12 @@ export const ListingPageLayout = (props) => {
             ? <button align="center" class="btn btn-outline-dark" onClick={onDonate}>Donate</button>
             : <button align="center" class="btn btn-outline-dark" disabled>Donate</button>
           }
+          <br/>
         </div> 
       </div>
     }
+    {listingReservedResponse &&
+      <div class="alert alert-success" role="alert">Listing reserved for the selected user!</div>}
   </div>
   );
 }

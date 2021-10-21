@@ -1,6 +1,7 @@
 [
   {
     "OwnerId": "448",
+    "isReserved": true,
     "Name": "Bacon",
     "Description": "tis a description",
     "Quantity": 3,
@@ -22,6 +23,7 @@
   },
   {
     "OwnerId": "9909",
+    "isReserved": false,
     "Name": "James",
     "Description": "tis a description",
     "Quantity": 2,
@@ -42,6 +44,7 @@
   },
   {
     "OwnerId": "448",
+    "isReserved": true,
     "Name": "Kenny",
     "Description": "tis a description",
     "Quantity": 1,
@@ -62,6 +65,7 @@
   },
   {
     "OwnerId": "9909",
+    "isReserved": false,
     "Name": "Kenny",
     "Description": "tis a description",
     "Quantity": 2,
@@ -82,6 +86,7 @@
   },
   {
     "OwnerId": "448",
+    "isReserved": false,
     "Name": "Bob",
     "Description": "Added via POST",
     "Quantity": 1,
@@ -102,6 +107,7 @@
   },
   {
     "OwnerId": "448",
+    "isReserved": false,
     "Name": "Tower",
     "Description": "Tall tower",
     "Quantity": 1,
@@ -122,6 +128,7 @@
   },
   {
     "OwnerId": "9909",
+    "isReserved": false,
     "Name": "Test",
     "Description": "TEST",
     "Quantity": 1,
@@ -137,10 +144,12 @@
     "Condition": 0,
     "RequestedUserIDs": [
       "448"
-    ]
+    ],
+    "Id": null
   },
   {
     "OwnerId": "448",
+    "isReserved": false,
     "Name": "TTTTT",
     "Description": "TTTTTTTT",
     "Quantity": 1,
@@ -153,6 +162,7 @@
     "Category": "Vehicles",
     "DatePublished": "2021-10-21T19:46:21.5443551Z",
     "ImagePath": "images/default.png",
+    "Condition": 0,
     "RequestedUserIDs": [],
     "Id": "7646"
   }
