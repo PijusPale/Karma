@@ -73,6 +73,7 @@ export const ListingComp = (props) => {
           <h2>{props.name}</h2>
           <p>{props.description}</p>
           <p>Quantity: {props.quantity}</p>
+          <p>Item condition: {props.condition}</p>
           <p>Date: {props.datePublished.slice(0, 10)}</p>
           {loggedIn && user.id === props.ownerId &&
             <>
