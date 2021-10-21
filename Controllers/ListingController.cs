@@ -37,7 +37,7 @@ namespace Karma.Controllers
             listing.Id = random.Next(9999).ToString(); // temp fix for id generation, later this should be assigned in DB.
             listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
 
-            string userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            string userId = this.TryGetUserId();
             listing.OwnerId = userId;
             _listingRepository.Add(listing);
             return StatusCode(StatusCodes.Status200OK);
@@ -53,7 +53,7 @@ namespace Karma.Controllers
         [Authorize]
         public ActionResult<IEnumerable<Listing>> GetListingsOfUser(string id)
         {   
-            string userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            string userId = this.TryGetUserId();
             if(id != userId)
                 return Unauthorized();
 
@@ -64,7 +64,7 @@ namespace Karma.Controllers
         [Authorize]
         public ActionResult<IEnumerable<Listing>> GetRequestedListingsOfUser(string id)
         {
-            string userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            string userId = this.TryGetUserId();
             if (id != userId)
                 return Unauthorized();
 
@@ -81,7 +81,7 @@ namespace Karma.Controllers
         [Authorize]
         public IActionResult RequestListing(string id)
         {
-            string userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            string userId = this.TryGetUserId();
             var listing = _listingRepository.GetById(id);
             var user = _userService.GetUserById(userId);
             if (listing.OwnerId == userId)
@@ -102,7 +102,7 @@ namespace Karma.Controllers
         [Authorize]
         public IActionResult DeleteListing(string id)
         {
-            string userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            string userId = this.TryGetUserId();
             var listing = _listingRepository.GetById(id);
             if (listing.OwnerId != userId)
                 return Unauthorized();
@@ -118,7 +118,7 @@ namespace Karma.Controllers
             var old = _listingRepository.GetById(listing.Id);
             if (old == null) return NotFound();
 
-            string userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            string userId = this.TryGetUserId();
             if (old.OwnerId != userId) return Unauthorized();
 
             listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit

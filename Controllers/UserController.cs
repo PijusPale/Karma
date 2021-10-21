@@ -36,7 +36,7 @@ namespace Karma.Controllers
         [HttpGet]
         public IActionResult GetCurrentUser()
         {
-            string userid = User.FindFirst(ClaimTypes.Name)?.Value;
+            string userid = this.TryGetUserId();
             if (userid == null) {
                 return NoContent();
             }
