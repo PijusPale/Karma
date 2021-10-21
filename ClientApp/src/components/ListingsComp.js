@@ -24,6 +24,8 @@ export const ListingsComp = () => {
                         return new Date(b['datePublished']) - new Date(a['datePublished'])
                     })
                 )
+                if (document.getElementById("sortBy..") != null)
+                    document.getElementById("sortBy..").remove();
                 break;
             case 'dateAsc':
                 setListingsData(
@@ -31,6 +33,8 @@ export const ListingsComp = () => {
                         return new Date(b['datePublished']) - new Date(a['datePublished'])
                     }).reverse()
                 )
+                if (document.getElementById("sortBy..") != null)
+                    document.getElementById("sortBy..").remove();
                 break;
             default:
                 break;
@@ -48,7 +52,7 @@ export const ListingsComp = () => {
                   } }
               />
                   <select onChange={(e) => sortArray(e.target.value)}>
-                      <option>Sort by...</option>
+                      <option id="sortBy..">Sort by...</option>
                       <option value="dateDesc">Date DESC</option>
                       <option value="dateAsc">Date ASC</option>
                   </select>
@@ -62,7 +66,7 @@ export const ListingsComp = () => {
                           val.location.city.toLowerCase().includes(searchTerm.toLowerCase())) {
                           return val
                       }
-                  }).map(data => <li key={data.id}><ListingComp {...data} /></li>)} </ul></>
+                  }).map(data => <li key={data.id}><ListingComp {...data} refresh={fetchData} /></li>)} </ul></>
       }
     </div>
   );
