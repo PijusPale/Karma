@@ -20,15 +20,18 @@ namespace Karma.Services
     }
     public class UserService : IUserService
     {
-        private List<User> _users = new List<User> {
-            new User { Username = "First", Id = "448", FirstName = "First", LastName = "Test"},
-            new User { Username = "Second", Id = "9909", FirstName = "Second", LastName = "Test"}
-        };
+        private List<User> _users;
         private readonly JwtSettings _jwtSettings;
 
         public UserService(IOptions<JwtSettings> jwtSettings)
         {
             _jwtSettings = jwtSettings.Value;
+
+            _users = new List<User>();
+            _users.Add(new User { Username = "First", Id = "448", FirstName = "First", LastName = "Test" });
+            _users.Add(new User { Username = "Second", Id = "9909", FirstName = "Second", LastName = "Test" });
+            _users.Add(new User { Username = "Third", Id = "1132", FirstName = "John", LastName = "Smith" });
+            _users.Add(new User { Username = "Fourth", Id = "3210", FirstName = "Anna", LastName = "Smith" });
         }
 
         public User Authenticate(UserCredentials request)
@@ -61,7 +64,14 @@ namespace Karma.Services
 
         public User GetUserById(string id)
         {
-            return _users.FirstOrDefault(u => u.Id == id);
+            foreach (var user in _users)
+            {
+                if (user.Id == id)
+                {
+                    return user;
+                }
+            }
+            return null;
         }
     }
 }

@@ -3,14 +3,12 @@ using System.Collections.Generic;
 
 namespace Karma.Models
 {
-	public class Category
+	public class Category: Entity
 	{
 		public Category()
 		{
 			this.Listings = new List<Listing>();
 		}
-
-		public string Id { get; set; }
 
 		public string Name { get; set; }
 

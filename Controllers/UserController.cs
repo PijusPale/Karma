@@ -44,7 +44,7 @@ namespace Karma.Controllers
         [HttpGet]
         public IActionResult GetCurrentUser()
         {
-            string userid = User.FindFirst(ClaimTypes.Name)?.Value;
+            string userid = this.TryGetUserId();
             if (userid == null) {
                 return NoContent();
             }
@@ -57,14 +57,14 @@ namespace Karma.Controllers
             if(id == null)
                 return NoContent();
 
-            var listing = _listingRepository.GetListingById(id);
+            var listing = _listingRepository.GetById(id);
             var listOfUsers = new List<User>();
 
             foreach(string requesteeId in listing.RequestedUserIDs)
             {
                 listOfUsers.Add(_userService.GetUserById(requesteeId));
             }
-            
+
             return Ok(listOfUsers);   
         }
     }

@@ -5,6 +5,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Karma.Models
 {
+    public enum Condition
+    {
+        New, Used, Broken
+    }
     public struct Location
     {
         public Location(string country, string district, string city, int radiusKM)
@@ -25,19 +29,26 @@ namespace Karma.Models
             set => radiusKM = value < 0 ? 0 : value;
         }
     }
-    public class Listing
+    public class Listing : Entity, IComparable
     {
         public Listing()
         {
             this.RequestedUserIDs = new List<String>();
         }
 
-        public string? Id { get; set; }
-
+        public int CompareTo(object obj)
+        {
+			    if (obj == null) return 1;
+			       Listing otherListing = obj as Listing;
+			    if (otherListing != null)
+				     return this.DatePublished.CompareTo(otherListing.DatePublished);
+			    else
+				     throw new ArgumentException("Object is not a Listing");
+        }
         public string OwnerId { get; set; }
 
         [Required]
-        [RegularExpression(@"^[a-zA-Z0-9! ]+$")] 
+        [RegularExpression(@"^[a-zA-Z0-9! ]+$")]
         [StringLength(20)]
         public string Name { get; set; }
 
@@ -59,6 +70,9 @@ namespace Karma.Models
         public DateTime DatePublished { get; set; }
 
         public string? ImagePath { get; set; }
+
+        [Required]
+        public Condition Condition { get; set; }
 
         public virtual List<String> RequestedUserIDs { get; set; }
     }

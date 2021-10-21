@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Karma.Models
 {
-    public class User
+    public class User: Entity
     {
         public User()
         {
@@ -12,8 +12,6 @@ namespace Karma.Models
             this.RequestedListings = new List<String>();
             this.Comments = new List<Comment>();
         }
-
-        public string Id { get; set; }
         public string Username { get; set; }
         public string FirstName { get; set; }
 

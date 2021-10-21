@@ -75,6 +75,14 @@ export default function AddListing(props) {
                 })} />
             </div>
             <div className="form-group">
+                <label>Item condition</label>
+                <select defaultValue={props.condition} className="custom-select" {...register("Condition", { required: true })}>
+                    <option value="New">New</option>
+                    <option value="Used">Used</option>
+                    <option value="Broken">Broken</option>
+                </select>
+            </div>
+            <div className="form-group">
                 <label>Quantity</label>
                 <input type="number" className="form-control" {...register("Quantity", { required: "Quantity of minimum 1 is required.", min: 1, max: 100 })} />
             </div>
