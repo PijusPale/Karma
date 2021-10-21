@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Karma.Models;
 using Karma.Repositories;
+using Karma.Services;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using System.Linq;
 
 namespace Karma.Controllers
 {
@@ -20,15 +20,25 @@ namespace Karma.Controllers
 
         private readonly IListingRepository _listingRepository;
 
-        public ListingController(ILogger<ListingController> logger, IListingRepository listingRepository)
+        private readonly IUserService _userService;
+
+        public ListingController(ILogger<ListingController> logger, IListingRepository listingRepository, IUserService userService)
         {
             _logger = logger;
             _listingRepository = listingRepository;
+            _userService = userService;
         }
 
         [HttpPost]
-        public ActionResult Post(Listing listing) {
+        [Authorize]
+        public ActionResult Post(Listing listing)
+        {
+            var random = new Random();
+            listing.Id = random.Next(9999).ToString(); // temp fix for id generation, later this should be assigned in DB.
             listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
+
+            string userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            listing.OwnerId = userId;
             _listingRepository.AddListing(listing);
             return StatusCode(StatusCodes.Status200OK);
         }
@@ -39,15 +49,83 @@ namespace Karma.Controllers
             return _listingRepository.GetAllListings();
         }
 
-        [HttpGet("{id}")]
-        public Listing GetListingById(string id) 
+        [HttpGet("userId={id}")]
+        [Authorize]
+        public ActionResult<IEnumerable<Listing>> GetListingsOfUser(string id)
+        {   
+            string userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            if(id != userId)
+                return Unauthorized();
+
+            return _listingRepository.GetAllUserListings(id).ToList();
+        }
+
+        [HttpGet("requesteeId={id}")]
+        [Authorize]
+        public ActionResult<IEnumerable<Listing>> GetRequestedListingsOfUser(string id)
         {
-            return _listingRepository.GetListingById(id);
+            string userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            if (id != userId)
+                return Unauthorized();
+
+            return _listingRepository.GetRequestedListings(id).ToList();
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetListingById(string id)
+        {
+            var listing =  _listingRepository.GetListingById(id);
+            return listing != null ? Ok(listing) : NotFound();
+        }
+
+        [HttpGet("request/{id}")]
+        [Authorize]
+        public IActionResult RequestListing(string id)
+        {
+            string userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            var listing = _listingRepository.GetListingById(id);
+            var user = _userService.GetUserById(userId);
+            if (listing.OwnerId == userId)
+                return Forbid();
+            
+            if(listing.RequestedUserIDs.Contains(userId) || user.RequestedListings.Contains(id))
+                return Conflict();
+
+            listing.RequestedUserIDs.Add(userId);
+            _listingRepository.UpdateListing(listing);
+
+            user.RequestedListings.Add(listing.Id);
+            
+            return Ok();
         }
 
         [HttpDelete("{id}")]
-        public void DeleteListing(string id) {
+        [Authorize]
+        public IActionResult DeleteListing(string id)
+        {
+            string userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            var listing = _listingRepository.GetListingById(id);
+            if (listing.OwnerId != userId)
+                return Unauthorized();
             _listingRepository.DeleteListingById(id);
+            return Ok();
+        }
+
+        [HttpPut("{id}")]
+        [Authorize]
+        public IActionResult UpdateListing(string id, [FromBody] Listing listing)
+        {
+
+            var old = _listingRepository.GetListingById(listing.Id);
+            if (old == null) return NotFound();
+
+            string userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            if (old.OwnerId != userId) return Unauthorized();
+
+            listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
+            listing.OwnerId = userId;
+            _listingRepository.UpdateListing(listing);
+            return Ok();
         }
     }
 }
