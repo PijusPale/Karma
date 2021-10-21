@@ -5,9 +5,19 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Karma.Models
 {
-	public class Listing
+	public class Listing : IComparable
 	{
-        public string? Id { get; set; }
+        public int CompareTo(object obj)
+        {
+			if (obj == null) return 1;
+			Listing otherListing = obj as Listing;
+			if (otherListing != null)
+				return this.DatePublished.CompareTo(otherListing.DatePublished);
+			else
+				throw new ArgumentException("Object is not a Listing");
+        }
+		
+		public string? Id { get; set; }
 
 		[Required]
 		[StringLength(20)]
