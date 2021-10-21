@@ -51,10 +51,10 @@
       "City": "Krakow",
       "RadiusKM": 5
     },
-    "Category": null,
-    "DatePublished": "2021-09-15T14:45:29.3073879+03:00",
+    "Category": "Vehicles",
+    "DatePublished": "2021-10-21T17:58:05.6247631Z",
     "ImagePath": "https://i.pinimg.com/474x/28/7b/9a/287b9a35afe88d4c52eeb83fedaeabdf.jpg",
-    "Condition": 0,
+    "Condition": 2,
     "RequestedUserIDs": [
       "9909"
     ],
@@ -106,15 +106,15 @@
     "Description": "Tall tower",
     "Quantity": 1,
     "Location": {
-      "Country": "Lithuania",
+      "Country": "France",
       "District": "",
-      "City": "Vilnius",
-      "RadiusKM": 10
+      "City": "Pairs",
+      "RadiusKM": 4
     },
     "Category": "Entertainment",
-    "DatePublished": "2021-10-11T16:04:07.9326898Z",
+    "DatePublished": "2021-10-21T17:57:49.8573743Z",
     "ImagePath": "images/tower.jpg",
-    "Condition": 0,
+    "Condition": 1,
     "RequestedUserIDs": [
       "9909"
     ],
@@ -127,6 +127,7 @@
     "Quantity": 1,
     "Location": {
       "Country": "Latvia",
+      "District": null,
       "City": "Daugavpils",
       "RadiusKM": 12
     },

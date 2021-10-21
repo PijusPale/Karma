@@ -123,6 +123,7 @@ namespace Karma.Controllers
             if (old.OwnerId != userId) return Unauthorized();
 
             listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
+            listing.RequestedUserIDs = old.RequestedUserIDs; // temp fix for saving old requests
             listing.OwnerId = userId;
             _listingRepository.Update(listing);
             return Ok();
