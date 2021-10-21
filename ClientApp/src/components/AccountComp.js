@@ -40,7 +40,7 @@ export const AccountComp = () => {
 
     const onLogOut = () => {
         setLoggedIn(false);
-        setCurrentUser(null);
+        setCurrentUser({});
         localStorage.removeItem('token');
     }
 

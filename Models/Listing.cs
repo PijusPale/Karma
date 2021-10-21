@@ -5,41 +5,61 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Karma.Models
 {
-	public class Listing
-	{
-		public Listing()
-		{
-			this.RequestedUserIDs = new List<String>();
-		}
+    public struct Location
+    {
+        public Location(string country, string district, string city, int radiusKM)
+        {
+            Country = country;
+            District = district;
+            City = city;
+            this.radiusKM = radiusKM < 0 ? 0 : radiusKM;
+        }
+
+        public string Country { get; set; }
+        public string District { get; set; }
+        public string City { get; set; }
+        private int radiusKM;
+        public int RadiusKM
+        {
+            get => radiusKM;
+            set => radiusKM = value < 0 ? 0 : value;
+        }
+    }
+    public class Listing
+    {
+        public Listing()
+        {
+            this.RequestedUserIDs = new List<String>();
+        }
 
         public string? Id { get; set; }
-		
-		public string OwnerId { get; set; }
 
-		[Required]
-        [RegularExpression(@"^[a-zA-Z0-9! ]+$")]
-		[StringLength(20)]
-		public string Name { get; set; }
+        public string OwnerId { get; set; }
 
-		[StringLength(200)]
-		[RegularExpression(@"^[a-zA-Z0-9!+, ]+$")]
-		public string Description { get; set; }
+        [Required]
+        [RegularExpression(@"^[a-zA-Z0-9! ]+$")] 
+        [StringLength(20)]
+        public string Name { get; set; }
 
-		[Required]
-		[Range(1, 100)]
-		public int Quantity { get; set; }
-		
-		[Required]
-		public string Location { get; set; }
+        [StringLength(200)]
+        [RegularExpression(@"^[a-zA-Z0-9!+, ]+$")]
+        public string Description { get; set; }
 
-		[Required]
-		public string Category { get; set; }
+        [Required]
+        [Range(1, 100)]
+        public int Quantity { get; set; }
 
-		[Display(Name = "Date Published")]
-		public DateTime DatePublished { get; set; }
+        [Required]
+        public Location Location { get; set; }
 
-		public string? ImagePath { get; set; }
+        [Required]
+        public string Category { get; set; }
 
-		public virtual List<String> RequestedUserIDs { get; set; }
-	}	
+        [Display(Name = "Date Published")]
+        public DateTime DatePublished { get; set; }
+
+        public string? ImagePath { get; set; }
+
+        public virtual List<String> RequestedUserIDs { get; set; }
+    }
 }

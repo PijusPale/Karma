@@ -5,8 +5,8 @@ import { ListingComp } from './ListingComp';
 export const UserListingsComp = () => {
     const [loading, setLoading] = useState(true);
     const [listingsData, setListingsData] = useState([]);
-    const [listingsType, setListingsType] = useState([]);
-    const { user } = useContext(UserContext);
+    const [listingsType, setListingsType] = useState('posted');
+    const { user, loggedIn } = useContext(UserContext);
 
     const fetchData = async (url) => {
         const response = await fetch(url, {
@@ -15,11 +15,14 @@ export const UserListingsComp = () => {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
               }
         });
-        const data = await response.json();
-        setListingsData(data);
-        setLoading(false);
+        if(response.ok) 
+        {
+            const data = await response.json();
+            setListingsData(data);
+            setLoading(false);
+        }
     };
-    
+
     useEffect(() => {
         if(listingsType === 'posted')
             fetchData(`listing/userId=${user.id}`);
@@ -28,7 +31,7 @@ export const UserListingsComp = () => {
     }, [listingsType, user]);
 
     return (
-        user &&
+        loggedIn &&
         <div>
             <div className="btn-group" role="group" aria-label="options">
                 <input type="button" className="btn btn-secondary" value="Posted Listings" onClick={() => setListingsType('posted')} />
