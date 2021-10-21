@@ -49,7 +49,7 @@ namespace Karma.Models
 
         public bool isReserved { get; set; }
 
-        public string? reservedForUserId { get; set; }
+        public string? recipientId { get; set; }
 
         [Required]
         [RegularExpression(@"^[a-zA-Z0-9! ]+$")]

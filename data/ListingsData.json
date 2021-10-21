@@ -2,7 +2,7 @@
   {
     "OwnerId": "448",
     "isReserved": true,
-    "reservedForUserId": null,
+    "recipientId": "9909",
     "Name": "Bacon",
     "Description": "tis a description",
     "Quantity": 3,
@@ -25,7 +25,7 @@
   {
     "OwnerId": "9909",
     "isReserved": false,
-    "reservedForUserId": null,
+    "recipientId": null,
     "Name": "James",
     "Description": "tis a description",
     "Quantity": 2,
@@ -47,7 +47,7 @@
   {
     "OwnerId": "448",
     "isReserved": true,
-    "reservedForUserId": null,
+    "recipientId": "9909",
     "Name": "Kenny",
     "Description": "tis a description",
     "Quantity": 1,
@@ -69,7 +69,7 @@
   {
     "OwnerId": "9909",
     "isReserved": false,
-    "reservedForUserId": null,
+    "recipientId": null,
     "Name": "Kenny",
     "Description": "tis a description",
     "Quantity": 2,
@@ -90,8 +90,8 @@
   },
   {
     "OwnerId": "448",
-    "isReserved": false,
-    "reservedForUserId": null,
+    "isReserved": true,
+    "recipientId": "9909",
     "Name": "Bob",
     "Description": "Added via POST",
     "Quantity": 1,
@@ -112,8 +112,8 @@
   },
   {
     "OwnerId": "448",
-    "isReserved": false,
-    "reservedForUserId": null,
+    "isReserved": true,
+    "recipientId": "undefined",
     "Name": "Tower",
     "Description": "Tall tower",
     "Quantity": 1,
@@ -135,7 +135,7 @@
   {
     "OwnerId": "9909",
     "isReserved": false,
-    "reservedForUserId": null,
+    "recipientId": null,
     "Name": "Test",
     "Description": "TEST",
     "Quantity": 1,

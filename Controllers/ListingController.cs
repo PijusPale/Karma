@@ -55,9 +55,9 @@ namespace Karma.Controllers
                 return Unauthorized();
 
             listing.isReserved = reserve;
-            listing.reservedForUserId = receiverId;
+            listing.recipientId = receiverId;
             _listingRepository.Update(listing);
-            
+
             return Ok();
         }
 
