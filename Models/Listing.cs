@@ -5,20 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Karma.Models
 {
-	public class Listing : IComparable
-	{
-        public int CompareTo(object obj)
-        {
-			if (obj == null) return 1;
-			Listing otherListing = obj as Listing;
-			if (otherListing != null)
-				return this.DatePublished.CompareTo(otherListing.DatePublished);
-			else
-				throw new ArgumentException("Object is not a Listing");
-        }
-		
-		public string? Id { get; set; }
-
+	
     public struct Location
     {
         public Location(string country, string district, string city, int radiusKM)
@@ -45,7 +32,7 @@ namespace Karma.Models
         {
             this.RequestedUserIDs = new List<String>();
         }
-        
+
         public int CompareTo(object obj)
         {
 			    if (obj == null) return 1;
