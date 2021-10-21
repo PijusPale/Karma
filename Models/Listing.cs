@@ -29,11 +29,21 @@ namespace Karma.Models
             set => radiusKM = value < 0 ? 0 : value;
         }
     }
-    public class Listing : Entity
+    public class Listing : Entity, IComparable
     {
         public Listing()
         {
             this.RequestedUserIDs = new List<String>();
+        }
+
+        public int CompareTo(object obj)
+        {
+			    if (obj == null) return 1;
+			       Listing otherListing = obj as Listing;
+			    if (otherListing != null)
+				     return this.DatePublished.CompareTo(otherListing.DatePublished);
+			    else
+				     throw new ArgumentException("Object is not a Listing");
         }
         public string OwnerId { get; set; }
 
