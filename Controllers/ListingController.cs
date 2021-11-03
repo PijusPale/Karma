@@ -33,8 +33,6 @@ namespace Karma.Controllers
         [Authorize]
         public ActionResult Post(Listing listing)
         {
-            var random = new Random();
-            listing.Id = random.Next(9999).ToString(); // temp fix for id generation, later this should be assigned in DB.
             listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
 
             string userId = this.TryGetUserId();
