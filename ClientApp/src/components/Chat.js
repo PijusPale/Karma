@@ -8,7 +8,7 @@ import '../chat.css';
 //TODO: RegEx expression for messages, save messages and load up on render.
 
 export const Chat = (props) => {
-    const [message, setMessage] = useState([]);
+    const [message  , setMessage] = useState('');
     const [messages, setMessages] = useState([]); //array of objects with message.type, message.nick, message.text
     const [hubConnection, setHubConnection] = useState();
     const { user, loggedIn } = useContext(UserContext);
@@ -44,16 +44,12 @@ export const Chat = (props) => {
     }
 
     const receiveMessage = (nick, receivedMessage) => {
-        var tempMessage = new Object();
-        tempMessage.nickname = nick;
-        tempMessage.text = receivedMessage;
-        tempMessage.type = "in";
-        if (user.firstName === nick)
-            tempMessage.type = "out";
+        var tempMessage = {
+        nickname: nick,
+        text: receivedMessage,
+        type: user.firstName === nick ? "out" : "in"};
         
-        messages.push(tempMessage);
-        var array = new Array();
-        setMessages(messages.concat(array));
+        setMessages(messages => messages.concat(tempMessage));
     }
 
     return (
@@ -82,7 +78,7 @@ export const Chat = (props) => {
                             <div class="chat-message clearfix">
                                 <div class="input-group flex-nowrap">
                                     <span class="input-group-text" id="addon-wrapping" onClick={sendMessage}><FontAwesomeIcon icon={faPaperPlane} /></span>
-                                    <input type="text" class="form-control" placeholder="Enter text here..." value={message} onChange={e => setMessage(e.target.value)} aria-label="Message" aria-describedby="addon-wrapping" />
+                                    <input type="text" class="form-control" placeholder="Enter text here..." value={message} onChange={e => setMessage(e.target.value)} onKeyPress={(t) => t.key === 'Enter' && sendMessage()} aria-label="Message" aria-describedby="addon-wrapping" />
                                 </div>
                             </div>
                         </div>
