@@ -33,7 +33,7 @@ namespace Karma.Services
         public void AddMessage(string content, string connectionId)
         {
             //get user id from connection id
-            var message = new Message(content: content, fromId: userId, groupId: GroupId, dateSent: DateTime.UtcNow, status: 0);
+            var message = new Message(content: content, fromId: "55", groupId: GroupId, dateSent: DateTime.UtcNow, status: 0);
             _messages.Add(message);  
         }
 
