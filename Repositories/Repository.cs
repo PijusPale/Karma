@@ -26,8 +26,16 @@ namespace Karma.Repositories
 
         public IEnumerable<TEntity> GetAll()
         {
-            string jsonString = System.IO.File.ReadAllText(_filePath);
-            return JsonSerializer.Deserialize<List<TEntity>>(jsonString);
+            try
+            {
+                string jsonString = System.IO.File.ReadAllText(_filePath);
+                return JsonSerializer.Deserialize<List<TEntity>>(jsonString);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
         }
 
         public TEntity GetById(string id)
@@ -54,7 +62,14 @@ namespace Karma.Repositories
         {
             var jsonOptions = new JsonSerializerOptions() { WriteIndented = true };
             string jsonString = JsonSerializer.Serialize(entities, jsonOptions);
-            System.IO.File.WriteAllText(_filePath, jsonString);
+            try
+            {
+                System.IO.File.WriteAllText(_filePath, jsonString);
+            }
+            catch
+            {
+                // TODO: Add logging
+            }
         }
     }
 }
