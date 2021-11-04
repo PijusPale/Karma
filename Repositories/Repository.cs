@@ -21,7 +21,11 @@ namespace Karma.Repositories
             entity.Id = random.Next(9999).ToString(); // temp fix for id generation, later this should be assigned in DB.
             List<TEntity> entities = GetAll().ToList();
             entities.Add(entity);
-            writeEntitiesToFile(entities);
+            IEnumerable<TEntity> queryAscending = from ent in entities
+                                 orderby ent.Id
+                                 select ent;
+
+            writeEntitiesToFile(queryAscending.ToList());
         }
 
         public IEnumerable<TEntity> GetAll()
