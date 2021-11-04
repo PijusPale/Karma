@@ -30,6 +30,8 @@ export const UserListingsComp = () => {
             fetchData(`listing/requesteeId=${user.id}`);
     }, [listingsType, user]);
 
+    const deletion = (id) => setListingsData(listingsData.filter(listing => listing.id !== id));
+
     return (
         loggedIn &&
         <div>
@@ -40,7 +42,7 @@ export const UserListingsComp = () => {
             <div>
                 {loading
                     ? <p><em>Loading...</em></p>
-                    : <ul> {listingsData.map(data => <li key={data.id}><ListingComp {...data} /></li>)} </ul>
+                    : <ul> {listingsData.map(data => <li key={data.id}><ListingComp {...data} deletion={deletion} /></li>)} </ul>
                 }
             </div>
         </div>
