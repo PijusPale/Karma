@@ -46,7 +46,6 @@ export const ListingComp = (props) => {
       }
     });
     res.ok && props.refresh && props.refresh();
-    props.deletion(props.id);
   };
 
   const onRequest = async () => {

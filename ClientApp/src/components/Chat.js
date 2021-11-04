@@ -8,7 +8,7 @@ import '../chat.css';
 //TODO: RegEx expression for messages, save messages and load up on render.
 
 export const Chat = (props) => {
-    const [message, setMessage] = useState([]);
+    const [message  , setMessage] = useState([]);
     const [messages, setMessages] = useState([]); //array of objects with message.type, message.nick, message.text
     const [hubConnection, setHubConnection] = useState();
     const { user, loggedIn } = useContext(UserContext);
