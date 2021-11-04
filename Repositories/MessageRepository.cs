@@ -18,8 +18,14 @@ namespace Karma.Repositories
 
         public IEnumerable<Message> GetAllByGroup(string groupId)
         {
-            string jsonString = System.IO.File.ReadAllText(Path.ChangeExtension(Path.Combine(_filePath, groupId), ".json"));
-            return JsonSerializer.Deserialize<List<Message>>(jsonString);
+            var fullFilePath = Path.ChangeExtension(Path.Combine(_filePath, groupId), ".json");
+            if(System.IO.File.Exists(fullFilePath))
+            {
+                string jsonString = System.IO.File.ReadAllText(fullFilePath);
+                return JsonSerializer.Deserialize<List<Message>>(jsonString);
+            }
+            
+            return Enumerable.Empty<Message>();
         }
         public void Add(List<Message> newMessages, string groupId)
         {
@@ -37,9 +43,10 @@ namespace Karma.Repositories
 
         private void WriteMessagesToFile(List<Message> messages, string groupId)
         {
+            var fullFilePath = Path.ChangeExtension(Path.Combine(_filePath, groupId), ".json");
             var jsonOptions = new JsonSerializerOptions() { WriteIndented = true };
             string jsonString = JsonSerializer.Serialize(messages, jsonOptions);
-            System.IO.File.WriteAllText(Path.ChangeExtension(Path.Combine(_filePath, groupId), ".json"), jsonString);
+            System.IO.File.WriteAllText(fullFilePath, jsonString);
         }
     }
 }
