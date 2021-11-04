@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 
 import { Route } from 'react-router';
