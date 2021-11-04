@@ -29,6 +29,8 @@ namespace Karma
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IListingRepository>(new ListingRepository(Path.Combine("data", "ListingsData.json")));
+            
+            services.AddSingleton<IMessageRepository>(new MessageRepository(Path.Combine("data", "messages")));
 
             services.AddControllersWithViews()
                 .AddJsonOptions(opts => {
@@ -67,6 +69,7 @@ namespace Karma
             });
 
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<MessageService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
