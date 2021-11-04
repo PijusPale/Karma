@@ -8,7 +8,7 @@ export const UserListingsComp = () => {
     const [listingsType, setListingsType] = useState('posted');
     const { user, loggedIn } = useContext(UserContext);
 
-    const fetchData = async (url) => {
+    const fetchDataUrl = async (url) => {
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -23,11 +23,15 @@ export const UserListingsComp = () => {
         }
     };
 
-    useEffect(() => {
+    const fetchData = () => {
         if(listingsType === 'posted')
-            fetchData(`listing/userId=${user.id}`);
+            fetchDataUrl(`listing/userId=${user.id}`);
         if(listingsType === 'requested')
-            fetchData(`listing/requesteeId=${user.id}`);
+            fetchDataUrl(`listing/requesteeId=${user.id}`);
+    }
+
+    useEffect(() => {
+        fetchData();
     }, [listingsType, user]);
 
     return (
@@ -40,7 +44,7 @@ export const UserListingsComp = () => {
             <div>
                 {loading
                     ? <p><em>Loading...</em></p>
-                    : <ul> {listingsData.map(data => <li key={data.id}><ListingComp {...data} /></li>)} </ul>
+                    : <ul> {listingsData.map(data => <li key={data.id}><ListingComp {...data} refresh={fetchData} /></li>)} </ul>
                 }
             </div>
         </div>

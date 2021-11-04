@@ -33,11 +33,12 @@ namespace Karma.Controllers
         [Authorize]
         public ActionResult Post(Listing listing)
         {
-            var random = new Random();
-            listing.Id = random.Next(9999).ToString(); // temp fix for id generation, later this should be assigned in DB.
             listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
 
             string userId = this.TryGetUserId();
+            if (userId == null)
+                return Unauthorized();
+
             listing.OwnerId = userId;
 
             listing.isReserved = false;
@@ -72,7 +73,7 @@ namespace Karma.Controllers
         public ActionResult<IEnumerable<Listing>> GetListingsOfUser(string id)
         {   
             string userId = this.TryGetUserId();
-            if(id != userId)
+            if(userId == null || id != userId)
                 return Unauthorized();
 
             return _listingRepository.GetAllUserListings(id).ToList();
@@ -101,6 +102,9 @@ namespace Karma.Controllers
         public IActionResult RequestListing(string id)
         {
             string userId = this.TryGetUserId();
+            if (userId == null)
+                return Unauthorized();
+
             var listing = _listingRepository.GetById(id);
             var user = _userService.GetUserById(userId);
             if (listing.OwnerId == userId)
@@ -123,7 +127,7 @@ namespace Karma.Controllers
         {
             string userId = this.TryGetUserId();
             var listing = _listingRepository.GetById(id);
-            if (listing.OwnerId != userId)
+            if (userId == null || listing.OwnerId != userId)
                 return Unauthorized();
             _listingRepository.DeleteById(id);
             return Ok();
@@ -138,7 +142,7 @@ namespace Karma.Controllers
             if (old == null) return NotFound();
 
             string userId = this.TryGetUserId();
-            if (old.OwnerId != userId) return Unauthorized();
+            if (userId == null || old.OwnerId != userId) return Unauthorized();
 
             listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
             listing.RequestedUserIDs = old.RequestedUserIDs; // temp fix for saving old requests
