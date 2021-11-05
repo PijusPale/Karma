@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -16,6 +17,8 @@ namespace Karma.Repositories
 
         public void Add(TEntity entity)
         {
+            var random = new Random();
+            entity.Id = random.Next(9999).ToString(); // temp fix for id generation, later this should be assigned in DB.
             List<TEntity> entities = GetAll().ToList();
             entities.Add(entity);
             IEnumerable<TEntity> queryAscending = from ent in entities
