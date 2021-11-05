@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import '../chat.css';
 
-//TODO: RegEx expression for messages, save messages and load up on render.
+//TODO: RegEx expression for messages, save messages and load up on render, implement send message on 'Enter'.
 
 export const Chat = (props) => {
     const [message  , setMessage] = useState('');
