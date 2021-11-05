@@ -5,9 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Karma.Repositories;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Karma.Services
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ChatHub : Hub
     {
         private IMessageService _messageService = new MessageService(new MessageRepository(Path.Combine("data", "messages")));
@@ -22,7 +25,7 @@ namespace Karma.Services
         }
 
         public Task SendGroupMessage(string groupId, string user, string message)
-        {
+        {   
             _messageService.AddMessage(message, Context.ConnectionId, groupId);
             _messageService.SaveMessages(groupId);
 

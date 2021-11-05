@@ -1,6 +1,7 @@
 using System.IO;
 using System.Text;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using Karma.Helpers;
 using Karma.Repositories;
 using Karma.Services;
@@ -56,6 +57,22 @@ namespace Karma
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
                     ValidateAudience = false
+                };
+
+                x.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+
+                        var path = context.HttpContext.Request.Path;
+                        if(!string.IsNullOrEmpty(accessToken) &&
+                        (path.StartsWithSegments("/ChatHub")))
+                        {
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
                 };
             });
 
