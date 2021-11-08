@@ -58,6 +58,8 @@ namespace Karma
                 };
             });
 
+            services.AddSignalR();
+
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -95,6 +97,8 @@ namespace Karma
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+
+                endpoints.MapHub<ChatHub>("/ChatHub");
             });
 
             app.UseSpa(spa =>

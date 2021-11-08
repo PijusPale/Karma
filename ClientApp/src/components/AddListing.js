@@ -59,7 +59,7 @@ export default function AddListing(props) {
                 })} />
             </div>
             <div className="form-group">
-                <label>Category</label>
+                <label>Category</label><br/>
                 <select defaultValue={props.category} className="custom-select" {...register("Category", { required: true })}>
                     <option value="Vehicles">Vehicles</option>
                     <option value="Apparel">Apparel</option>
@@ -98,9 +98,9 @@ export default function AddListing(props) {
                 <small className="form-text text-muted"> Radius describes how close you are located from the city center.</small>
             </div>
             <div className="form-group">
-                <label>Images</label>
+                <label>Images</label><br/>
                 <input asp-for="FileUpload.FormFile" type="file" className="form-control-file" name="temp-image" accept="image/*"{...register("ImagePath")} />
-            </div>
+            </div><br/>
             <button disabled={isSubmitting} className="btn btn-primary mr-1">
                 {isSubmitting && <span className="spinner-border spinner-border-sm mr-1"></span>}
                 Submit

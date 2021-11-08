@@ -40,8 +40,26 @@ namespace Karma.Controllers
                 return Unauthorized();
 
             listing.OwnerId = userId;
+
+            listing.isReserved = false;
             _listingRepository.Add(listing);
-            return StatusCode(StatusCodes.Status200OK);
+            return Ok();
+        }
+
+        [HttpPost("id={id}/reserve={reserve}/for={receiverId}")]
+        [Authorize]
+        public ActionResult ReserveListing(string id, bool reserve, string receiverId)
+        {
+            string userId = this.TryGetUserId();
+            var listing = _listingRepository.GetById(id);
+            if(userId != listing.OwnerId)
+                return Unauthorized();
+
+            listing.isReserved = reserve;
+            listing.recipientId = receiverId;
+            _listingRepository.Update(listing);
+
+            return Ok();
         }
 
         [HttpGet]

@@ -1,87 +1,30 @@
 [
   {
-    "OwnerId": "448",
-    "Name": "Bacon",
-    "Description": "tis a description",
-    "Quantity": 3,
-    "Location": {
-      "Country": "Lithuania",
-      "District": "Kaunas District Municipality",
-      "City": "Kaunas",
-      "RadiusKM": 5
-    },
-    "Category": null,
-    "DatePublished": "2021-09-15T14:45:29.3073786+03:00",
-    "ImagePath": "https://guide-images.cdn.ifixit.com/igi/o4OjCNmNeOhvsS1P.large",
-    "Condition": 0,
-    "RequestedUserIDs": [
-      "9909",
-      "1132"
-    ],
-    "Id": "2522"
-  },
-  {
     "OwnerId": "9909",
-    "Name": "James",
-    "Description": "tis a description",
-    "Quantity": 2,
-    "Location": {
-      "Country": "Poland",
-      "District": "Masovia",
-      "City": "Warsaw",
-      "RadiusKM": 15
-    },
-    "Category": null,
-    "DatePublished": "2021-09-15T14:45:29.3073864+03:00",
-    "ImagePath": "https://guide-images.cdn.ifixit.com/igi/o4OjCNmNeOhvsS1P.large",
-    "Condition": 0,
-    "RequestedUserIDs": [
-      "448"
-    ],
-    "Id": "5580"
-  },
-  {
-    "OwnerId": "448",
-    "Name": "Kenny",
-    "Description": "tis a description",
+    "isReserved": false,
+    "recipientId": null,
+    "Name": "Test",
+    "Description": "TEST",
     "Quantity": 1,
     "Location": {
-      "Country": "Poland",
-      "District": "Lesser Poland",
-      "City": "Krakow",
-      "RadiusKM": 5
-    },
-    "Category": "Vehicles",
-    "DatePublished": "2021-10-21T17:58:05.6247631Z",
-    "ImagePath": "https://i.pinimg.com/474x/28/7b/9a/287b9a35afe88d4c52eeb83fedaeabdf.jpg",
-    "Condition": 2,
-    "RequestedUserIDs": [
-      "9909"
-    ],
-    "Id": "4159"
-  },
-  {
-    "OwnerId": "9909",
-    "Name": "Kenny",
-    "Description": "tis a description",
-    "Quantity": 2,
-    "Location": {
       "Country": "Latvia",
-      "District": "Daugavpils District",
+      "District": null,
       "City": "Daugavpils",
       "RadiusKM": 12
     },
-    "Category": null,
-    "DatePublished": "2021-09-15T14:45:29.3073884+03:00",
-    "ImagePath": "https://i.pinimg.com/474x/28/7b/9a/287b9a35afe88d4c52eeb83fedaeabdf.jpg",
+    "Category": "Vehicles",
+    "DatePublished": "2021-10-12T17:27:43.0064015Z",
+    "ImagePath": "images/default.png",
     "Condition": 0,
     "RequestedUserIDs": [
       "448"
     ],
-    "Id": "8975"
+    "Id": null
   },
   {
     "OwnerId": "448",
+    "isReserved": true,
+    "recipientId": "9909",
     "Name": "Bob",
     "Description": "Added via POST",
     "Quantity": 1,
@@ -102,6 +45,31 @@
   },
   {
     "OwnerId": "448",
+    "isReserved": true,
+    "recipientId": "9909",
+    "Name": "Bacon",
+    "Description": "tis a description",
+    "Quantity": 3,
+    "Location": {
+      "Country": "Lithuania",
+      "District": "Kaunas District Municipality",
+      "City": "Kaunas",
+      "RadiusKM": 5
+    },
+    "Category": null,
+    "DatePublished": "2021-09-15T14:45:29.3073786+03:00",
+    "ImagePath": "https://guide-images.cdn.ifixit.com/igi/o4OjCNmNeOhvsS1P.large",
+    "Condition": 0,
+    "RequestedUserIDs": [
+      "9909",
+      "1132"
+    ],
+    "Id": "2522"
+  },
+  {
+    "OwnerId": "448",
+    "isReserved": true,
+    "recipientId": "undefined",
     "Name": "Tower",
     "Description": "Tall tower",
     "Quantity": 1,
@@ -121,19 +89,85 @@
     "Id": "3273"
   },
   {
-    "OwnerId": "9909",
-    "Name": "Test",
-    "Description": "TEST",
+    "OwnerId": "448",
+    "isReserved": true,
+    "recipientId": "9909",
+    "Name": "Kenny",
+    "Description": "tis a description",
     "Quantity": 1,
     "Location": {
+      "Country": "Poland",
+      "District": "Lesser Poland",
+      "City": "Krakow",
+      "RadiusKM": 5
+    },
+    "Category": "Vehicles",
+    "DatePublished": "2021-10-21T17:58:05.6247631Z",
+    "ImagePath": "https://i.pinimg.com/474x/28/7b/9a/287b9a35afe88d4c52eeb83fedaeabdf.jpg",
+    "Condition": 2,
+    "RequestedUserIDs": [
+      "9909"
+    ],
+    "Id": "4159"
+  },
+  {
+    "OwnerId": "9909",
+    "isReserved": false,
+    "recipientId": null,
+    "Name": "James",
+    "Description": "tis a description",
+    "Quantity": 2,
+    "Location": {
+      "Country": "Poland",
+      "District": "Masovia",
+      "City": "Warsaw",
+      "RadiusKM": 15
+    },
+    "Category": null,
+    "DatePublished": "2021-09-15T14:45:29.3073864+03:00",
+    "ImagePath": "https://guide-images.cdn.ifixit.com/igi/o4OjCNmNeOhvsS1P.large",
+    "Condition": 0,
+    "RequestedUserIDs": [
+      "448"
+    ],
+    "Id": "5580"
+  },
+  {
+    "OwnerId": "448",
+    "isReserved": false,
+    "recipientId": null,
+    "Name": "dfs",
+    "Description": "sdfdsfsd",
+    "Quantity": 1,
+    "Location": {
+      "Country": "Lithuania",
+      "District": "Zemaitija",
+      "City": "\u0160iauliai",
+      "RadiusKM": 5
+    },
+    "Category": "Vehicles",
+    "DatePublished": "2021-10-21T22:48:20.0827499Z",
+    "ImagePath": "images/default.png",
+    "Condition": 0,
+    "RequestedUserIDs": [],
+    "Id": "7671"
+  },
+  {
+    "OwnerId": "9909",
+    "isReserved": false,
+    "recipientId": null,
+    "Name": "Kenny",
+    "Description": "tis a description",
+    "Quantity": 2,
+    "Location": {
       "Country": "Latvia",
-      "District": null,
+      "District": "Daugavpils District",
       "City": "Daugavpils",
       "RadiusKM": 12
     },
-    "Category": "Vehicles",
-    "DatePublished": "2021-10-12T17:27:43.0064015Z",
-    "ImagePath": "images/default.png",
+    "Category": null,
+    "DatePublished": "2021-09-15T14:45:29.3073884+03:00",
+    "ImagePath": "https://i.pinimg.com/474x/28/7b/9a/287b9a35afe88d4c52eeb83fedaeabdf.jpg",
     "Condition": 0,
     "RequestedUserIDs": [
       "448"

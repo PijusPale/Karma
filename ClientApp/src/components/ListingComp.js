@@ -45,7 +45,7 @@ export const ListingComp = (props) => {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
     });
-    res.ok && props.refresh();
+    res.ok && props.refresh && props.refresh();
   };
 
   const onRequest = async () => {
@@ -74,8 +74,7 @@ export const ListingComp = (props) => {
           <p>Quantity: {props.quantity}</p>
           <p>Item condition: {props.condition}</p>
           <p>Date: {props.datePublished.slice(0, 10)}</p>
-        </div>
-        {loggedIn && user.id === props.ownerId &&
+          {loggedIn && user.id === props.ownerId &&
           <div>
             <ConfirmationButton color='danger' onSubmit={onDelete} submitLabel={'Delete'}
               prompt={'Are you sure you want to delete this listing?'}>Delete</ConfirmationButton>
@@ -89,6 +88,7 @@ export const ListingComp = (props) => {
             }
           </div>}
         {CustomAlert()}
+        </div>
       </div>
       <Modal isOpen={update} toggle={toggleModal}>
         <ModalHeader><Label>Update</Label></ModalHeader>
