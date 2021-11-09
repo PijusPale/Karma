@@ -9,6 +9,7 @@ using Karma.Services;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Karma.Controllers
 {
@@ -31,7 +32,7 @@ namespace Karma.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult Post(Listing listing)
+        public async Task<ActionResult> PostAsync(Listing listing)
         {
             listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
 
@@ -42,70 +43,70 @@ namespace Karma.Controllers
             listing.OwnerId = userId;
 
             listing.isReserved = false;
-            _listingRepository.Add(listing);
+            await _listingRepository.AddAsync(listing);
             return Ok();
         }
 
         [HttpPost("id={id}/reserve={reserve}/for={receiverId}")]
         [Authorize]
-        public ActionResult ReserveListing(string id, bool reserve, string receiverId)
+        public async Task<ActionResult> ReserveListingAsync(string id, bool reserve, string receiverId)
         {
             string userId = this.TryGetUserId();
-            var listing = _listingRepository.GetById(id);
+            var listing = await _listingRepository.GetByIdAsync(id);
             if(userId != listing.OwnerId)
                 return Unauthorized();
 
             listing.isReserved = reserve;
             listing.recipientId = receiverId;
-            _listingRepository.Update(listing);
+            await _listingRepository.UpdateAsync(listing);
 
             return Ok();
         }
 
         [HttpGet]
-        public IEnumerable<Listing> GetAllListings()
+        public async Task<ActionResult<IEnumerable<Listing>>> GetAllListingsAsync()
         {
-            return _listingRepository.GetAll();
+            return Ok(await _listingRepository.GetAllAsync());
         }
 
         [HttpGet("userId={id}")]
         [Authorize]
-        public ActionResult<IEnumerable<Listing>> GetListingsOfUser(string id)
+        public async Task<ActionResult<IEnumerable<Listing>>> GetListingsOfUserAsync(string id)
         {   
             string userId = this.TryGetUserId();
             if(userId == null || id != userId)
                 return Unauthorized();
 
-            return _listingRepository.GetAllUserListings(id).ToList();
+            return (await _listingRepository.GetAllUserListingsAsync(id)).ToList();
         }
 
         [HttpGet("requesteeId={id}")]
         [Authorize]
-        public ActionResult<IEnumerable<Listing>> GetRequestedListingsOfUser(string id)
+        public async Task<ActionResult<IEnumerable<Listing>>> GetRequestedListingsOfUserAsync(string id)
         {
             string userId = this.TryGetUserId();
             if (id != userId)
                 return Unauthorized();
 
-            return _listingRepository.GetRequestedListings(id).ToList();
+            return (await _listingRepository.GetRequestedListingsAsync(id)).ToList();
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetListingById(string id)
+        public async Task<ActionResult<Listing>> GetListingByIdAsync(string id)
         {
-            var listing =  _listingRepository.GetById(id);
+            var listing =  (await _listingRepository.GetByIdAsync(id));
             return listing != null ? Ok(listing) : NotFound();
         }
 
         [HttpGet("request/{id}")]
         [Authorize]
-        public IActionResult RequestListing(string id)
+        public async Task<ActionResult> RequestListingAsync(string id)
         {
             string userId = this.TryGetUserId();
             if (userId == null)
                 return Unauthorized();
 
-            var listing = _listingRepository.GetById(id);
+            var listing = await _listingRepository.GetByIdAsync(id);
             var user = _userService.GetUserById(userId);
             if (listing.OwnerId == userId)
                 return Forbid();
@@ -114,7 +115,7 @@ namespace Karma.Controllers
                 return Conflict();
 
             listing.RequestedUserIDs.Add(userId);
-            _listingRepository.Update(listing);
+            await _listingRepository.UpdateAsync(listing);
 
             user.RequestedListings.Add(listing.Id);
             
@@ -123,22 +124,22 @@ namespace Karma.Controllers
 
         [HttpDelete("{id}")]
         [Authorize]
-        public IActionResult DeleteListing(string id)
+        public async Task<ActionResult> DeleteListingAsync(string id)
         {
             string userId = this.TryGetUserId();
-            var listing = _listingRepository.GetById(id);
+            var listing = await _listingRepository.GetByIdAsync(id);
             if (userId == null || listing.OwnerId != userId)
                 return Unauthorized();
-            _listingRepository.DeleteById(id);
+            await _listingRepository.DeleteByIdAsync(id);
             return Ok();
         }
 
         [HttpPut("{id}")]
         [Authorize]
-        public IActionResult UpdateListing(string id, [FromBody] Listing listing)
+        public async Task<ActionResult> UpdateListingAsync(string id, [FromBody] Listing listing)
         {
 
-            var old = _listingRepository.GetById(listing.Id);
+            var old = await _listingRepository.GetByIdAsync(listing.Id);
             if (old == null) return NotFound();
 
             string userId = this.TryGetUserId();
@@ -147,7 +148,7 @@ namespace Karma.Controllers
             listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
             listing.RequestedUserIDs = old.RequestedUserIDs; // temp fix for saving old requests
             listing.OwnerId = userId;
-            _listingRepository.Update(listing);
+            await _listingRepository.UpdateAsync(listing);
             return Ok();
         }
     }

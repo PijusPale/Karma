@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Karma.Repositories
 {
@@ -13,5 +14,15 @@ namespace Karma.Repositories
         void DeleteById(string id);
 
         void Update(TEntity id);
+
+        Task<IEnumerable<TEntity>> GetAllAsync();
+
+        Task<TEntity> GetByIdAsync(string id);
+
+        Task AddAsync(TEntity entity);
+
+        Task DeleteByIdAsync(string id);
+
+        Task UpdateAsync(TEntity entity);
     }
 }

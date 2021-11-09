@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Karma.Models;
 
 namespace Karma.Repositories
@@ -12,15 +13,15 @@ namespace Karma.Repositories
 
         public ListingRepository(string filePath) : base(filePath) { }
 
-        public IEnumerable<Listing> GetAllUserListings(string userId)
+        public async Task<IEnumerable<Listing>> GetAllUserListingsAsync(string userId)
         {
-            List<Listing> listings = GetAll().ToList();
+            List<Listing> listings = (await GetAllAsync()).ToList();
             return listings.Where(a => a.OwnerId == userId);
         }
 
-        public IEnumerable<Listing> GetRequestedListings(string userId)
+        public async Task<IEnumerable<Listing>> GetRequestedListingsAsync(string userId)
         {
-            List<Listing> listings = GetAll().ToList();
+            List<Listing> listings = (await GetAllAsync()).ToList();
             return listings.Where(a => a.RequestedUserIDs.Contains(userId));
         }
     }
