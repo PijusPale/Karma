@@ -107,6 +107,9 @@ namespace Karma.Controllers
                 return Unauthorized();
 
             var listing = await _listingRepository.GetByIdAsync(id);
+            if (listing == null)
+                return NotFound();
+
             var user = _userService.GetUserById(userId);
             if (listing.OwnerId == userId)
                 return Forbid();
@@ -128,6 +131,8 @@ namespace Karma.Controllers
         {
             string userId = this.TryGetUserId();
             var listing = await _listingRepository.GetByIdAsync(id);
+            if (listing == null)
+                return NotFound();
             if (userId == null || listing.OwnerId != userId)
                 return Unauthorized();
             await _listingRepository.DeleteByIdAsync(id);

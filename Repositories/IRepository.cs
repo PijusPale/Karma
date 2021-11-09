@@ -19,10 +19,10 @@ namespace Karma.Repositories
 
         Task<TEntity> GetByIdAsync(string id);
 
-        Task AddAsync(TEntity entity);
+        Task<bool> AddAsync(TEntity entity);
 
-        Task DeleteByIdAsync(string id);
+        Task<bool> DeleteByIdAsync(string id);
 
-        Task UpdateAsync(TEntity entity);
+        Task<bool> UpdateAsync(TEntity entity);
     }
 }
