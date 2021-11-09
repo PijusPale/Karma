@@ -5,13 +5,14 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Karma.Models;
+using Microsoft.Extensions.Logging;
 
 namespace Karma.Repositories
 {
     public class ListingRepository : Repository<Listing>, IListingRepository
     {
 
-        public ListingRepository(string filePath) : base(filePath) { }
+        public ListingRepository(string filePath, ILogger<ListingRepository> logger) : base(filePath, logger) { }
 
         public async Task<IEnumerable<Listing>> GetAllUserListingsAsync(string userId)
         {

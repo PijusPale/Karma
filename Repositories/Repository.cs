@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Karma.Models;
+using Microsoft.Extensions.Logging;
 
 namespace Karma.Repositories
 {
@@ -14,10 +15,12 @@ namespace Karma.Repositories
         protected string _filePath;
         private readonly int numberOfRetries = 3;
         private readonly int DelayOnRetry = 1000;
+        private readonly ILogger<Repository<TEntity>> _logger;
 
-        public Repository(string filePath)
+        public Repository(string filePath, ILogger<Repository<TEntity>> logger)
         {
             _filePath = filePath;
+            _logger = logger;
         }
 
         public void Add(TEntity entity)
@@ -41,8 +44,9 @@ namespace Karma.Repositories
                     string jsonString = System.IO.File.ReadAllText(_filePath);
                     return JsonSerializer.Deserialize<List<TEntity>>(jsonString);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    _logger.LogError(ex, "Repository read file exception");
                     return new List<TEntity>();
                 }
             }
@@ -78,9 +82,9 @@ namespace Karma.Repositories
                 {
                     System.IO.File.WriteAllText(_filePath, jsonString);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // TODO: Add logging
+                    _logger.LogError(ex, "Repository write to file exception");
                 }
             }
         }
@@ -92,8 +96,9 @@ namespace Karma.Repositories
                 string jsonString = await System.IO.File.ReadAllTextAsync(_filePath);
                 return JsonSerializer.Deserialize<List<TEntity>>(jsonString);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Repository read file async exception");
                 return new List<TEntity>();
             }
         }
@@ -143,9 +148,9 @@ namespace Karma.Repositories
                 {
                     await Task.Delay(DelayOnRetry);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // TODO: Add logging
+                    _logger.LogError(ex, "Repository write to file async exception");
                     return false;
                 }
             }
