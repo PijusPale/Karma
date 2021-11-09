@@ -1,5 +1,6 @@
 using System.IO;
 using System.Text;
+using System.Text.Json.Serialization;
 using Karma.Helpers;
 using Karma.Repositories;
 using Karma.Services;
@@ -29,7 +30,11 @@ namespace Karma
         {
             services.AddSingleton<IListingRepository>(new ListingRepository(Path.Combine("data", "ListingsData.json")));
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddJsonOptions(opts => {
+                    var enumConverter = new JsonStringEnumConverter();
+                    opts.JsonSerializerOptions.Converters.Add(enumConverter);
+                });
 
             var jwtSettingsSection = Configuration.GetSection("JwtSettings");
             services.Configure<JwtSettings>(jwtSettingsSection);
@@ -52,6 +57,8 @@ namespace Karma
                     ValidateAudience = false
                 };
             });
+
+            services.AddSignalR();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -90,6 +97,8 @@ namespace Karma
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+
+                endpoints.MapHub<ChatHub>("/ChatHub");
             });
 
             app.UseSpa(spa =>

@@ -4,16 +4,13 @@ using System.Collections.Generic;
 
 namespace Karma.Models
 {
-    public class User
+    public class User: Entity
     {
         public User()
         {
             this.Listings = new List<String>();
             this.RequestedListings = new List<String>();
-            this.Comments = new List<Comment>();
         }
-
-        public string Id { get; set; }
         public string Username { get; set; }
         public string FirstName { get; set; }
 
@@ -23,7 +20,13 @@ namespace Karma.Models
 
         public virtual List<String> RequestedListings { get; set; }
         
-        public virtual List<Comment> Comments { get; set; }
+        public virtual string[] Comments { get; set; }
+
+        public string this[int index]
+        {
+            get => Comments[index];
+            set => Comments[index] = value;
+        }
 
         public string AvatarPath { get; set; }
 

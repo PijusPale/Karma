@@ -30,7 +30,7 @@ export const ListingComp = (props) => {
 
     if (show) {
       return (
-        <div class={variant} role="alert">
+        <div className={variant} role="alert">
           {description}
         </div>
       );
@@ -45,7 +45,7 @@ export const ListingComp = (props) => {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
     });
-    res.ok && props.refresh();
+    res.ok && props.refresh && props.refresh();
   };
 
   const onRequest = async () => {
@@ -63,7 +63,7 @@ export const ListingComp = (props) => {
     <div>
       <div className="row" style={{ borderStyle: "solid", borderWidth: "2px", marginTop: "10px" }}>
         <div>
-          <a href={'/details/' + props.id} target="_blank" rel ="noopener noreferrer" >      
+          <a href={'/details/' + props.id} target="_blank" rel="noopener noreferrer" >
             <img src={props.imagePath} alt="defaultImage" />
           </a>
           <p>{props.location.country}, {props.location.city}, {props.location.radiusKM}km</p>
@@ -72,9 +72,9 @@ export const ListingComp = (props) => {
           <h2>{props.name}</h2>
           <p>{props.description}</p>
           <p>Quantity: {props.quantity}</p>
+          <p>Item condition: {props.condition}</p>
           <p>Date: {props.datePublished.slice(0, 10)}</p>
-        </div>
-        {loggedIn && user.id === props.ownerId &&
+          {loggedIn && user.id === props.ownerId &&
           <div>
             <ConfirmationButton color='danger' onSubmit={onDelete} submitLabel={'Delete'}
               prompt={'Are you sure you want to delete this listing?'}>Delete</ConfirmationButton>
@@ -88,6 +88,7 @@ export const ListingComp = (props) => {
             }
           </div>}
         {CustomAlert()}
+        </div>
       </div>
       <Modal isOpen={update} toggle={toggleModal}>
         <ModalHeader><Label>Update</Label></ModalHeader>

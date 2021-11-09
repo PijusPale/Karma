@@ -35,28 +35,47 @@ namespace Karma.Controllers
         [Authorize]
         public ActionResult Post(Listing listing)
         {
-            var random = new Random();
-            listing.Id = random.Next(9999).ToString(); // temp fix for id generation, later this should be assigned in DB.
             listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
 
-            string userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            string userId = this.TryGetUserId();
+            if (userId == null)
+                return Unauthorized();
+
             listing.OwnerId = userId;
-            _listingRepository.AddListing(listing);
-            return StatusCode(StatusCodes.Status200OK);
+
+            listing.isReserved = false;
+            _listingRepository.Add(listing);
+            return Ok();
+        }
+
+        [HttpPost("id={id}/reserve={reserve}/for={receiverId}")]
+        [Authorize]
+        public ActionResult ReserveListing(string id, bool reserve, string receiverId)
+        {
+            string userId = this.TryGetUserId();
+            var listing = _listingRepository.GetById(id);
+            if(userId != listing.OwnerId)
+                return Unauthorized();
+
+            listing.isReserved = reserve;
+            listing.recipientId = receiverId;
+            _listingRepository.Update(listing);
+
+            return Ok();
         }
 
         [HttpGet]
         public IEnumerable<Listing> GetAllListings()
         {
-            return _listingRepository.GetAllListings();
+            return _listingRepository.GetAll();
         }
 
         [HttpGet("userId={id}")]
         [Authorize]
         public ActionResult<IEnumerable<Listing>> GetListingsOfUser(string id)
         {   
-            string userId = User.FindFirst(ClaimTypes.Name)?.Value;
-            if(id != userId)
+            string userId = this.TryGetUserId();
+            if(userId == null || id != userId)
                 return Unauthorized();
 
             return _listingRepository.GetAllUserListings(id).ToList();
@@ -66,7 +85,7 @@ namespace Karma.Controllers
         [Authorize]
         public ActionResult<IEnumerable<Listing>> GetRequestedListingsOfUser(string id)
         {
-            string userId = User.FindFirst(ClaimTypes.Name)?.Value;
+            string userId = this.TryGetUserId();
             if (id != userId)
                 return Unauthorized();
 
@@ -76,7 +95,7 @@ namespace Karma.Controllers
         [HttpGet("{id}")]
         public IActionResult GetListingById(string id)
         {
-            var listing =  _listingRepository.GetListingById(id);
+            var listing =  _listingRepository.GetById(id);
             return listing != null ? Ok(listing) : NotFound();
         }
 
@@ -84,8 +103,11 @@ namespace Karma.Controllers
         [Authorize]
         public IActionResult RequestListing(string id)
         {
-            string userId = User.FindFirst(ClaimTypes.Name)?.Value;
-            var listing = _listingRepository.GetListingById(id);
+            string userId = this.TryGetUserId();
+            if (userId == null)
+                return Unauthorized();
+
+            var listing = _listingRepository.GetById(id);
             var user = _userService.GetUserById(userId);
             if (listing.OwnerId == userId)
                 return Forbid();
@@ -94,10 +116,8 @@ namespace Karma.Controllers
                 return Conflict();
 
             listing.RequestedUserIDs.Add(userId);
-            _listingRepository.UpdateListing(listing);
-            Console.WriteLine("console write line works");
-            nofitication += nofiticationHandler;
-            onNofitication();
+            _listingRepository.Update(listing);
+
             user.RequestedListings.Add(listing.Id);
             
             return Ok();
@@ -117,11 +137,11 @@ namespace Karma.Controllers
         [Authorize]
         public IActionResult DeleteListing(string id)
         {
-            string userId = User.FindFirst(ClaimTypes.Name)?.Value;
-            var listing = _listingRepository.GetListingById(id);
-            if (listing.OwnerId != userId)
+            string userId = this.TryGetUserId();
+            var listing = _listingRepository.GetById(id);
+            if (userId == null || listing.OwnerId != userId)
                 return Unauthorized();
-            _listingRepository.DeleteListingById(id);
+            _listingRepository.DeleteById(id);
             return Ok();
         }
 
@@ -130,15 +150,16 @@ namespace Karma.Controllers
         public IActionResult UpdateListing(string id, [FromBody] Listing listing)
         {
 
-            var old = _listingRepository.GetListingById(listing.Id);
+            var old = _listingRepository.GetById(listing.Id);
             if (old == null) return NotFound();
 
-            string userId = User.FindFirst(ClaimTypes.Name)?.Value;
-            if (old.OwnerId != userId) return Unauthorized();
+            string userId = this.TryGetUserId();
+            if (userId == null || old.OwnerId != userId) return Unauthorized();
 
             listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
+            listing.RequestedUserIDs = old.RequestedUserIDs; // temp fix for saving old requests
             listing.OwnerId = userId;
-            _listingRepository.UpdateListing(listing);
+            _listingRepository.Update(listing);
             return Ok();
         }
     }
