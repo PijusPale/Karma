@@ -32,23 +32,4 @@ img {
     display: flex;
     padding: 10px;
 
-    &-show {
-        animation: notif 400ms ease-in-out forwards;
-        display: flex;
-    }
-
-}
-
-@keyframes notif{
-    0% {
-        opacity:0;
-        top:0;
-    }
-    5% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-        top: 2rem;
-    }
 }

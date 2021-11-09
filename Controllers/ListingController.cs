@@ -22,6 +22,8 @@ namespace Karma.Controllers
 
         private readonly IUserService _userService;
 
+        public event EventHandler nofitication;
+
         public ListingController(ILogger<ListingController> logger, IListingRepository listingRepository, IUserService userService)
         {
             _logger = logger;
@@ -93,10 +95,22 @@ namespace Karma.Controllers
 
             listing.RequestedUserIDs.Add(userId);
             _listingRepository.UpdateListing(listing);
-
+            Console.WriteLine("console write line works");
+            nofitication += nofiticationHandler;
+            onNofitication();
             user.RequestedListings.Add(listing.Id);
             
             return Ok();
+        }
+
+        protected virtual void onNofitication()
+        {
+            if (nofitication != null) nofitication(this);
+        }
+
+        private static void nofiticationHandler (object sender)
+        {
+            Console.WriteLine("Nofitication event works!!!");
         }
 
         [HttpDelete("{id}")]

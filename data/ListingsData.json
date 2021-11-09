@@ -121,6 +121,7 @@
     "Quantity": 1,
     "Location": {
       "Country": "Latvia",
+      "District": null,
       "City": "Daugavpils",
       "RadiusKM": 12
     },
@@ -130,5 +131,22 @@
     "RequestedUserIDs": [
       "448"
     ]
+  },
+  {
+    "Id": "3601",
+    "OwnerId": "448",
+    "Name": "title2",
+    "Description": "nofiticationtrial",
+    "Quantity": 1,
+    "Location": {
+      "Country": "Lithuania",
+      "District": "Zemaitija",
+      "City": "\u0160iauliai",
+      "RadiusKM": 5
+    },
+    "Category": "Apparel",
+    "DatePublished": "2021-11-09T14:33:33.8028615Z",
+    "ImagePath": "images/6Ue22sjGcko.jpg",
+    "RequestedUserIDs": []
   }
 ]
