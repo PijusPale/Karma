@@ -22,13 +22,14 @@ namespace Karma.Controllers
 
         private readonly IUserService _userService;
 
-        public event EventHandler nofitication;
+        private readonly INotification _notification;
 
-        public ListingController(ILogger<ListingController> logger, IListingRepository listingRepository, IUserService userService)
+        public ListingController(ILogger<ListingController> logger, IListingRepository listingRepository, IUserService userService, INotification notification)
         {
             _logger = logger;
             _listingRepository = listingRepository;
             _userService = userService;
+            _notification = notification;
         }
 
         [HttpPost]
@@ -119,18 +120,8 @@ namespace Karma.Controllers
             _listingRepository.Update(listing);
 
             user.RequestedListings.Add(listing.Id);
-            
+
             return Ok();
-        }
-
-        protected virtual void onNofitication()
-        {
-            if (nofitication != null) nofitication(this);
-        }
-
-        private static void nofiticationHandler (object sender)
-        {
-            Console.WriteLine("Nofitication event works!!!");
         }
 
         [HttpDelete("{id}")]

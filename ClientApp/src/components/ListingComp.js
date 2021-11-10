@@ -3,12 +3,14 @@ import { Button, Label, Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { UserContext } from '../UserContext';
 import AddListing from './AddListing';
 import { ConfirmationButton } from './ConfirmationButton';
+import Notification from './Notification';
 
 export const ListingComp = (props) => {
   const { user, loggedIn } = useContext(UserContext);
   const [update, setUpdate] = useState(false);
   const [show, setShow] = useState(false);
   const [requestResponse, setResponse] = useState(0);
+  const [notify, setNotify] = useState({ isOpen: false });
 
   const toggleModal = () => setUpdate(!update);
 
@@ -57,6 +59,8 @@ export const ListingComp = (props) => {
     });
     setResponse(res.status);
     setShow(true);
+    if (res.ok)
+      setNotify({ isOpen: true, message: 'Item has been requested' });
   };
 
   return (
@@ -94,6 +98,9 @@ export const ListingComp = (props) => {
         <ModalHeader><Label>Update</Label></ModalHeader>
         <ModalBody><AddListing {...props} update={true}
           afterSubmit={() => { toggleModal(); props.refresh(); }} /></ModalBody>
-      </Modal>
+          </Modal>
+          <Notification {...{ notify, setNotify }} />
     </div>);
 };
+// <button onClick={openNotif()}>Open nofitication</button>
+//

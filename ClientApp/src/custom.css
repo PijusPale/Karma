@@ -23,13 +23,3 @@ img {
   height: 135px;
   margin-right: 10px;
 }
-
-.nofitication {
-    background-color: #2e8f27;
-    color: white;
-    border-radius: 3px;
-    float: right;
-    display: flex;
-    padding: 10px;
-
-}
