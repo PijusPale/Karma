@@ -60,7 +60,7 @@ export const ListingComp = (props) => {
     setResponse(res.status);
     setShow(true);
     if (res.ok)
-      setNotify({ isOpen: true, message: 'Item has been requested' });
+      setNotify({ isOpen: true, message: 'The item has been requested' });
   };
 
   return (
