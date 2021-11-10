@@ -120,7 +120,6 @@ namespace Karma.Controllers
             _listingRepository.Update(listing);
 
             user.RequestedListings.Add(listing.Id);
-
             return Ok();
         }
 

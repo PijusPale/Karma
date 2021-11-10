@@ -102,5 +102,3 @@ export const ListingComp = (props) => {
           <Notification {...{ notify, setNotify }} />
     </div>);
 };
-// <button onClick={openNotif()}>Open nofitication</button>
-//
