@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { ListingComp } from './ListingComp';
+import { Pagination } from './Pagination';
 
 export const ListingsComp = () => {
-  const [loading, setLoading] = useState(true);
-  const [listingsData, setListingsData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  
-  const fetchData = async () => {
-    const response = await fetch('listing');
-    const data = await response.json();
-    setListingsData(data);
-    setLoading(false);
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
+    const [loading, setLoading] = useState(true);
+    const [listingsData, setListingsData] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [listingsPerPage] = useState(5);
+    const [totalListings, setTotalListings] = useState();
+
+    const fetchData = async () => {
+        const response = await fetch('listing');
+        const data = await response.json();
+        setListingsData(data);
+        setTotalListings(data.length);
+        setLoading(false);
+    };
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     const sortArray = type => {
         switch (type) {
@@ -41,33 +46,53 @@ export const ListingsComp = () => {
         }
     }
 
-  return (
-      <div style={{ overflow: 'hidden' }}>
-      {loading ? <p><em>Loading...</em></p>
-              : <><input
-                  type="text"
-                  placeholder="Search..."
-                  onChange={(event) => {
-                      setSearchTerm(event.target.value);
-                  } }
-              />
-                  <select onChange={(e) => sortArray(e.target.value)}>
-                      <option id="sortBy..">Sort by...</option>
-                      <option value="dateDesc">Date DESC</option>
-                      <option value="dateAsc">Date ASC</option>
-                  </select>
 
-                  <ul> {listingsData.filter((val) => {
-                      if (searchTerm == "") {
-                          return val
-                      }
-                      else if (val.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          val.location.country.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          val.location.city.toLowerCase().includes(searchTerm.toLowerCase())) {
-                          return val
-                      }
-                  }).map(data => <li key={data.id}><ListingComp {...data} refresh={fetchData} /></li>)} </ul></>
-      }
-    </div>
-  );
+    const indexOfLastListing = currentPage * listingsPerPage;
+    const indexOfFirstListing = indexOfLastListing - listingsPerPage;
+
+    const FilterListings = () => {
+        const filteredListings = listingsData.filter((val) => {
+            if (searchTerm == "") {
+                return val
+            }
+            else if (val.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                val.location.country.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                val.location.city.toLowerCase().includes(searchTerm.toLowerCase())) {
+                return val
+            }
+        });
+        useEffect(() => {
+            setTotalListings(filteredListings.length);
+        }, []);
+
+        const currentListings = filteredListings.slice(indexOfFirstListing, indexOfLastListing);
+        return (currentListings.map(data => <li key={data.id}><ListingComp {...data} refresh={fetchData} /></li>));
+    }
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    return (
+        <div>
+            {loading ? <p><em>Loading...</em></p>
+                : <><input
+                    type="text"
+                    placeholder="Search..."
+                    onChange={(event) => {
+                        setSearchTerm(event.target.value);
+                    }}
+                />
+                    <select onChange={(e) => sortArray(e.target.value)}>
+                        <option id="sortBy..">Sort by...</option>
+                        <option value="dateDesc">Date DESC</option>
+                        <option value="dateAsc">Date ASC</option>
+                    </select>
+
+                    <ul>
+                        {listingsData != null &&
+                            <FilterListings />}
+                    </ul>
+                    <Pagination listingsPerPage={listingsPerPage} totalListings={totalListings} paginate={paginate} /> </>
+            }
+        </div>
+    );
 }
