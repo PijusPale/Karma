@@ -57,10 +57,13 @@ export const ListingComp = (props) => {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
     });
+    const res2 = await fetch(`notification`,{
+      method: 'GET'
+    });
     setResponse(res.status);
     setShow(true);
     if (res.ok)
-      setNotify({ isOpen: true, message: 'The item has been requested' });
+      setNotify({ isOpen: true, message: 'The item has been requested' }); // TODO message => res2(string)
   };
 
   return (

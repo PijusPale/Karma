@@ -119,9 +119,27 @@ namespace Karma.Controllers
             listing.RequestedUserIDs.Add(userId);
             _listingRepository.Update(listing);
 
+            /*_notification.notification += notificationHandler;
+            DoNotification();*/
+
             user.RequestedListings.Add(listing.Id);
             return Ok();
         }
+
+
+        /*public IActionResult DoNotification(){
+            _notification.onNotification(new NotificationEventArgs("The item has been requested"));
+            return Ok();
+        }
+
+        public void notificationHandler(object sender, NotificationEventArgs e){
+            NotifString(e.Text);
+        }
+
+        [HttpGet("notification")]
+        public string NotifString(string e){
+            return e;
+        }*/
 
         [HttpDelete("{id}")]
         [Authorize]
