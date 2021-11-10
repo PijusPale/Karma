@@ -61,7 +61,9 @@ export const ListingsComp = () => {
                 return val
             }
         });
-        setTotalListings(filteredListings.length);
+        useEffect(() => {
+            setTotalListings(filteredListings.length);
+        }, []);
 
         const currentListings = filteredListings.slice(indexOfFirstListing, indexOfLastListing);
         return (currentListings.map(data => <li key={data.id}><ListingComp {...data} refresh={fetchData} /></li>));
