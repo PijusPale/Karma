@@ -18,7 +18,7 @@ namespace Karma.Models
             Content = content;
             FromId = fromId;
             GroupId = groupId;
-            dateSent = DateSent;
+            DateSent = dateSent;
             Status = status;
         }
 
