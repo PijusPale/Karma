@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.SignalR;
 using Karma.Models;
 using Karma.Repositories;
 
@@ -8,7 +9,7 @@ namespace Karma.Services
     public interface IMessageService
     {
         IEnumerable<Message> GetAll(string groupId);
-        void AddMessage(string content, string connectionId, string groupId);
+        void AddMessage(string content, string userId, string groupId);
         void SaveMessages(string groupId);
     }
 
@@ -29,10 +30,9 @@ namespace Karma.Services
             return _messageRepository.GetAllByGroup(groupId);
         }
 
-        public void AddMessage(string content, string connectionId, string groupId)
+        public void AddMessage(string content, string userId, string groupId)
         {
-            //get user id from connection id
-            var message = new Message(content: content, fromId: connectionId/*temp*/, groupId: groupId, dateSent: DateTime.UtcNow, status: 0);
+            var message = new Message(content: content, fromId: userId, groupId: groupId, dateSent: DateTime.UtcNow, status: 0);
             _messages.Add(message);  
         }
 

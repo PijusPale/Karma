@@ -5,12 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Karma.Repositories;
 using System.IO;
+using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Karma.Services
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     public class ChatHub : Hub
     {
         //TODO: Find a better way to do DI
@@ -28,7 +29,7 @@ namespace Karma.Services
 
         public Task SendGroupMessage(string groupId, string user, string message)
         {   
-            _messageService.AddMessage(message, Context.ConnectionId, groupId);
+            _messageService.AddMessage(message, Context.UserIdentifier, groupId);
             _messageService.SaveMessages(groupId);
 
             return Clients.Group(groupId).SendAsync("ReceiveGroupMessage", user, message);

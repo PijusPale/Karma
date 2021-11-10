@@ -8,6 +8,7 @@ using Karma.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
@@ -31,6 +32,7 @@ namespace Karma
         {
             services.AddSingleton<IListingRepository>(new ListingRepository(Path.Combine("data", "ListingsData.json")));
             services.AddSingleton<IMessageRepository>(new MessageRepository(Path.Combine("data", "messages")));
+            //services.AddSingleton<IUserIdProvider, IdBasedUserIdProvider>();
 
             services.AddControllersWithViews()
                 .AddJsonOptions(opts => {
