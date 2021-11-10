@@ -12,14 +12,13 @@ export const Chat = (props) => {
     const [messages, setMessages] = useState([]); //array of objects with message.type, message.nick, message.text
     const [hubConnection, setHubConnection] = useState();
     const { user, loggedIn } = useContext(UserContext);
+    const messagesDiv = document.querySelector("#messages") //gets the div of messsages box
 
     useEffect(() => {
         if (loggedIn) {
             const connection = new HubConnectionBuilder()
                 .withUrl("/ChatHub", { accessTokenFactory: () => localStorage.getItem('token')})
                 .build();
-            
-                console.log(localStorage.getItem('token'));
 
             connection.on("ReceiveGroupMessage", (nick, receivedMessage) => receiveMessage(nick, receivedMessage));
 
@@ -42,6 +41,7 @@ export const Chat = (props) => {
                 .catch(err => console.error(`Error while sending message: ${err}`));
 
             setMessage('');
+            scrollToBottom(messagesDiv);
         }
     }
 
@@ -52,6 +52,22 @@ export const Chat = (props) => {
         type: user.firstName === nick ? "out" : "in"};
         
         setMessages(messages => messages.concat(tempMessage));
+        scrollToBottom(messagesDiv);
+    }
+
+    const fetchOldMessages = () =>{
+
+    }
+
+    const handleScrollUp = e => {
+        let element = e.target;
+        if(element.scrollTop===0){
+            //fetch old messages
+        }
+    }
+
+    function scrollToBottom(div) {
+        div.scrollTop = div.scrollHeight
     }
 
     return (
@@ -62,7 +78,7 @@ export const Chat = (props) => {
                     <div class="card">
                         <div class="card-header">Chat</div>
                         <div class="card-body height3">
-                            <ul class="chat-list">
+                            <ul class="chat-list" id="messages" onScroll={handleScrollUp} >
                                 {messages.map((data, index) =>
                                     <li class={data.type} key={index}>
                                         <div class="chat-img">
