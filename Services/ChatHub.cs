@@ -13,7 +13,9 @@ namespace Karma.Services
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ChatHub : Hub
     {
+        //TODO: Find a better way to do DI
         private IMessageService _messageService = new MessageService(new MessageRepository(Path.Combine("data", "messages")));
+       
         public Task SendMessage(string user, string message)
         {
             return Clients.All.SendAsync("ReceiveMessage", user, message);
