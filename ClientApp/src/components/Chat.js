@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import '../chat.css';
 
-//TODO: RegEx expression for messages, save messages and load up on render, implement send message on 'Enter'.
+//TODO: RegEx expression for messages, save messages and load up on render.
 
 export const Chat = (props) => {
     const [message  , setMessage] = useState('');
@@ -16,8 +16,10 @@ export const Chat = (props) => {
     useEffect(() => {
         if (loggedIn) {
             const connection = new HubConnectionBuilder()
-                .withUrl("/ChatHub")
+                .withUrl("/ChatHub", { accessTokenFactory: () => localStorage.getItem('token')})
                 .build();
+            
+                console.log(localStorage.getItem('token'));
 
             connection.on("ReceiveGroupMessage", (nick, receivedMessage) => receiveMessage(nick, receivedMessage));
 
