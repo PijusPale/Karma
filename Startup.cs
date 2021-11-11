@@ -32,7 +32,7 @@ namespace Karma
         {
             services.AddSingleton<IListingRepository>(new ListingRepository(Path.Combine("data", "ListingsData.json")));
             services.AddSingleton<IMessageRepository>(new MessageRepository(Path.Combine("data", "messages")));
-            //services.AddSingleton<IUserIdProvider, IdBasedUserIdProvider>();
+            services.AddSingleton<IUserIdProvider, IdBasedUserIdProvider>();
 
             services.AddControllersWithViews()
                 .AddJsonOptions(opts => {
