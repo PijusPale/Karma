@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -14,6 +15,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Karma
@@ -30,7 +32,11 @@ namespace Karma
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IListingRepository>(new ListingRepository(Path.Combine("data", "ListingsData.json")));
+            services.AddTransient(typeof(Lazy<>), typeof(LazyInstance<>));
+            services.AddSingleton<IListingRepository>(s => {
+                var logger = (ILogger<ListingRepository>)s.GetService(typeof(ILogger<ListingRepository>));
+                return new ListingRepository(Path.Combine("data", "ListingsData.json"), logger);
+            });
             services.AddSingleton<IMessageRepository>(new MessageRepository(Path.Combine("data", "messages")));
             services.AddSingleton<IUserIdProvider, IdBasedUserIdProvider>();
 

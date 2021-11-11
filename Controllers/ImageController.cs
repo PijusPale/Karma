@@ -37,8 +37,9 @@ namespace Karma.Controllers
                 
                 return StatusCode(StatusCodes.Status201Created);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "ImageController posting file");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }

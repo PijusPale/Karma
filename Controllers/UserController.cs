@@ -21,9 +21,9 @@ namespace Karma.Controllers
 
         private readonly IUserService _userService;
 
-        private readonly IListingRepository _listingRepository;
+        private readonly Lazy<IListingRepository> _listingRepository;
 
-        public UserController(ILogger<ListingController> logger, IListingRepository listingRepository, IUserService userService)
+        public UserController(ILogger<ListingController> logger, Lazy<IListingRepository> listingRepository, IUserService userService)
         {
             _logger = logger;
             _userService = userService;
@@ -57,7 +57,7 @@ namespace Karma.Controllers
             if(id == null)
                 return NoContent();
 
-            var listing = _listingRepository.GetById(id);
+            var listing = _listingRepository.Value.GetById(id);
             var listOfUsers = new List<User>();
 
             foreach(string requesteeId in listing.RequestedUserIDs)
