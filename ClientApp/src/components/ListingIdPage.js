@@ -135,7 +135,7 @@ export const ListingPageLayout = (props) => {
       </div>
     }
 
-    {chatShow && <Chat groupId={md5(props.OwnerId + recipientId + props.Id)}/>}
+    {chatShow && <Chat groupId={md5(props.OwnerId + recipientId + props.id)} listingId={props.id}/>}
   </div>
   );
 }
