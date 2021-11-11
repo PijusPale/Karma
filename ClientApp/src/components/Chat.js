@@ -24,14 +24,14 @@ export const Chat = (props) => {
                 .withUrl("/ChatHub", { accessTokenFactory: () => localStorage.getItem('token')})
                 .build();
 
-            connection.on("ReceiveGroupMessage", (nick, receivedMessage) => receiveMessage(nick, receivedMessage));
+            connection.on("ReceiveGroupMessageAsync", (nick, receivedMessage) => receiveMessage(nick, receivedMessage));
 
             connection.logging = true;
             connection
                 .start()
                 .then(() => console.log('Connection established.'))
                 .catch(err => console.log(`Error while establishing connection: ${err}`))
-                .then(() => connection.invoke("AddToGroup", props.groupId))
+                .then(() => connection.invoke("AddToGroupAsync", props.groupId))
                 .catch(err => console.error(`Error while adding to group: ${err}`));
 
             setHubConnection(connection);
@@ -47,7 +47,7 @@ export const Chat = (props) => {
     const sendMessage = async () => {
         if (message !== '') {
             await hubConnection
-                .invoke('SendGroupMessage', props.groupId, user.id, message)
+                .invoke('SendGroupMessageAsync', props.groupId, user.id, message)
                 .catch(err => console.error(`Error while sending message: ${err}`));
 
             setMessage('');
