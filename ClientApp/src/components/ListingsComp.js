@@ -1,25 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import { ListingComp } from './ListingComp';
 import { Pagination } from './Pagination';
+import PageNotFound from './PageNotFound';
 
-export const ListingsComp = () => {
+export const ListingsComp = ({ url = 'listing'}) => {
     const [loading, setLoading] = useState(true);
     const [listingsData, setListingsData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [listingsPerPage] = useState(5);
     const [totalListings, setTotalListings] = useState();
+    const [serverError, setServerError] = useState(false);
 
     const fetchData = async () => {
-        const response = await fetch('listing');
-        const data = await response.json();
-        setListingsData(data);
-        setTotalListings(data.length);
-        setLoading(false);
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+              }
+        });
+        if (response.ok) {
+            const data = await response.json();
+            setListingsData(data);
+            setTotalListings(data.length);
+            setLoading(false);
+        } else if (response.status === 500) {
+            setServerError(true);
+        }
     };
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [url]);
 
     const sortArray = type => {
         switch (type) {
@@ -71,7 +82,7 @@ export const ListingsComp = () => {
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    return (
+    return (serverError ? < PageNotFound /> :
         <div>
             {loading ? <p><em>Loading...</em></p>
                 : <><input
