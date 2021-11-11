@@ -3,7 +3,7 @@ import { ListingComp } from './ListingComp';
 import { Pagination } from './Pagination';
 import PageNotFound from './PageNotFound';
 
-export const ListingsComp = () => {
+export const ListingsComp = ({ url = 'listing'}) => {
     const [loading, setLoading] = useState(true);
     const [listingsData, setListingsData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
@@ -13,7 +13,12 @@ export const ListingsComp = () => {
     const [serverError, setServerError] = useState(false);
 
     const fetchData = async () => {
-        const response = await fetch('listing');
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+              }
+        });
         if (response.ok) {
             const data = await response.json();
             setListingsData(data);
@@ -25,7 +30,7 @@ export const ListingsComp = () => {
     };
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [url]);
 
     const sortArray = type => {
         switch (type) {
