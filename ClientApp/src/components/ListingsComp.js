@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { ListingComp } from './ListingComp';
+import PageNotFound from './PageNotFound';
 
 export const ListingsComp = () => {
   const [loading, setLoading] = useState(true);
   const [listingsData, setListingsData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [serverError, setServerError] = useState(false);
   
   const fetchData = async () => {
     const response = await fetch('listing');
-    const data = await response.json();
-    setListingsData(data);
-    setLoading(false);
+    if (response.ok) {
+        const data = await response.json();
+        setListingsData(data);
+        setLoading(false);
+    } else if (response.status == 500) {
+        setServerError(true);
+    }
   };
   useEffect(() => {
     fetchData();
@@ -42,6 +48,7 @@ export const ListingsComp = () => {
     }
 
   return (
+      serverError ? <PageNotFound /> :
       <div style={{ overflow: 'hidden' }}>
       {loading ? <p><em>Loading...</em></p>
               : <><input
