@@ -82,7 +82,6 @@ export const Chat = (props) => {
         if(response.ok) 
         {
             const data = await response.json();
-            console.log(data);
             await setMessages(messages => data.concat(messages));
             setLoading(false);
             setFirstLoad(true);
