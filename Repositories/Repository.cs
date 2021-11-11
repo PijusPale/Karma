@@ -99,13 +99,15 @@ namespace Karma.Repositories
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Repository read file async exception");
-                return new List<TEntity>();
+                return null;
             }
         }
 
         public async Task<TEntity> GetByIdAsync(string id)
         {
             List<TEntity> entities = (await GetAllAsync()).ToList();
+            if (entities == null)
+                return null;
             return entities.FirstOrDefault(x => x.Id == id);
         }
 
@@ -114,6 +116,8 @@ namespace Karma.Repositories
             var random = new Random();
             entity.Id = random.Next(9999).ToString(); // temp fix for id generation, later this should be assigned in DB.
             List<TEntity> entities = (await GetAllAsync()).ToList();
+            if (entities == null)
+                return false;
             entities.Add(entity);
 
             return await writeEntitiesToFileAsync(entities);
@@ -122,6 +126,8 @@ namespace Karma.Repositories
         public async Task<bool> DeleteByIdAsync(string id)
         {
             List<TEntity> entities = (await GetAllAsync()).ToList();
+            if (entities == null)
+                return false;
             entities.Remove(entities.Find(x => x.Id == id));
             return await writeEntitiesToFileAsync(entities);
         }
@@ -129,6 +135,8 @@ namespace Karma.Repositories
         public async Task<bool> UpdateAsync(TEntity entity)
         {
             List<TEntity> entities = (await GetAllAsync()).ToList();
+            if (entities == null)
+                return false;
             entities[entities.FindIndex(l => l.Id == entity.Id)] = entity;
             return await writeEntitiesToFileAsync(entities);
         }

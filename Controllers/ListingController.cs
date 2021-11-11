@@ -43,8 +43,8 @@ namespace Karma.Controllers
             listing.OwnerId = userId;
 
             listing.isReserved = false;
-            await _listingRepository.AddAsync(listing);
-            return Ok();
+
+            return await _listingRepository.AddAsync(listing) ? Ok() : StatusCode(500);
         }
 
         [HttpPost("id={id}/reserve={reserve}/for={receiverId}")]
@@ -53,31 +53,34 @@ namespace Karma.Controllers
         {
             string userId = this.TryGetUserId();
             var listing = await _listingRepository.GetByIdAsync(id);
-            if(userId != listing.OwnerId)
+            if (listing == null)
+                return NotFound();
+            if (userId != listing.OwnerId)
                 return Unauthorized();
 
             listing.isReserved = reserve;
             listing.recipientId = receiverId;
-            await _listingRepository.UpdateAsync(listing);
 
-            return Ok();
+            return await _listingRepository.UpdateAsync(listing) ? Ok() : StatusCode(500);
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Listing>>> GetAllListingsAsync()
         {
-            return Ok(await _listingRepository.GetAllAsync());
+            var listings = await _listingRepository.GetAllAsync();
+            return listings != null ? Ok(listings) : StatusCode(500);
         }
 
         [HttpGet("userId={id}")]
         [Authorize]
         public async Task<ActionResult<IEnumerable<Listing>>> GetListingsOfUserAsync(string id)
-        {   
+        {
             string userId = this.TryGetUserId();
-            if(userId == null || id != userId)
+            if (userId == null || id != userId)
                 return Unauthorized();
 
-            return (await _listingRepository.GetAllUserListingsAsync(id)).ToList();
+            var listings = await _listingRepository.GetAllUserListingsAsync(id);
+            return listings != null ? Ok(listings) : StatusCode(500);
         }
 
         [HttpGet("requesteeId={id}")]
@@ -88,13 +91,14 @@ namespace Karma.Controllers
             if (id != userId)
                 return Unauthorized();
 
-            return (await _listingRepository.GetRequestedListingsAsync(id)).ToList();
+            var listings = await _listingRepository.GetRequestedListingsAsync(id);
+            return listings != null ? Ok(listings) : StatusCode(500);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Listing>> GetListingByIdAsync(string id)
         {
-            var listing =  (await _listingRepository.GetByIdAsync(id));
+            var listing = (await _listingRepository.GetByIdAsync(id));
             return listing != null ? Ok(listing) : NotFound();
         }
 
@@ -110,18 +114,19 @@ namespace Karma.Controllers
             if (listing == null)
                 return NotFound();
 
-            var user = _userService.GetUserById(userId);
             if (listing.OwnerId == userId)
                 return Forbid();
-            
-            if(listing.RequestedUserIDs.Contains(userId) || user.RequestedListings.Contains(id))
+
+            var user = _userService.GetUserById(userId);
+            if (listing.RequestedUserIDs.Contains(userId) || user.RequestedListings.Contains(id))
                 return Conflict();
 
             listing.RequestedUserIDs.Add(userId);
-            await _listingRepository.UpdateAsync(listing);
+            if (!await _listingRepository.UpdateAsync(listing))
+                return StatusCode(500);
 
             user.RequestedListings.Add(listing.Id);
-            
+
             return Ok();
         }
 
@@ -135,7 +140,9 @@ namespace Karma.Controllers
                 return NotFound();
             if (userId == null || listing.OwnerId != userId)
                 return Unauthorized();
-            await _listingRepository.DeleteByIdAsync(id);
+            if (!await _listingRepository.DeleteByIdAsync(id))
+                return StatusCode(500);
+            _userService.GetUserById(userId).RequestedListings.Remove(id);
             return Ok();
         }
 
@@ -145,15 +152,19 @@ namespace Karma.Controllers
         {
 
             var old = await _listingRepository.GetByIdAsync(listing.Id);
-            if (old == null) return NotFound();
+            if (old == null) 
+                return NotFound();
 
             string userId = this.TryGetUserId();
-            if (userId == null || old.OwnerId != userId) return Unauthorized();
+            if (userId == null || old.OwnerId != userId)
+                return Unauthorized();
 
             listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
             listing.RequestedUserIDs = old.RequestedUserIDs; // temp fix for saving old requests
             listing.OwnerId = userId;
-            await _listingRepository.UpdateAsync(listing);
+            if (!await _listingRepository.UpdateAsync(listing))
+                return StatusCode(500);
+
             return Ok();
         }
     }

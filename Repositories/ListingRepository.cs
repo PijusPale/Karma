@@ -17,12 +17,16 @@ namespace Karma.Repositories
         public async Task<IEnumerable<Listing>> GetAllUserListingsAsync(string userId)
         {
             List<Listing> listings = (await GetAllAsync()).ToList();
+            if (listings == null)
+                return null;
             return listings.Where(a => a.OwnerId == userId);
         }
 
         public async Task<IEnumerable<Listing>> GetRequestedListingsAsync(string userId)
         {
             List<Listing> listings = (await GetAllAsync()).ToList();
+            if (listings == null)
+                return null;
             return listings.Where(a => a.RequestedUserIDs.Contains(userId));
         }
     }
