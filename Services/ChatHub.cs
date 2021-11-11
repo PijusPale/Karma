@@ -17,17 +17,17 @@ namespace Karma.Services
         //TODO: Find a better way to do DI
         private IMessageService _messageService = new MessageService(new MessageRepository(Path.Combine("data", "messages")));
        
-        public Task SendMessage(string user, string message)
+        public Task SendMessageAsync(string user, string message)
         {
             return Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 
-        public Task SendMessageToCaller(string user, string message)
+        public Task SendMessageToCallerAsync(string user, string message)
         {
             return Clients.Caller.SendAsync("ReceiveMessageToCaller", user, message);
         }
 
-        public Task SendGroupMessage(string groupId, string user, string message)
+        public Task SendGroupMessageAsync(string groupId, string user, string message)
         {   
             _messageService.AddMessage(message, Context.UserIdentifier, groupId);
             _messageService.SaveMessages(groupId);
@@ -35,12 +35,12 @@ namespace Karma.Services
             return Clients.Group(groupId).SendAsync("ReceiveGroupMessage", user, message);
         }
 
-        public async Task AddToGroup(string groupId)
+        public async Task AddToGroupAsync(string groupId)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, groupId);
         }
 
-        public async Task RemoveFromGroup(string groupId)
+        public async Task RemoveFromGroupAsync(string groupId)
         {
             _messageService.SaveMessages(groupId);
 
