@@ -24,7 +24,7 @@ export const Chat = (props) => {
                 .withUrl("/ChatHub", { accessTokenFactory: () => localStorage.getItem('token')})
                 .build();
 
-            connection.on("ReceiveGroupMessageAsync", (nick, receivedMessage) => receiveMessage(nick, receivedMessage));
+            connection.on("ReceiveGroupMessage", (nick, receivedMessage) => receiveMessage(nick, receivedMessage));
 
             connection.logging = true;
             connection
