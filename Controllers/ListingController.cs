@@ -119,15 +119,15 @@ namespace Karma.Controllers
             listing.RequestedUserIDs.Add(userId);
             _listingRepository.Update(listing);
 
+            Notify saveNotificationHandler = delegate {
+                _logger.LogInformation("{0} - INFO - ListingController: User {1} requested listing {2}.", DateTime.UtcNow, userId, id);
+            };
+
             _notification.saveNotification += saveNotificationHandler;
             _notification.Start();
 
             user.RequestedListings.Add(listing.Id);
             return Ok();
-        }
-
-        public static void saveNotificationHandler(){
-            Console.WriteLine("Works"); //temp line since nothing is really needed here
         }
 
         [HttpDelete("{id}")]
