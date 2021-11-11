@@ -1,5 +1,5 @@
 ﻿using Karma.Services;
-using Karma.Models;
+using Karma.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -18,19 +18,28 @@ namespace Karma.Controllers
 
         private readonly IMessageService _messageService;
 
-        public MessagesController(ILogger<MessagesController> logger, IMessageService messageService)
+        private readonly IListingRepository _listingRepository;
+
+        public MessagesController(ILogger<MessagesController> logger, IMessageService messageService, IListingRepository listingRepository)
         {
             _logger = logger;
             _messageService = messageService;
+            _listingRepository = listingRepository;
         }
 
-        [HttpGet("groupId={groupId}&limit={limit}")]
+        [HttpGet("listingId={listingId}/groupId={groupId}&limit={limit}")]
         [Authorize]
-        public IActionResult GetMessages(string groupId, int limit)
+        public IActionResult GetMessages(string listingId, string groupId, int limit)
         {
             string userId = this.TryGetUserId();
-            if (userId == null)
+            var listing = _listingRepository.GetById(listingId);
+            if(listing == null)
+                return NoContent();
+
+            if (userId == null || (!listing.OwnerId.Equals(userId) && !listing.recipientId.Equals(userId))){
+                Console.WriteLine("userId {0}, OwnerId {1}, recipientId {2}", userId, listing.OwnerId, listing.recipientId);
                 return Unauthorized();
+            }
 
             var result = _messageService.GetByLimit(groupId, limit).ToList();
             if(result.Count == 0)
@@ -39,12 +48,19 @@ namespace Karma.Controllers
             return Ok(result);
         }
 
-        [HttpGet("groupId={groupId}&limit={limit}/sinceId={lastMessageId}")]
-        public IActionResult GetMessages(string groupId, int limit, string lastMessageId)
+        [HttpGet("listingId={listingId}/groupId={groupId}&limit={limit}/sinceId={lastMessageId}")]
+        public IActionResult GetMessages(string listingId, string groupId, int limit, string lastMessageId)
         {
             string userId = this.TryGetUserId();
-            if (userId == null)
+            var listing = _listingRepository.GetById(listingId);
+            if(listing == null)
+                return NoContent();
+
+            if (userId == null || (!listing.OwnerId.Equals(userId) && !listing.recipientId.Equals(userId)))
+            {
+                Console.WriteLine("userId {0}, OwnerId {1}, recipientId {2}", userId, listing.OwnerId, listing.recipientId);
                 return Unauthorized();
+            }
    
             var result = _messageService.GetByLimit(groupId, limit, lastMessageId).ToList();
             if(result.Count == 0)
