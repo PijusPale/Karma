@@ -7,6 +7,10 @@ namespace Karma.Repositories
     {
         IEnumerable<Message> GetAllByGroup(string groupId);
 
+        IEnumerable<Message> GetByLimit(string groupId, int limit);
+
+        IEnumerable<Message> GetByLimit(string groupId, int limit, string lastMessageId);
+
         void Add(List<Message> newMessages, string groupId);
 
         void DeleteById(string messageId, string groupId);

@@ -9,6 +9,8 @@ namespace Karma.Services
     public interface IMessageService
     {
         IEnumerable<Message> GetAll(string groupId);
+        IEnumerable<Message> GetByLimit(string groupId, int limit);
+        IEnumerable<Message> GetByLimit(string groupId, int limit, string lastMessageId);
         void AddMessage(string content, string userId, string groupId);
         void SaveMessages(string groupId);
     }
@@ -30,9 +32,21 @@ namespace Karma.Services
             return _messageRepository.GetAllByGroup(groupId);
         }
 
+        public IEnumerable<Message> GetByLimit(string groupId, int limit)
+        {
+            return _messageRepository.GetByLimit(groupId, limit);
+        }
+
+        public IEnumerable<Message> GetByLimit(string groupId, int limit, string lastMessageId)
+        {
+            return _messageRepository.GetByLimit(groupId, limit, lastMessageId);
+        }
+
         public void AddMessage(string content, string userId, string groupId)
         {
-            var message = new Message(content: content, fromId: userId, groupId: groupId, dateSent: DateTime.UtcNow, status: 0);
+            var random = new Random();
+            string messageId = random.Next(9999).ToString();
+            var message = new Message(id: messageId, content: content, fromId: userId, groupId: groupId, dateSent: DateTime.UtcNow, status: 0);
             _messages.Add(message);  
         }
 

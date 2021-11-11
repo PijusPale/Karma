@@ -27,6 +27,21 @@ namespace Karma.Repositories
             
             return Enumerable.Empty<Message>();
         }
+        
+        public IEnumerable<Message> GetByLimit(string groupId, int limit)
+        {
+            var messages = GetAllByGroup(groupId).OrderByDescending(x => x.DateSent);
+            return messages.Take(limit).Reverse();
+
+        }
+
+        public IEnumerable<Message> GetByLimit(string groupId, int limit, string lastMessageId)
+        {
+            var messages = GetAllByGroup(groupId).OrderByDescending(x => x.DateSent);
+            var offset = messages.ToList().FindIndex(x => x.Id == lastMessageId) + 1;
+            return messages.Skip(offset).Take(limit).Reverse();
+        }
+
         public void Add(List<Message> newMessages, string groupId)
         {
             List<Message> oldMessages = GetAllByGroup(groupId).ToList();
