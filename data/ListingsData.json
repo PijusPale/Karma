@@ -1,27 +1,5 @@
 [
   {
-    "OwnerId": "9909",
-    "isReserved": false,
-    "recipientId": null,
-    "Name": "Test",
-    "Description": "TEST",
-    "Quantity": 1,
-    "Location": {
-      "Country": "Latvia",
-      "District": null,
-      "City": "Daugavpils",
-      "RadiusKM": 12
-    },
-    "Category": "Vehicles",
-    "DatePublished": "2021-10-12T17:27:43.0064015Z",
-    "ImagePath": "images/default.png",
-    "Condition": 0,
-    "RequestedUserIDs": [
-      "448"
-    ],
-    "Id": null
-  },
-  {
     "OwnerId": "448",
     "isReserved": true,
     "recipientId": "9909",
