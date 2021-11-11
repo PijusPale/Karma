@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -28,6 +29,7 @@ namespace Karma
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient(typeof(Lazy<>), typeof(LazyInstance<>));
             services.AddSingleton<IListingRepository>(new ListingRepository(Path.Combine("data", "ListingsData.json")));
 
             services.AddControllersWithViews()

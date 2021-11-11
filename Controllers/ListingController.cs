@@ -20,9 +20,9 @@ namespace Karma.Controllers
 
         private readonly IListingRepository _listingRepository;
 
-        private readonly IUserService _userService;
+        private readonly Lazy<IUserService> _userService;
 
-        public ListingController(ILogger<ListingController> logger, IListingRepository listingRepository, IUserService userService)
+        public ListingController(ILogger<ListingController> logger, IListingRepository listingRepository, Lazy<IUserService> userService)
         {
             _logger = logger;
             _listingRepository = listingRepository;
@@ -106,7 +106,7 @@ namespace Karma.Controllers
                 return Unauthorized();
 
             var listing = _listingRepository.GetById(id);
-            var user = _userService.GetUserById(userId);
+            var user = _userService.Value.GetUserById(userId);
             if (listing.OwnerId == userId)
                 return Forbid();
             
