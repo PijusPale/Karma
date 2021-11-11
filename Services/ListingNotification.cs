@@ -21,7 +21,7 @@ namespace Karma.Services
         public void Start(){
             
             var notif = new NotificationModel{
-                Text = "Your item has been requested",
+                Text = "An item has been requested",
                 DatePublished = DateTime.UtcNow
             };
             
