@@ -22,9 +22,9 @@ namespace Karma.Controllers
 
         private readonly IUserService _userService;
 
-        private readonly INotification _notification;
+        private readonly IListingNotification _notification;
 
-        public ListingController(ILogger<ListingController> logger, IListingRepository listingRepository, IUserService userService, INotification notification)
+        public ListingController(ILogger<ListingController> logger, IListingRepository listingRepository, IUserService userService, IListingNotification notification)
         {
             _logger = logger;
             _listingRepository = listingRepository;
@@ -119,27 +119,16 @@ namespace Karma.Controllers
             listing.RequestedUserIDs.Add(userId);
             _listingRepository.Update(listing);
 
-            /*_notification.notification += notificationHandler;
-            DoNotification();*/
+            _notification.saveNotification += saveNotificationHandler;
+            _notification.Start();
 
             user.RequestedListings.Add(listing.Id);
             return Ok();
         }
 
-
-        /*public IActionResult DoNotification(){
-            _notification.onNotification(new NotificationEventArgs("The item has been requested"));
-            return Ok();
+        public static void saveNotificationHandler(){
+            Console.WriteLine("Works"); //temp line since nothing is really needed here
         }
-
-        public void notificationHandler(object sender, NotificationEventArgs e){
-            NotifString(e.Text);
-        }
-
-        [HttpGet("notification")]
-        public string NotifString(string e){
-            return e;
-        }*/
 
         [HttpDelete("{id}")]
         [Authorize]

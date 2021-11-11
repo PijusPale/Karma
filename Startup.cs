@@ -68,7 +68,7 @@ namespace Karma
 
             services.AddScoped<IUserService, UserService>();
 
-            services.AddScoped<INotification, Notification>();
+            services.AddSingleton<IListingNotification>(new ListingNotification(Path.Combine("data", "NotificationData.json")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
