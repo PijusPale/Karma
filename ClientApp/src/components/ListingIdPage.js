@@ -128,7 +128,7 @@ export const ListingPageLayout = (props) => {
       <button class="btn btn-outline-dark" onClick={redirectToChat}>Chat with user</button>
     </div>
     } 
-    {loggedIn && user.id !== props.recipientId && listingReservedResponse && !chatShow &&
+    {loggedIn && user.id === props.OwnerId && listingReservedResponse && !chatShow &&
       <div align="center">
         <div class="alert alert-success" role="alert">Listing reserved for the selected user!</div>
         <button class="btn btn-outline-dark" onClick={redirectToChat}>Chat with user</button>
