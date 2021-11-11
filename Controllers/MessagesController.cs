@@ -36,10 +36,8 @@ namespace Karma.Controllers
             if(listing == null)
                 return NoContent();
 
-            if (userId == null || (!listing.OwnerId.Equals(userId) && !listing.recipientId.Equals(userId))){
-                Console.WriteLine("userId {0}, OwnerId {1}, recipientId {2}", userId, listing.OwnerId, listing.recipientId);
+            if (userId == null || (!listing.OwnerId.Equals(userId) && !listing.recipientId.Equals(userId)))
                 return Unauthorized();
-            }
 
             var result = _messageService.GetByLimit(groupId, limit).ToList();
             if(result.Count == 0)
@@ -57,10 +55,7 @@ namespace Karma.Controllers
                 return NoContent();
 
             if (userId == null || (!listing.OwnerId.Equals(userId) && !listing.recipientId.Equals(userId)))
-            {
-                Console.WriteLine("userId {0}, OwnerId {1}, recipientId {2}", userId, listing.OwnerId, listing.recipientId);
                 return Unauthorized();
-            }
    
             var result = _messageService.GetByLimit(groupId, limit, lastMessageId).ToList();
             if(result.Count == 0)
