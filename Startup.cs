@@ -2,12 +2,14 @@ using System;
 using System.IO;
 using System.Text;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using Karma.Helpers;
 using Karma.Repositories;
 using Karma.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
@@ -35,6 +37,8 @@ namespace Karma
                 var logger = (ILogger<ListingRepository>)s.GetService(typeof(ILogger<ListingRepository>));
                 return new ListingRepository(Path.Combine("data", "ListingsData.json"), logger);
             });
+            services.AddSingleton<IMessageRepository>(new MessageRepository(Path.Combine("data", "messages")));
+            services.AddSingleton<IUserIdProvider, IdBasedUserIdProvider>();
 
             services.AddControllersWithViews()
                 .AddJsonOptions(opts => {
@@ -62,6 +66,22 @@ namespace Karma
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
+
+                x.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+
+                        var path = context.HttpContext.Request.Path;
+                        if(!string.IsNullOrEmpty(accessToken) &&
+                        (path.StartsWithSegments("/ChatHub")))
+                        {
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
             services.AddSignalR();
@@ -73,6 +93,7 @@ namespace Karma
             });
 
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IMessageService, MessageService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

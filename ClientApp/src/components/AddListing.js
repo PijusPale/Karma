@@ -39,10 +39,8 @@ export default function AddListing(props) {
             },
             body: JSON.stringify(data),
         }).then(function (response) {
-            console.log(response.ok);
             if (imageAttached && response.ok) {
                 const res = axios.post('image', formData);
-                console.log(res);
             }
         });
         props.update && props.afterSubmit();
