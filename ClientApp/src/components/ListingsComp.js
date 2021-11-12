@@ -57,7 +57,6 @@ export const ListingsComp = ({ url = 'listing'}) => {
         }
     }
 
-
     const indexOfLastListing = currentPage * listingsPerPage;
     const indexOfFirstListing = indexOfLastListing - listingsPerPage;
 

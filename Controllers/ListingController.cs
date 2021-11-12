@@ -23,11 +23,15 @@ namespace Karma.Controllers
 
         private readonly Lazy<IUserService> _userService;
 
-        public ListingController(ILogger<ListingController> logger, IListingRepository listingRepository, Lazy<IUserService> userService)
+        private readonly IListingNotification _notification;
+
+        public ListingController(ILogger<ListingController> logger, IListingRepository listingRepository, Lazy<IUserService> userService, IListingNotification notification)
+
         {
             _logger = logger;
             _listingRepository = listingRepository;
             _userService = userService;
+            _notification = notification;
         }
 
         [HttpPost]
@@ -124,6 +128,13 @@ namespace Karma.Controllers
             listing.RequestedUserIDs.Add(userId);
             if (!await _listingRepository.UpdateAsync(listing))
                 return StatusCode(500);
+
+            Notify saveNotificationHandler = delegate {
+                _logger.LogInformation("{0} - INFO - ListingController: User {1} requested listing {2}.", DateTime.UtcNow, userId, id);
+            };
+
+            _notification.saveNotification += saveNotificationHandler;
+            _notification.Start();
 
             user.RequestedListings.Add(listing.Id);
 
