@@ -25,7 +25,7 @@ namespace Karma.Controllers
 
         private readonly IListingNotification _notification;
 
-        public ListingController(ILogger<ListingController> logger, IListingRepository listingRepository, IUserService userService, IListingNotification notification)
+        public ListingController(ILogger<ListingController> logger, IListingRepository listingRepository, Lazy<IUserService> userService, IListingNotification notification)
 
         {
             _logger = logger;
