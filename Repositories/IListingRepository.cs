@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Karma.Models;
 
 namespace Karma.Repositories
 {
     public interface IListingRepository : IRepository<Listing>
     {
-        IEnumerable<Listing> GetAllUserListings(string userId);
-        IEnumerable<Listing> GetRequestedListings(string userId);
+        Task<IEnumerable<Listing>> GetAllUserListingsAsync(string userId);
+        Task<IEnumerable<Listing>> GetRequestedListingsAsync(string userId);
     }
 }
