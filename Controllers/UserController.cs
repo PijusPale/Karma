@@ -48,7 +48,7 @@ namespace Karma.Controllers
             if (userid == null) {
                 return NoContent();
             }
-            return Ok(_userService.GetUserById(userid));
+            return Ok(_userService.GetUserById(int.Parse(userid)));
         }
 
         [HttpGet("getByListingId={id}")]
@@ -57,12 +57,12 @@ namespace Karma.Controllers
             if(id == null)
                 return NoContent();
 
-            var listing = _listingRepository.Value.GetById(id);
+            var listing = _listingRepository.Value.GetById(int.Parse(id));
             var listOfUsers = new List<User>();
 
             foreach(string requesteeId in listing.RequestedUserIDs)
             {
-                listOfUsers.Add(_userService.GetUserById(requesteeId));
+                listOfUsers.Add(_userService.GetUserById(int.Parse(requesteeId)));
             }
 
             return Ok(listOfUsers);   

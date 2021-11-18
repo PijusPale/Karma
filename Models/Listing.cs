@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Karma.Models
 {
@@ -64,7 +65,8 @@ namespace Karma.Models
         [Range(1, 100)]
         public int Quantity { get; set; }
 
-        [Required]
+        //[Required]
+        [NotMapped]
         public Location Location { get; set; }
 
         [Required]
@@ -78,6 +80,7 @@ namespace Karma.Models
         [Required]
         public Condition Condition { get; set; }
 
+        [NotMapped]
         public virtual List<String> RequestedUserIDs { get; set; }
     }
 }

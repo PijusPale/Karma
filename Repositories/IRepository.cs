@@ -7,21 +7,21 @@ namespace Karma.Repositories
     {
         IEnumerable<TEntity> GetAll();
 
-        TEntity GetById(string id);
+        TEntity GetById(int id);
 
         void Add(TEntity entity);
 
-        void DeleteById(string id);
+        void DeleteById(int id);
 
         void Update(TEntity id);
 
         Task<IEnumerable<TEntity>> GetAllAsync();
 
-        Task<TEntity> GetByIdAsync(string id);
+        Task<TEntity> GetByIdAsync(int id);
 
         Task<bool> AddAsync(TEntity entity);
 
-        Task<bool> DeleteByIdAsync(string id);
+        Task<bool> DeleteByIdAsync(int id);
 
         Task<bool> UpdateAsync(TEntity entity);
     }
