@@ -128,14 +128,14 @@ export const ListingPageLayout = (props) => {
       <button class="btn btn-outline-dark" onClick={redirectToChat}>Chat with user</button>
     </div>
     } 
-    {loggedIn && user.id === props.OwnerId && listingReservedResponse && !chatShow &&
+    {loggedIn && user.id === props.ownerId && listingReservedResponse && !chatShow &&
       <div align="center">
         <div class="alert alert-success" role="alert">Listing reserved for the selected user!</div>
         <button class="btn btn-outline-dark" onClick={redirectToChat}>Chat with user</button>
       </div>
     }
 
-    {chatShow && <Chat groupId={md5(props.OwnerId + recipientId + props.id)} listingId={props.id}/>}
+    {chatShow && <Chat groupId={md5(props.ownerId + props.recipientId + props.id)} listingId={props.id}/>}
   </div>
   );
 }
