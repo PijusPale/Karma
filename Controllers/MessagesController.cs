@@ -47,6 +47,7 @@ namespace Karma.Controllers
         }
 
         [HttpGet("listingId={listingId}/groupId={groupId}&limit={limit}/sinceId={lastMessageId}")]
+        [Authorize]
         public IActionResult GetMessages(string listingId, string groupId, int limit, string lastMessageId)
         {
             string userId = this.TryGetUserId();
@@ -61,6 +62,21 @@ namespace Karma.Controllers
             if(result.Count == 0)
                 return NoContent();
 
+            return Ok(result);
+        }
+
+        
+        [HttpGet("conversations")]
+        [Authorize]
+        public IActionResult GetConversations()
+        {
+            string userId = this.TryGetUserId();
+           
+            if (userId == null)
+                return Unauthorized();
+
+            var result = _messageService.GetConversations(userId);
+            
             return Ok(result);
         }
     }

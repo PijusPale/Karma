@@ -3,14 +3,18 @@ import { HubConnectionBuilder } from '@microsoft/signalr';
 import { UserContext } from '../UserContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
+import { MainContainer, ChatContainer, MessageList, Message, MessageInput, Sidebar, Search, Conversation, ConversationList, Avatar, ConversationHeader, InfoButton } from '@chatscope/chat-ui-kit-react';
 import '../chat.css';
+import './chat.css';
 
 //TODO: RegEx expression for messages, save messages and load up on render
 //TODO: Change from IDs to names when we have a Database for easy union of user table and specific messages table
 
 export const Chat = (props) => {
-    const [message  , setMessage] = useState('');
+    const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]); //array of objects with message.type, message.nick, message.text
+    const [conversations, setConversations] = useState([]); //array of objects with conversations fetched from server
     const [hubConnection, setHubConnection] = useState();
     const [loading, setLoading] = useState(true); // Loading bar while waiting for fetch
     const [firstLoad, setFirstLoad] = useState(false); //True after the first batch of messages is loaded
@@ -18,10 +22,10 @@ export const Chat = (props) => {
     const { user, loggedIn } = useContext(UserContext);
     const messagesDiv = document.querySelector("#messages") //gets the div of messsages box
 
-    useEffect( () => {
+    useEffect(() => {
         if (loggedIn) {
             const connection = new HubConnectionBuilder()
-                .withUrl("/ChatHub", { accessTokenFactory: () => localStorage.getItem('token')})
+                .withUrl("/ChatHub", { accessTokenFactory: () => localStorage.getItem('token') })
                 .build();
 
             connection.on("ReceiveGroupMessage", (nick, receivedMessage) => receiveMessage(nick, receivedMessage));
@@ -40,8 +44,8 @@ export const Chat = (props) => {
     }, [loggedIn]);
 
     useEffect(() => {
-        if(firstLoad)
-        scrollToBottom(messagesDiv);
+        if (firstLoad)
+            scrollToBottom(messagesDiv);
     }, [firstLoad]);
 
     const sendMessage = async () => {
@@ -57,38 +61,38 @@ export const Chat = (props) => {
 
     const receiveMessage = (nick, receivedMessage) => {
         var tempMessage = {
-        fromId: nick,
-        content: receivedMessage,
-        type: user.firstName === nick ? "out" : "in",
-        dateSent: Date.now,
-        status: 'Delivered'};
-        
+            fromId: nick,
+            content: receivedMessage,
+            type: user.firstName === nick ? "out" : "in",
+            dateSent: Date.now,
+            status: 'Delivered'
+        };
+
         setMessages(messages => messages.concat(tempMessage));
         scrollToBottom(messagesDiv);
     }
 
     const fetchOldMessages = async (limit = 20, lastMessageId) => {
         let url = `messages/listingId=${props.listingId}/groupId=${props.groupId}&limit=${limit}`;
-        if(lastMessageId !== undefined)
-          url = `messages/listingId=${props.listingId}/groupId=${props.groupId}&limit=${limit}/sinceId=${lastMessageId}`;
-          
-        
+        if (lastMessageId !== undefined)
+            url = `messages/listingId=${props.listingId}/groupId=${props.groupId}&limit=${limit}/sinceId=${lastMessageId}`;
+
+
         const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
-              }
+            }
         });
-        if(response.ok) 
-        {
+        if (response.ok) {
             const data = await response.json();
             await setMessages(messages => data.concat(messages));
             setLoading(false);
             setFirstLoad(true);
-            if(data.length < limit) // set allLoaded = true if the last messages have been sent from the server
+            if (data.length < limit) // set allLoaded = true if the last messages have been sent from the server
                 setAllLoaded(true);
         }
-        if(response.status === 204) // set allLoaded = true if there are no past messages
+        if (response.status === 204) // set allLoaded = true if there are no past messages
         {
             setAllLoaded(true);
         }
@@ -97,7 +101,7 @@ export const Chat = (props) => {
     const handleScrollUp = e => {
         let element = e.target;
         let lastMessageId = messages[0].id;
-        if(element.scrollTop===0){
+        if (element.scrollTop === 0) {
             fetchOldMessages(20, lastMessageId);
             setLoading(true);
         }
@@ -108,7 +112,7 @@ export const Chat = (props) => {
     }
 
     return (
-        loggedIn &&
+        /* loggedIn &&
         <div class="container content">
             <div class="row">
                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
@@ -140,6 +144,18 @@ export const Chat = (props) => {
                     </div>
                 </div>
             </div>
+        </div> */
+        loggedIn &&
+        <div class="fixed-container border">
+                <Sidebar position="left" scrollable={true}>
+                    <ConversationList>
+                        {conversations.map((data, index) =>
+                        <Conversation name={data.listingTitle} lastSenderName={data.lastSender} info={data.lastMessage}>
+                        <Avatar src={data.listingImg} name={data.listingTitle} />
+                    </Conversation>
+                        )}
+                    </ConversationList>
+                </Sidebar>
         </div>
     );
 };
