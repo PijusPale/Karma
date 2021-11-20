@@ -53,7 +53,7 @@ namespace Karma.Controllers
 
         [HttpPost("id={id}/reserve={reserve}/for={receiverId}")]
         [Authorize]
-        public async Task<ActionResult> ReserveListingAsync(string id, bool reserve, string receiverId)
+        public async Task<ActionResult> ReserveListingAsync(int id, bool reserve, string receiverId)
         {
             string userId = this.TryGetUserId();
             var listing = await _listingRepository.GetByIdAsync(id);
@@ -100,7 +100,7 @@ namespace Karma.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Listing>> GetListingByIdAsync(string id)
+        public async Task<ActionResult<Listing>> GetListingByIdAsync(int id)
         {
             var listing = (await _listingRepository.GetByIdAsync(id));
             return listing != null ? Ok(listing) : NotFound();
@@ -108,7 +108,7 @@ namespace Karma.Controllers
 
         [HttpGet("request/{id}")]
         [Authorize]
-        public async Task<ActionResult> RequestListingAsync(string id)
+        public async Task<ActionResult> RequestListingAsync(int id)
         {
             string userId = this.TryGetUserId();
             if (userId == null)
@@ -121,7 +121,7 @@ namespace Karma.Controllers
             if (listing.OwnerId == userId)
                 return Forbid();
 
-            var user = _userService.Value.GetUserById(userId);
+            var user = _userService.Value.GetUserById(int.Parse(userId));
             if (listing.RequestedUserIDs.Contains(userId) || user.RequestedListings.Contains(id))
                 return Conflict();
 
@@ -143,7 +143,7 @@ namespace Karma.Controllers
 
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<ActionResult> DeleteListingAsync(string id)
+        public async Task<ActionResult> DeleteListingAsync(int id)
         {
             string userId = this.TryGetUserId();
             var listing = await _listingRepository.GetByIdAsync(id);
@@ -153,13 +153,13 @@ namespace Karma.Controllers
                 return Unauthorized();
             if (!await _listingRepository.DeleteByIdAsync(id))
                 return StatusCode(500);
-            _userService.Value.GetUserById(userId).RequestedListings.Remove(id);
+            _userService.Value.GetUserById(int.Parse(userId)).RequestedListings.Remove(id);
             return Ok();
         }
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<ActionResult> UpdateListingAsync(string id, [FromBody] Listing listing)
+        public async Task<ActionResult> UpdateListingAsync(int id, [FromBody] Listing listing)
         {
 
             var old = await _listingRepository.GetByIdAsync(listing.Id);

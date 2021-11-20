@@ -32,7 +32,7 @@ namespace Karma.Controllers
         public IActionResult GetMessages(string listingId, string groupId, int limit)
         {
             string userId = this.TryGetUserId();
-            var listing = _listingRepository.GetById(listingId);
+            var listing = _listingRepository.GetById(int.Parse(listingId));
             if(listing == null)
                 return NoContent();
 
@@ -51,7 +51,7 @@ namespace Karma.Controllers
         public IActionResult GetMessages(string listingId, string groupId, int limit, string lastMessageId)
         {
             string userId = this.TryGetUserId();
-            var listing = _listingRepository.GetById(listingId);
+            var listing = _listingRepository.GetById(int.Parse(listingId));
             if(listing == null)
                 return NoContent();
 

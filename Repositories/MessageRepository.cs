@@ -42,7 +42,7 @@ namespace Karma.Repositories
         public IEnumerable<Message> GetByLimit(string groupId, int limit, string lastMessageId)
         {
             var messages = GetAllByGroup(groupId).OrderByDescending(x => x.DateSent);
-            var offset = messages.ToList().FindIndex(x => x.Id == lastMessageId) + 1;
+            var offset = messages.ToList().FindIndex(x => x.Id.ToString() == lastMessageId) + 1;
             return messages.Skip(offset).Take(limit).Reverse();
         }
 
@@ -56,7 +56,7 @@ namespace Karma.Repositories
         public void DeleteById(string messageId, string groupId)
         {
             List<Message> messages = GetAllByGroup(groupId).ToList();
-            messages.Remove(messages.Find(x => x.Id == messageId));
+            messages.Remove(messages.Find(x => x.Id.ToString() == messageId));
             WriteMessagesToFile(messages, groupId);
         }
 

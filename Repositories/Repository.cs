@@ -26,7 +26,7 @@ namespace Karma.Repositories
         public void Add(TEntity entity)
         {
             var random = new Random();
-            entity.Id = random.Next(9999).ToString(); // temp fix for id generation, later this should be assigned in DB.
+            entity.Id = random.Next(9999); // temp fix for id generation, later this should be assigned in DB.
             List<TEntity> entities = GetAll().ToList();
             entities.Add(entity);
             IEnumerable<TEntity> queryAscending = from ent in entities
@@ -53,13 +53,13 @@ namespace Karma.Repositories
 
         }
 
-        public TEntity GetById(string id)
+        public TEntity GetById(int id)
         {
             List<TEntity> entities = GetAll().ToList();
             return entities.FirstOrDefault(x => x.Id == id);
         }
 
-        public void DeleteById(string id)
+        public void DeleteById(int id)
         {
             List<TEntity> entities = GetAll().ToList();
             entities.Remove(entities.Find(x => x.Id == id));
@@ -89,7 +89,7 @@ namespace Karma.Repositories
             }
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             try
             {
@@ -103,7 +103,7 @@ namespace Karma.Repositories
             }
         }
 
-        public async Task<TEntity> GetByIdAsync(string id)
+        public async Task<TEntity> GetByIdAsync(int id)
         {
             List<TEntity> entities = (await GetAllAsync()).ToList();
             if (entities == null)
@@ -111,10 +111,10 @@ namespace Karma.Repositories
             return entities.FirstOrDefault(x => x.Id == id);
         }
 
-        public async Task<bool> AddAsync(TEntity entity)
+        public virtual async Task<bool> AddAsync(TEntity entity)
         {
             var random = new Random();
-            entity.Id = random.Next(9999).ToString(); // temp fix for id generation, later this should be assigned in DB.
+            entity.Id = random.Next(9999); // temp fix for id generation, later this should be assigned in DB.
             List<TEntity> entities = (await GetAllAsync()).ToList();
             if (entities == null)
                 return false;
@@ -123,7 +123,7 @@ namespace Karma.Repositories
             return await writeEntitiesToFileAsync(entities);
         }
 
-        public async Task<bool> DeleteByIdAsync(string id)
+        public async Task<bool> DeleteByIdAsync(int id)
         {
             List<TEntity> entities = (await GetAllAsync()).ToList();
             if (entities == null)

@@ -17,6 +17,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore;
+using Karma.data.messages;
 
 namespace Karma
 {
@@ -33,12 +35,12 @@ namespace Karma
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient(typeof(Lazy<>), typeof(LazyInstance<>));
-            services.AddSingleton<IListingRepository>(s => {
-                var logger = (ILogger<ListingRepository>)s.GetService(typeof(ILogger<ListingRepository>));
-                return new ListingRepository(Path.Combine("data", "ListingsData.json"), logger);
-            });
+
+            services.AddDbContext<BaseDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IListingRepository, DbListingRepository>();
             services.AddSingleton<IMessageRepository>(new MessageRepository(Path.Combine("data", "messages")));
             services.AddSingleton<IUserIdProvider, IdBasedUserIdProvider>();
+
 
             services.AddControllersWithViews()
                 .AddJsonOptions(opts => {
