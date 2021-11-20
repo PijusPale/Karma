@@ -28,6 +28,10 @@ namespace Karma.Repositories
             return Enumerable.Empty<Message>();
         }
         
+        public IEnumerable<Message> GetAllByUser(string userId)
+        {
+        }
+
         public IEnumerable<Message> GetByLimit(string groupId, int limit)
         {
             var messages = GetAllByGroup(groupId).OrderByDescending(x => x.DateSent);

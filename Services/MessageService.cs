@@ -13,6 +13,7 @@ namespace Karma.Services
         IEnumerable<Message> GetByLimit(string groupId, int limit, string lastMessageId);
         void AddMessage(string content, string userId, string groupId);
         void SaveMessages(string groupId);
+        IEnumerable<ConversationDto> GetConversations(string userId); 
     }
 
     public class MessageService : IMessageService
@@ -53,6 +54,10 @@ namespace Karma.Services
         public void SaveMessages(string groupId)
         {
             _messageRepository.Add(_messages, groupId);
+        }
+
+        public IEnumerable<ConversationDto> GetConversations(string userId)
+        {
         }
     }
 }
