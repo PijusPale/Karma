@@ -12,15 +12,15 @@ namespace Karma.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MessagesController : ControllerBase
+    public class MessageController : ControllerBase
     {
-        private readonly ILogger<MessagesController> _logger;
+        private readonly ILogger<MessageController> _logger;
 
         private readonly IMessageService _messageService;
 
         private readonly IListingRepository _listingRepository;
 
-        public MessagesController(ILogger<MessagesController> logger, IMessageService messageService, IListingRepository listingRepository)
+        public MessageController(ILogger<MessageController> logger, IMessageService messageService, IListingRepository listingRepository)
         {
             _logger = logger;
             _messageService = messageService;
