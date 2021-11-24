@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Karma.Models
 {
@@ -8,18 +9,20 @@ namespace Karma.Models
     {
         public User()
         {
-            this.Listings = new List<String>();
+            this.Listings = new List<int>();
             this.RequestedListings = new List<int>();
         }
+        [Required]
         public string Username { get; set; }
+        [Required]
         public string FirstName { get; set; }
-
+        [Required]
         public string LastName { get; set; }
-
-        public virtual List<String> Listings { get; set; }
-
+        [NotMapped]
+        public virtual List<int> Listings { get; set; }
+        [NotMapped]
         public virtual List<int> RequestedListings { get; set; }
-        
+        [NotMapped]
         public virtual string[] Comments { get; set; }
 
         public string this[int index]
@@ -27,9 +30,8 @@ namespace Karma.Models
             get => Comments[index];
             set => Comments[index] = value;
         }
-
-        public string AvatarPath { get; set; }
-
+        public string? AvatarPath { get; set; }
+        [NotMapped]
         public string Token { get; set; }
     }
 }

@@ -8,5 +8,7 @@ namespace Karma.data.messages
         public BaseDbContext(DbContextOptions<BaseDbContext> options) : base(options) { }
 
         public DbSet<Listing> Listings { get; set; }
+
+        public DbSet<User> Users { get; set; }        
     }
 }

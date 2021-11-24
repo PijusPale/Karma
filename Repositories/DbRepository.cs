@@ -15,7 +15,6 @@ namespace Karma.Repositories
         public DbRepository(BaseDbContext context)
         {
             _context = context;
-            entities = _context.Set<TEntity>();
         }
 
         public void Add(TEntity entity)
