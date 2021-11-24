@@ -31,7 +31,7 @@ namespace Karma.Controllers
         [Authorize]
         public IActionResult GetMessages(string listingId, string groupId, int limit)
         {
-            string userId = this.TryGetUserId();
+            var userId = this.TryGetUserId();
             var listing = _listingRepository.GetById(int.Parse(listingId));
             if(listing == null)
                 return NoContent();
@@ -49,7 +49,7 @@ namespace Karma.Controllers
         [HttpGet("listingId={listingId}/groupId={groupId}&limit={limit}/sinceId={lastMessageId}")]
         public IActionResult GetMessages(string listingId, string groupId, int limit, string lastMessageId)
         {
-            string userId = this.TryGetUserId();
+            var userId = this.TryGetUserId();
             var listing = _listingRepository.GetById(int.Parse(listingId));
             if(listing == null)
                 return NoContent();

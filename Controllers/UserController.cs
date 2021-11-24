@@ -44,25 +44,22 @@ namespace Karma.Controllers
         [HttpGet]
         public IActionResult GetCurrentUser()
         {
-            string userid = this.TryGetUserId();
+            var userid = this.TryGetUserId();
             if (userid == null) {
                 return NoContent();
             }
-            return Ok(_userService.GetUserById(int.Parse(userid)));
+            return Ok(_userService.GetUserById((int)userid));
         }
 
         [HttpGet("getByListingId={id}")]
-        public IActionResult GetRequestedUsersOfListing(string id)
+        public IActionResult GetRequestedUsersOfListing(int id)
         {
-            if(id == null)
-                return NoContent();
-
-            var listing = _listingRepository.Value.GetById(int.Parse(id));
+            var listing = _listingRepository.Value.GetById(id);
             var listOfUsers = new List<User>();
 
-            foreach(string requesteeId in listing.RequestedUserIDs)
+            foreach(int requesteeId in listing.RequestedUserIDs)
             {
-                listOfUsers.Add(_userService.GetUserById(int.Parse(requesteeId)));
+                listOfUsers.Add(_userService.GetUserById(requesteeId));
             }
 
             return Ok(listOfUsers);   

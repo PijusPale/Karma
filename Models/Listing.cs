@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json;
 
 namespace Karma.Models
 {
@@ -34,7 +35,7 @@ namespace Karma.Models
     {
         public Listing()
         {
-            this.RequestedUserIDs = new List<String>();
+            this.RequestedUserIDs = new List<int>();
         }
 
         public int CompareTo(object obj)
@@ -46,7 +47,7 @@ namespace Karma.Models
 			    else
 				     throw new ArgumentException("Object is not a Listing");
         }
-        public string OwnerId { get; set; }
+        public int OwnerId { get; set; }
 
         public bool isReserved { get; set; }
 
@@ -67,7 +68,19 @@ namespace Karma.Models
 
         //[Required]
         [NotMapped]
-        public Location Location { get; set; }
+        public Location? Location { get; set; }
+
+        public string LocationJson {
+            get {
+                return JsonSerializer.Serialize(Location);
+            }
+            set {
+                if (value == null)
+                    Location = null;
+                else 
+                Location = JsonSerializer.Deserialize<Location>(value);
+            }
+        }
 
         [Required]
         public string Category { get; set; }
@@ -81,6 +94,6 @@ namespace Karma.Models
         public Condition Condition { get; set; }
 
         [NotMapped]
-        public virtual List<String> RequestedUserIDs { get; set; }
+        public virtual List<int> RequestedUserIDs { get; set; }
     }
 }

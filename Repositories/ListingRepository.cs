@@ -14,7 +14,7 @@ namespace Karma.Repositories
 
         public ListingRepository(string filePath, ILogger<ListingRepository> logger) : base(filePath, logger) { }
 
-        public async Task<IEnumerable<Listing>> GetAllUserListingsAsync(string userId)
+        public async Task<IEnumerable<Listing>> GetAllUserListingsAsync(int userId)
         {
             List<Listing> listings = (await GetAllAsync()).ToList();
             if (listings == null)
@@ -22,7 +22,7 @@ namespace Karma.Repositories
             return listings.Where(a => a.OwnerId == userId);
         }
 
-        public async Task<IEnumerable<Listing>> GetRequestedListingsAsync(string userId)
+        public async Task<IEnumerable<Listing>> GetRequestedListingsAsync(int userId)
         {
             List<Listing> listings = (await GetAllAsync()).ToList();
             if (listings == null)
