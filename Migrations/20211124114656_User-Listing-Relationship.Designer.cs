@@ -3,14 +3,16 @@ using System;
 using Karma.data.messages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Karma.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    partial class BaseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211124114656_User-Listing-Relationship")]
+    partial class UserListingRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,21 +94,6 @@ namespace Karma.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ListingUser", b =>
-                {
-                    b.Property<int>("RequestedListingsId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("RequesteesId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("RequestedListingsId", "RequesteesId");
-
-                    b.HasIndex("RequesteesId");
-
-                    b.ToTable("ListingUser");
-                });
-
             modelBuilder.Entity("Karma.Models.Listing", b =>
                 {
                     b.HasOne("Karma.Models.User", "User")
@@ -116,21 +103,6 @@ namespace Karma.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ListingUser", b =>
-                {
-                    b.HasOne("Karma.Models.Listing", null)
-                        .WithMany()
-                        .HasForeignKey("RequestedListingsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Karma.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("RequesteesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Karma.Models.User", b =>

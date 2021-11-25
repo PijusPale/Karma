@@ -15,7 +15,6 @@ namespace Karma.Repositories
         public DbRepository(BaseDbContext context)
         {
             _context = context;
-            entities = _context.Set<TEntity>();
         }
 
         public void Add(TEntity entity)
@@ -80,23 +79,19 @@ namespace Karma.Repositories
 
         public void Update(TEntity id)
         {
-            entities.Remove(GetById(id.Id));
-            entities.Add(id);
             _context.SaveChanges();
         }
 
-        public async Task<bool> UpdateAsync(TEntity entity)
+        public Task<bool> UpdateAsync(TEntity entity)
         {
             try
             {
-                entities.Remove(await GetByIdAsync(entity.Id));
-                await entities.AddAsync(entity);
                 _context.SaveChanges();
-                return true;
+                return Task.FromResult(true);
             }
             catch
             {
-                return false;
+                return Task.FromResult(false);
             }
         }
     }

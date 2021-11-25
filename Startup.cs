@@ -38,6 +38,7 @@ namespace Karma
 
             services.AddDbContext<BaseDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IListingRepository, DbListingRepository>();
+            services.AddScoped<IUserRepository, DbUserRepository>();
             services.AddSingleton<IMessageRepository>(new MessageRepository(Path.Combine("data", "messages")));
             services.AddSingleton<IUserIdProvider, IdBasedUserIdProvider>();
 

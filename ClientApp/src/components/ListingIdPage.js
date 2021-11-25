@@ -53,7 +53,7 @@ export const ListingPageLayout = (props) => {
       setListingReservedResponse(true);
        
     const fetchData = async () => {
-      if (loggedIn && (user.id === props.ownerId)) {
+      if (loggedIn && (user.id === props.userId)) {
         const response = await fetch(`user/getByListingId=${props.id}`, {
           method: 'GET',
           headers: {
@@ -73,7 +73,7 @@ export const ListingPageLayout = (props) => {
   const onDonate = async () => {
     const sendData = async () => {
       var reserve = true;
-      if(loggedIn && (user.id === props.ownerId)) {
+      if(loggedIn && (user.id === props.userId)) {
         const response = await fetch(`listing/id=${props.id}/reserve=${reserve}/for=${recipientId}`, {
           method: 'POST',
           headers: {
@@ -104,7 +104,7 @@ export const ListingPageLayout = (props) => {
       <p>Quantity: {props.quantity}</p>
     </div>
 
-    {loggedIn && user.id === props.ownerId && !listingReservedResponse && !chatShow &&
+    {loggedIn && user.id === props.userId && !listingReservedResponse && !chatShow &&
       <div align="center">
         <h5>Select user to donate the item to:</h5>
         <select class ="form-select" onChange={e => setrecipientId(e.target.value)}>
@@ -128,14 +128,14 @@ export const ListingPageLayout = (props) => {
       <button class="btn btn-outline-dark" onClick={redirectToChat}>Chat with user</button>
     </div>
     } 
-    {loggedIn && user.id === props.ownerId && listingReservedResponse && !chatShow &&
+    {loggedIn && user.id === props.userId && listingReservedResponse && !chatShow &&
       <div align="center">
         <div class="alert alert-success" role="alert">Listing reserved for the selected user!</div>
         <button class="btn btn-outline-dark" onClick={redirectToChat}>Chat with user</button>
       </div>
     }
 
-    {chatShow && <Chat groupId={md5(props.ownerId + props.recipientId + props.id)} listingId={props.id}/>}
+    {chatShow && <Chat groupId={md5(props.userId + props.recipientId + props.id)} listingId={props.id}/>}
   </div>
   );
 }

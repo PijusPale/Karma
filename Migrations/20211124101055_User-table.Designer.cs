@@ -3,14 +3,16 @@ using System;
 using Karma.data.messages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Karma.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    partial class BaseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211124101055_User-table")]
+    partial class Usertable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,10 +49,10 @@ namespace Karma.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int>("OwnerId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("isReserved")
@@ -60,8 +62,6 @@ namespace Karma.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Listings");
                 });
@@ -90,52 +90,6 @@ namespace Karma.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("ListingUser", b =>
-                {
-                    b.Property<int>("RequestedListingsId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("RequesteesId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("RequestedListingsId", "RequesteesId");
-
-                    b.HasIndex("RequesteesId");
-
-                    b.ToTable("ListingUser");
-                });
-
-            modelBuilder.Entity("Karma.Models.Listing", b =>
-                {
-                    b.HasOne("Karma.Models.User", "User")
-                        .WithMany("Listings")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ListingUser", b =>
-                {
-                    b.HasOne("Karma.Models.Listing", null)
-                        .WithMany()
-                        .HasForeignKey("RequestedListingsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Karma.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("RequesteesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Karma.Models.User", b =>
-                {
-                    b.Navigation("Listings");
                 });
 #pragma warning restore 612, 618
         }

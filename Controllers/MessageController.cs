@@ -29,14 +29,14 @@ namespace Karma.Controllers
 
         [HttpGet("listingId={listingId}/groupId={groupId}&limit={limit}")]
         [Authorize]
-        public IActionResult GetMessages(string listingId, string groupId, int limit)
+        public IActionResult GetMessages(int listingId, string groupId, int limit)
         {
-            string userId = this.TryGetUserId();
-            var listing = _listingRepository.GetById(int.Parse(listingId));
+            var userId = this.TryGetUserId();
+            var listing = _listingRepository.GetById(listingId);
             if(listing == null)
                 return NoContent();
 
-            if (userId == null || (!listing.OwnerId.Equals(userId) && !listing.recipientId.Equals(userId)))
+            if (userId == null || (!listing.UserId.Equals(userId) && !listing.recipientId.Equals(userId)))
                 return Unauthorized();
 
             var result = _messageService.GetByLimit(groupId, limit).ToList();
@@ -46,16 +46,16 @@ namespace Karma.Controllers
             return Ok(result);
         }
 
-        [HttpGet("listingId={listingId}/groupId={groupId}&limit={limit}/sinceId={lastMessageId}")]
         [Authorize]
-        public IActionResult GetMessages(string listingId, string groupId, int limit, string lastMessageId)
+        [HttpGet("listingId={listingId}/groupId={groupId}&limit={limit}/sinceId={lastMessageId}")]
+        public IActionResult GetMessages(int listingId, string groupId, int limit, string lastMessageId)
         {
-            string userId = this.TryGetUserId();
-            var listing = _listingRepository.GetById(int.Parse(listingId));
+            var userId = this.TryGetUserId();
+            var listing = _listingRepository.GetById(listingId);
             if(listing == null)
                 return NoContent();
 
-            if (userId == null || (!listing.OwnerId.Equals(userId) && !listing.recipientId.Equals(userId)))
+            if (userId == null || (!listing.UserId.Equals(userId) && !listing.recipientId.Equals(userId)))
                 return Unauthorized();
    
             var result = _messageService.GetByLimit(groupId, limit, lastMessageId).ToList();
