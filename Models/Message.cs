@@ -13,7 +13,7 @@ namespace Karma.Models
 
     public class Message : Entity
     {
-        public Message(int id, string content, string fromId, string groupId, DateTime dateSent, MessageStatus status)
+        public Message(int id, string content, int fromId, string groupId, DateTime dateSent, MessageStatus status)
         {
             Id = id;
             Content = content;
@@ -22,15 +22,15 @@ namespace Karma.Models
             DateSent = dateSent;
             Status = status;
         }
-
+        [Required]
         public string Content { get; set; }
-
-        public string FromId { get; set; }
-
+        [Required]
+        public int FromId { get; set; }
+        [Required]
         public string GroupId { get; set; }
-
+        [Required]
         public DateTime DateSent { get; set; }
-
+        [Required]
         public MessageStatus Status { get; set; }
     }
 
