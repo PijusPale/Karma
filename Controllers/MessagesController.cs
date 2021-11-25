@@ -36,7 +36,7 @@ namespace Karma.Controllers
             if(listing == null)
                 return NoContent();
 
-            if (userId == null || (!listing.OwnerId.Equals(userId) && !listing.recipientId.Equals(userId)))
+            if (userId == null || (!listing.UserId.Equals(userId) && !listing.recipientId.Equals(userId)))
                 return Unauthorized();
 
             var result = _messageService.GetByLimit(groupId, limit).ToList();
@@ -54,7 +54,7 @@ namespace Karma.Controllers
             if(listing == null)
                 return NoContent();
 
-            if (userId == null || (!listing.OwnerId.Equals(userId) && !listing.recipientId.Equals(userId)))
+            if (userId == null || (!listing.UserId.Equals(userId) && !listing.recipientId.Equals(userId)))
                 return Unauthorized();
    
             var result = _messageService.GetByLimit(groupId, limit, lastMessageId).ToList();

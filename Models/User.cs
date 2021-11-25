@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Karma.Models
 {
@@ -9,7 +10,7 @@ namespace Karma.Models
     {
         public User()
         {
-            this.Listings = new List<int>();
+            this.Listings = new List<Listing>();
             this.RequestedListings = new List<int>();
         }
         [Required]
@@ -18,8 +19,9 @@ namespace Karma.Models
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
-        [NotMapped]
-        public virtual List<int> Listings { get; set; }
+        
+        [JsonIgnore]
+        public virtual ICollection<Listing> Listings { get; set; }
         [NotMapped]
         public virtual List<int> RequestedListings { get; set; }
         [NotMapped]

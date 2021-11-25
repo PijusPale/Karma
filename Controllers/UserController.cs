@@ -64,5 +64,19 @@ namespace Karma.Controllers
 
             return Ok(listOfUsers);   
         }
+        [Authorize]
+        [HttpGet("listings")]
+        public ActionResult<IEnumerable<Listing>> GetAllListingsOfUser()
+        {
+            var userId = this.TryGetUserId();
+            if (userId == null)
+                return Unauthorized();
+            
+            var user = _userService.GetUserById((int) userId);
+            if (user == null)
+                return NotFound();
+            
+            return Ok(_userService.GetAllUserListings((int)userId));
+        }
     }
 }

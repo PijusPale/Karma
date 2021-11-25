@@ -5,11 +5,11 @@ import { ListingsComp } from './ListingsComp';
 export const UserListingsComp = () => {
     const [listingsType, setListingsType] = useState('posted');
     const { user, loggedIn } = useContext(UserContext);
-    const [url, setUrl] = useState(`listing/userId=${user.id}`);
+    const [url, setUrl] = useState(`user/listings}`);
 
     useEffect(() => {
         if(listingsType === 'posted')
-            setUrl(`listing/userId=${user.id}`);
+            setUrl(`user/listings`);
         if(listingsType === 'requested')
             setUrl(`listing/requesteeId=${user.id}`);
     }, [listingsType, user]);

@@ -24,6 +24,7 @@ export const ListingsComp = ({ url = 'listing'}) => {
             setListingsData(data);
             setTotalListings(data.length);
             setLoading(false);
+            setServerError(false);
         } else if (response.status === 500) {
             setServerError(true);
         }

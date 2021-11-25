@@ -44,7 +44,7 @@ namespace Karma.Controllers
             if (!userId.HasValue)
                 return Unauthorized();
 
-            listing.OwnerId = (int) userId;
+            listing.UserId = (int) userId;
 
             listing.isReserved = false;
 
@@ -59,7 +59,7 @@ namespace Karma.Controllers
             var listing = await _listingRepository.GetByIdAsync(id);
             if (listing == null)
                 return NotFound();
-            if (userId != listing.OwnerId)
+            if (userId != listing.UserId)
                 return Unauthorized();
 
             listing.isReserved = reserve;
@@ -118,7 +118,7 @@ namespace Karma.Controllers
             if (listing == null)
                 return NotFound();
 
-            if (listing.OwnerId == userId)
+            if (listing.UserId == userId)
                 return Forbid();
 
             var user = _userService.Value.GetUserById((int) userId);
@@ -126,8 +126,8 @@ namespace Karma.Controllers
                 return Conflict();
 
             listing.RequestedUserIDs.Add((int)userId);
-            if (!await _listingRepository.UpdateAsync(listing))
-                return StatusCode(500);
+            //if (!await _listingRepository.UpdateAsync(listing))
+            //    return StatusCode(500);
 
             Notify saveNotificationHandler = delegate {
                 _logger.LogInformation("{0} - INFO - ListingController: User {1} requested listing {2}.", DateTime.UtcNow, userId, id);
@@ -149,7 +149,7 @@ namespace Karma.Controllers
             var listing = await _listingRepository.GetByIdAsync(id);
             if (listing == null)
                 return NotFound();
-            if (userId == null || listing.OwnerId != userId)
+            if (userId == null || listing.UserId != userId)
                 return Unauthorized();
             if (!await _listingRepository.DeleteByIdAsync(id))
                 return StatusCode(500);
@@ -167,12 +167,12 @@ namespace Karma.Controllers
                 return NotFound();
 
             var userId = this.TryGetUserId();
-            if (userId == null || old.OwnerId != userId)
+            if (userId == null || old.UserId != userId)
                 return Unauthorized();
 
             listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
             listing.RequestedUserIDs = old.RequestedUserIDs; // temp fix for saving old requests
-            listing.OwnerId = (int) userId;
+            listing.UserId = (int) userId;
             if (!await _listingRepository.UpdateAsync(listing))
                 return StatusCode(500);
 

@@ -78,13 +78,13 @@ export const ListingComp = (props) => {
           <p>Quantity: {props.quantity}</p>
           <p>Item condition: {props.condition}</p>
           <p>Date: {props.datePublished.slice(0, 10)}</p>
-          {loggedIn && user.id === props.ownerId &&
+          {loggedIn && user.id === props.userId &&
           <div>
             <ConfirmationButton color='danger' onSubmit={onDelete} submitLabel={'Delete'}
               prompt={'Are you sure you want to delete this listing?'}>Delete</ConfirmationButton>
             <Button color="primary" onClick={() => setUpdate(true)}>Update</Button>
           </div>}
-        {loggedIn && user.id !== props.ownerId && !requestResponse &&
+        {loggedIn && user.id !== props.userId && !requestResponse &&
           <div>
             {props.requestedUserIDs.includes(user.id)
               ? <Button color="secondary" disabled>You have already requested this item</Button>
