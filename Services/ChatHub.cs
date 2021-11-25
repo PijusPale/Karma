@@ -14,9 +14,13 @@ namespace Karma.Services
     [Authorize]
     public class ChatHub : Hub
     {
-        //TODO: Find a better way to do DI
-        private IMessageService _messageService = new MessageService(new MessageRepository(Path.Combine("data", "messages")));
-       
+        private readonly IMessageService _messageService;
+        
+        public ChatHub(IMessageService messageService)
+        {
+            _messageService = messageService;
+        }
+    
         public Task SendMessageAsync(string user, string message)
         {
             return Clients.All.SendAsync("ReceiveMessage", user, message);

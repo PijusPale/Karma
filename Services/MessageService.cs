@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.SignalR;
 using Karma.Models;
 using Karma.Repositories;
@@ -13,7 +14,7 @@ namespace Karma.Services
         IEnumerable<Message> GetByLimit(string groupId, int limit, string lastMessageId);
         void AddMessage(string content, string userId, string groupId);
         void SaveMessages(string groupId);
-        IEnumerable<ConversationDto> GetConversations(string userId); 
+        IEnumerable<ConversationDto> GetConversations(int userId); 
     }
 
     public class MessageService : IMessageService
@@ -47,7 +48,7 @@ namespace Karma.Services
         {
             var random = new Random();
             string messageId = random.Next(9999).ToString();
-            var message = new Message(id: int.Parse(messageId), content: content, fromId: userId, groupId: groupId, dateSent: DateTime.UtcNow, status: 0);
+            var message = new Message(id: int.Parse(messageId), content: content, fromId: int.Parse(userId), groupId: groupId, dateSent: DateTime.UtcNow, status: 0);
             _messages.Add(message);  
         }
 
@@ -56,8 +57,9 @@ namespace Karma.Services
             _messageRepository.Add(_messages, groupId);
         }
 
-        public IEnumerable<ConversationDto> GetConversations(string userId)
+        public IEnumerable<ConversationDto> GetConversations(int userId)
         {
+            return Enumerable.Empty<ConversationDto>();
         }
     }
 }

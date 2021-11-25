@@ -70,12 +70,12 @@ namespace Karma.Controllers
         [Authorize]
         public IActionResult GetConversations()
         {
-            string userId = this.TryGetUserId();
+            var userId = this.TryGetUserId();
            
             if (userId == null)
                 return Unauthorized();
 
-            var result = _messageService.GetConversations(userId);
+            var result = _messageService.GetConversations((int) userId);
             
             return Ok(result);
         }

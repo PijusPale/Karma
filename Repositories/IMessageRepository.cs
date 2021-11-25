@@ -7,6 +7,8 @@ namespace Karma.Repositories
     {
         IEnumerable<Message> GetAllByGroup(string groupId);
 
+        IEnumerable<Conversation> GetConversations(int userId);
+
         IEnumerable<Message> GetByLimit(string groupId, int limit);
 
         IEnumerable<Message> GetByLimit(string groupId, int limit, string lastMessageId);
