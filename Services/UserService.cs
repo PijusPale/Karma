@@ -18,7 +18,8 @@ namespace Karma.Services
         User Authenticate(UserCredentials request);
         IEnumerable<User> GetAll();
         User GetUserById(int id);
-        IEnumerable<Listing> GetAllUserListings(int userId);
+        IEnumerable<Listing> GetAllUserListingsByUserId(int userId);
+        IEnumerable<Listing> GetAllRequestedListingsByUserId(int userId);
     }
     public class UserService : IUserService
     {
@@ -64,9 +65,14 @@ namespace Karma.Services
             return _userRepository.GetById(id);
         }
 
-        public IEnumerable<Listing> GetAllUserListings(int userId) 
+        public IEnumerable<Listing> GetAllUserListingsByUserId(int userId)
         {
             return _userRepository.GetAllUserListingsByUserId(userId);
+        }
+
+        public IEnumerable<Listing> GetAllRequestedListingsByUserId(int userId)
+        {
+            return _userRepository.GetAllRequestedListingsByUserId(userId);
         }
     }
 }

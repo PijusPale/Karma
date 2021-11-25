@@ -11,7 +11,7 @@ namespace Karma.Models
         public User()
         {
             this.Listings = new List<Listing>();
-            this.RequestedListings = new List<int>();
+            this.RequestedListings = new List<Listing>();
         }
         [Required]
         public string Username { get; set; }
@@ -22,8 +22,8 @@ namespace Karma.Models
         
         [JsonIgnore]
         public virtual ICollection<Listing> Listings { get; set; }
-        [NotMapped]
-        public virtual List<int> RequestedListings { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<Listing> RequestedListings { get; set; }
         [NotMapped]
         public virtual string[] Comments { get; set; }
 

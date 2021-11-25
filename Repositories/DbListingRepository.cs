@@ -12,6 +12,13 @@ namespace Karma.Repositories
             entities = _context.Listings;
         }
 
+        public IEnumerable<User> GetAllRequestees(int listingId)
+        {
+            var listing = entities.Find(listingId);
+            _context.Entry(listing).Collection<User>(l => l.Requestees).Load();
+            return listing.Requestees;
+        }
+
         public Task<IEnumerable<Listing>> GetAllUserListingsAsync(int userId)
         {
             throw new System.NotImplementedException();

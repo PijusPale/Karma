@@ -122,12 +122,14 @@ namespace Karma.Controllers
                 return Forbid();
 
             var user = _userService.Value.GetUserById((int) userId);
-            if (listing.RequestedUserIDs.Contains((int) userId) || user.RequestedListings.Contains(id))
+            var requestedListings = _userService.Value.GetAllRequestedListingsByUserId((int) userId);
+            if (requestedListings.Contains(listing))
                 return Conflict();
 
             listing.RequestedUserIDs.Add((int)userId);
-            //if (!await _listingRepository.UpdateAsync(listing))
-            //    return StatusCode(500);
+            listing.Requestees.Add(user);
+            if (!await _listingRepository.UpdateAsync(listing))
+                return StatusCode(500);
 
             Notify saveNotificationHandler = delegate {
                 _logger.LogInformation("{0} - INFO - ListingController: User {1} requested listing {2}.", DateTime.UtcNow, userId, id);
@@ -136,7 +138,7 @@ namespace Karma.Controllers
             _notification.saveNotification += saveNotificationHandler;
             _notification.Start();
 
-            user.RequestedListings.Add(listing.Id);
+            user.RequestedListings.Add(listing);
 
             return Ok();
         }
@@ -153,7 +155,7 @@ namespace Karma.Controllers
                 return Unauthorized();
             if (!await _listingRepository.DeleteByIdAsync(id))
                 return StatusCode(500);
-            _userService.Value.GetUserById((int) userId).RequestedListings.Remove(id);
+            _userService.Value.GetUserById((int) userId).RequestedListings.Remove(listing);
             return Ok();
         }
 

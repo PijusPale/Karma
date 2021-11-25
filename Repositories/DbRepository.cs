@@ -88,8 +88,6 @@ namespace Karma.Repositories
         {
             try
             {
-                entities.Remove(await GetByIdAsync(entity.Id));
-                await entities.AddAsync(entity);
                 _context.SaveChanges();
                 return true;
             }

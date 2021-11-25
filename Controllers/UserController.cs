@@ -52,17 +52,18 @@ namespace Karma.Controllers
         }
 
         [HttpGet("getByListingId={id}")]
-        public IActionResult GetRequestedUsersOfListing(int id)
+        public ActionResult<IEnumerable<User>> GetRequestedUsersOfListing(int id)
         {
-            var listing = _listingRepository.Value.GetById(id);
+            /*var listing = _listingRepository.Value.GetById(id);
             var listOfUsers = new List<User>();
+            
 
             foreach(int requesteeId in listing.RequestedUserIDs)
             {
                 listOfUsers.Add(_userService.GetUserById(requesteeId));
-            }
+            }*/
 
-            return Ok(listOfUsers);   
+            return Ok(_listingRepository.Value.GetAllRequestees(id));   
         }
         [Authorize]
         [HttpGet("listings")]
@@ -76,7 +77,22 @@ namespace Karma.Controllers
             if (user == null)
                 return NotFound();
             
-            return Ok(_userService.GetAllUserListings((int)userId));
+            return Ok(_userService.GetAllUserListingsByUserId((int)userId));
         }
+        [Authorize]
+        [HttpGet("requested_listings")]
+        public ActionResult<IEnumerable<Listing>> GetAllRequestedListingsOfUser()
+        {
+            var userId = this.TryGetUserId();
+            if (userId == null)
+                return Unauthorized();
+            
+            var user = _userService.GetUserById((int) userId);
+            if (user == null)
+                return NotFound();
+            
+            return Ok(_userService.GetAllRequestedListingsByUserId((int)userId));
+        }
+        
     }
 }

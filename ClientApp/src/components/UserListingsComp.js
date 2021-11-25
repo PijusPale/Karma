@@ -11,7 +11,7 @@ export const UserListingsComp = () => {
         if(listingsType === 'posted')
             setUrl(`user/listings`);
         if(listingsType === 'requested')
-            setUrl(`listing/requesteeId=${user.id}`);
+            setUrl(`user/requested_listings`);
     }, [listingsType, user]);
 
     return (

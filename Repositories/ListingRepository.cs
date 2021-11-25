@@ -14,6 +14,11 @@ namespace Karma.Repositories
 
         public ListingRepository(string filePath, ILogger<ListingRepository> logger) : base(filePath, logger) { }
 
+        public IEnumerable<User> GetAllRequestees(int listingId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IEnumerable<Listing>> GetAllUserListingsAsync(int userId)
         {
             List<Listing> listings = (await GetAllAsync()).ToList();

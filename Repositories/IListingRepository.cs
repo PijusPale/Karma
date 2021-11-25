@@ -8,5 +8,6 @@ namespace Karma.Repositories
     {
         Task<IEnumerable<Listing>> GetAllUserListingsAsync(int userId);
         Task<IEnumerable<Listing>> GetRequestedListingsAsync(int userId);
+        IEnumerable<User> GetAllRequestees(int listingId);
     }
 }

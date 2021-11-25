@@ -37,6 +37,7 @@ namespace Karma.Models
         public Listing()
         {
             this.RequestedUserIDs = new List<int>();
+            Requestees = new List<User>();
         }
 
         public int CompareTo(object obj)
@@ -97,5 +98,8 @@ namespace Karma.Models
 
         [NotMapped]
         public virtual List<int> RequestedUserIDs { get; set; }
+
+        [JsonIgnore]
+        public ICollection<User> Requestees { get; set; }
     }
 }
