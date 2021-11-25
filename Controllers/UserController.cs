@@ -54,15 +54,6 @@ namespace Karma.Controllers
         [HttpGet("getByListingId={id}")]
         public ActionResult<IEnumerable<User>> GetRequestedUsersOfListing(int id)
         {
-            /*var listing = _listingRepository.Value.GetById(id);
-            var listOfUsers = new List<User>();
-            
-
-            foreach(int requesteeId in listing.RequestedUserIDs)
-            {
-                listOfUsers.Add(_userService.GetUserById(requesteeId));
-            }*/
-
             return Ok(_listingRepository.Value.GetAllRequestees(id));   
         }
         [Authorize]

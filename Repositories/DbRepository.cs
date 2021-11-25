@@ -79,21 +79,19 @@ namespace Karma.Repositories
 
         public void Update(TEntity id)
         {
-            entities.Remove(GetById(id.Id));
-            entities.Add(id);
             _context.SaveChanges();
         }
 
-        public async Task<bool> UpdateAsync(TEntity entity)
+        public Task<bool> UpdateAsync(TEntity entity)
         {
             try
             {
                 _context.SaveChanges();
-                return true;
+                return Task.FromResult(true);
             }
             catch
             {
-                return false;
+                return Task.FromResult(false);
             }
         }
     }

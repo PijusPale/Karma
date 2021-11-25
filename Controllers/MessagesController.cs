@@ -29,10 +29,10 @@ namespace Karma.Controllers
 
         [HttpGet("listingId={listingId}/groupId={groupId}&limit={limit}")]
         [Authorize]
-        public IActionResult GetMessages(string listingId, string groupId, int limit)
+        public IActionResult GetMessages(int listingId, string groupId, int limit)
         {
             var userId = this.TryGetUserId();
-            var listing = _listingRepository.GetById(int.Parse(listingId));
+            var listing = _listingRepository.GetById(listingId);
             if(listing == null)
                 return NoContent();
 
@@ -47,10 +47,10 @@ namespace Karma.Controllers
         }
 
         [HttpGet("listingId={listingId}/groupId={groupId}&limit={limit}/sinceId={lastMessageId}")]
-        public IActionResult GetMessages(string listingId, string groupId, int limit, string lastMessageId)
+        public IActionResult GetMessages(int listingId, string groupId, int limit, string lastMessageId)
         {
             var userId = this.TryGetUserId();
-            var listing = _listingRepository.GetById(int.Parse(listingId));
+            var listing = _listingRepository.GetById(listingId);
             if(listing == null)
                 return NoContent();
 
