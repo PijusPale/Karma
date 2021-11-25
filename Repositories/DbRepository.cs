@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Karma.data.messages;
+using Karma.Database;
 using Karma.Models;
 using Microsoft.EntityFrameworkCore;
 

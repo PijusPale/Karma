@@ -18,7 +18,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
-using Karma.data.messages;
+using Karma.Database;
 
 namespace Karma
 {
