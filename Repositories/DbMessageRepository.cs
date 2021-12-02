@@ -36,10 +36,19 @@ namespace Karma.Repositories
             return conversations;
         }
 
+        public Conversation GetConversation(string groupId)
+        {
+            var conversation =  from c in _context.Conversations
+                                where c.GroupId == groupId
+                                select c;
+            return conversation.First();
+        }
+
         public IEnumerable<Message> GetByLimit(string groupId, int limit)
         {
             var messages =  (from m in entities
                             orderby m.DateSent descending
+                            where m.GroupId == groupId
                             select m).Take(limit).Reverse();
             return messages;
         }
@@ -48,6 +57,7 @@ namespace Karma.Repositories
         {
             var query = from m in entities
                         orderby m.DateSent descending
+                        where m.GroupId == groupId
                         select m;
             var offset = query.ToList().FindIndex(x => x.Id.ToString() == lastMessageId) + 1;
             var messages = query.Skip(offset).Take(limit).Reverse();
@@ -57,6 +67,12 @@ namespace Karma.Repositories
         public void Add(List<Message> newMessages, string groupId)
         {
             entities.AddRange(newMessages);
+            _context.SaveChanges();
+        }
+
+        public void CreateConversation(int userOneId, int userTwoId, int listingId, string groupId)
+        {
+            _context.Conversations.Add(new Conversation{UserOneId = userOneId, UserTwoId = userTwoId, ListingId = listingId, GroupId = groupId });
             _context.SaveChanges();
         }
 
