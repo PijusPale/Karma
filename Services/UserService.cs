@@ -7,6 +7,7 @@ using System.Text;
 using Karma.Helpers;
 using Karma.Models;
 using Karma.Models.Authentication;
+using Karma.Repositories;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -16,27 +17,24 @@ namespace Karma.Services
     {
         User Authenticate(UserCredentials request);
         IEnumerable<User> GetAll();
-        User GetUserById(string id);
+        User GetUserById(int id);
+        IEnumerable<Listing> GetAllUserListingsByUserId(int userId);
+        IEnumerable<Listing> GetAllRequestedListingsByUserId(int userId);
     }
     public class UserService : IUserService
     {
-        private List<User> _users;
         private readonly JwtSettings _jwtSettings;
+        private readonly IUserRepository _userRepository;
 
-        public UserService(IOptions<JwtSettings> jwtSettings)
+        public UserService(IOptions<JwtSettings> jwtSettings, IUserRepository userRepository)
         {
             _jwtSettings = jwtSettings.Value;
-
-            _users = new List<User>();
-            _users.Add(new User { Username = "First", Id = "448", FirstName = "First", LastName = "Test" });
-            _users.Add(new User { Username = "Second", Id = "9909", FirstName = "Second", LastName = "Test" });
-            _users.Add(new User { Username = "Third", Id = "1132", FirstName = "John", LastName = "Smith" });
-            _users.Add(new User { Username = "Fourth", Id = "3210", FirstName = "Anna", LastName = "Smith" });
+            _userRepository = userRepository;
         }
 
         public User Authenticate(UserCredentials request)
         {
-            var user = _users.SingleOrDefault(u => request.Username == u.Username);
+            var user = _userRepository.GetAll().SingleOrDefault(u => request.Username == u.Username);
             if (user == null)
                 return null;
 
@@ -59,19 +57,22 @@ namespace Karma.Services
 
         public IEnumerable<User> GetAll()
         {
-            return _users;
+            return _userRepository.GetAll();
         }
 
-        public User GetUserById(string id)
+        public User GetUserById(int id)
         {
-            foreach (var user in _users)
-            {
-                if (user.Id == id)
-                {
-                    return user;
-                }
-            }
-            return null;
+            return _userRepository.GetById(id);
+        }
+
+        public IEnumerable<Listing> GetAllUserListingsByUserId(int userId)
+        {
+            return _userRepository.GetAllUserListingsByUserId(userId);
+        }
+
+        public IEnumerable<Listing> GetAllRequestedListingsByUserId(int userId)
+        {
+            return _userRepository.GetAllRequestedListingsByUserId(userId);
         }
     }
 }

@@ -40,11 +40,11 @@ namespace Karma.Controllers
         {
             listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
 
-            string userId = this.TryGetUserId();
-            if (userId == null)
+            var userId = this.TryGetUserId();
+            if (!userId.HasValue)
                 return Unauthorized();
 
-            listing.OwnerId = userId;
+            listing.UserId = (int) userId;
 
             listing.isReserved = false;
 
@@ -53,13 +53,13 @@ namespace Karma.Controllers
 
         [HttpPost("id={id}/reserve={reserve}/for={receiverId}")]
         [Authorize]
-        public async Task<ActionResult> ReserveListingAsync(string id, bool reserve, string receiverId)
+        public async Task<ActionResult> ReserveListingAsync(int id, bool reserve, string receiverId)
         {
-            string userId = this.TryGetUserId();
+            var userId = this.TryGetUserId();
             var listing = await _listingRepository.GetByIdAsync(id);
             if (listing == null)
                 return NotFound();
-            if (userId != listing.OwnerId)
+            if (userId != listing.UserId)
                 return Unauthorized();
 
             listing.isReserved = reserve;
@@ -77,9 +77,9 @@ namespace Karma.Controllers
 
         [HttpGet("userId={id}")]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<Listing>>> GetListingsOfUserAsync(string id)
+        public async Task<ActionResult<IEnumerable<Listing>>> GetListingsOfUserAsync(int id)
         {
-            string userId = this.TryGetUserId();
+            var userId = this.TryGetUserId();
             if (userId == null || id != userId)
                 return Unauthorized();
 
@@ -89,9 +89,9 @@ namespace Karma.Controllers
 
         [HttpGet("requesteeId={id}")]
         [Authorize]
-        public async Task<ActionResult<IEnumerable<Listing>>> GetRequestedListingsOfUserAsync(string id)
+        public async Task<ActionResult<IEnumerable<Listing>>> GetRequestedListingsOfUserAsync(int id)
         {
-            string userId = this.TryGetUserId();
+            var userId = this.TryGetUserId();
             if (id != userId)
                 return Unauthorized();
 
@@ -100,7 +100,7 @@ namespace Karma.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Listing>> GetListingByIdAsync(string id)
+        public async Task<ActionResult<Listing>> GetListingByIdAsync(int id)
         {
             var listing = (await _listingRepository.GetByIdAsync(id));
             return listing != null ? Ok(listing) : NotFound();
@@ -108,9 +108,9 @@ namespace Karma.Controllers
 
         [HttpGet("request/{id}")]
         [Authorize]
-        public async Task<ActionResult> RequestListingAsync(string id)
+        public async Task<ActionResult> RequestListingAsync(int id)
         {
-            string userId = this.TryGetUserId();
+            var userId = this.TryGetUserId();
             if (userId == null)
                 return Unauthorized();
 
@@ -118,14 +118,16 @@ namespace Karma.Controllers
             if (listing == null)
                 return NotFound();
 
-            if (listing.OwnerId == userId)
+            if (listing.UserId == userId)
                 return Forbid();
 
-            var user = _userService.Value.GetUserById(userId);
-            if (listing.RequestedUserIDs.Contains(userId) || user.RequestedListings.Contains(id))
+            var user = _userService.Value.GetUserById((int) userId);
+            var requestedListings = _userService.Value.GetAllRequestedListingsByUserId((int) userId);
+            if (requestedListings.Contains(listing))
                 return Conflict();
 
-            listing.RequestedUserIDs.Add(userId);
+            listing.RequestedUserIDs.Add((int)userId);
+            listing.Requestees.Add(user);
             if (!await _listingRepository.UpdateAsync(listing))
                 return StatusCode(500);
 
@@ -136,43 +138,43 @@ namespace Karma.Controllers
             _notification.saveNotification += saveNotificationHandler;
             _notification.Start();
 
-            user.RequestedListings.Add(listing.Id);
+            user.RequestedListings.Add(listing);
 
             return Ok();
         }
 
         [HttpDelete("{id}")]
         [Authorize]
-        public async Task<ActionResult> DeleteListingAsync(string id)
+        public async Task<ActionResult> DeleteListingAsync(int id)
         {
-            string userId = this.TryGetUserId();
+            var userId = this.TryGetUserId();
             var listing = await _listingRepository.GetByIdAsync(id);
             if (listing == null)
                 return NotFound();
-            if (userId == null || listing.OwnerId != userId)
+            if (userId == null || listing.UserId != userId)
                 return Unauthorized();
             if (!await _listingRepository.DeleteByIdAsync(id))
                 return StatusCode(500);
-            _userService.Value.GetUserById(userId).RequestedListings.Remove(id);
+            _userService.Value.GetUserById((int) userId).RequestedListings.Remove(listing);
             return Ok();
         }
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<ActionResult> UpdateListingAsync(string id, [FromBody] Listing listing)
+        public async Task<ActionResult> UpdateListingAsync(int id, [FromBody] Listing listing)
         {
 
             var old = await _listingRepository.GetByIdAsync(listing.Id);
             if (old == null) 
                 return NotFound();
 
-            string userId = this.TryGetUserId();
-            if (userId == null || old.OwnerId != userId)
+            var userId = this.TryGetUserId();
+            if (userId == null || old.UserId != userId)
                 return Unauthorized();
 
             listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
             listing.RequestedUserIDs = old.RequestedUserIDs; // temp fix for saving old requests
-            listing.OwnerId = userId;
+            listing.UserId = (int) userId;
             if (!await _listingRepository.UpdateAsync(listing))
                 return StatusCode(500);
 

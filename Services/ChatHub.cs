@@ -27,7 +27,7 @@ namespace Karma.Services
             return Clients.Caller.SendAsync("ReceiveMessageToCaller", user, message);
         }
 
-        public Task SendGroupMessageAsync(string groupId, string user, string message)
+        public Task SendGroupMessageAsync(string groupId, int user, string message)
         {   
             _messageService.AddMessage(message, Context.UserIdentifier, groupId);
             _messageService.SaveMessages(groupId);

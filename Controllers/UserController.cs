@@ -44,28 +44,46 @@ namespace Karma.Controllers
         [HttpGet]
         public IActionResult GetCurrentUser()
         {
-            string userid = this.TryGetUserId();
+            var userid = this.TryGetUserId();
             if (userid == null) {
                 return NoContent();
             }
-            return Ok(_userService.GetUserById(userid));
+            return Ok(_userService.GetUserById((int)userid));
         }
 
         [HttpGet("getByListingId={id}")]
-        public IActionResult GetRequestedUsersOfListing(string id)
+        public ActionResult<IEnumerable<User>> GetRequestedUsersOfListing(int id)
         {
-            if(id == null)
-                return NoContent();
-
-            var listing = _listingRepository.Value.GetById(id);
-            var listOfUsers = new List<User>();
-
-            foreach(string requesteeId in listing.RequestedUserIDs)
-            {
-                listOfUsers.Add(_userService.GetUserById(requesteeId));
-            }
-
-            return Ok(listOfUsers);   
+            return Ok(_listingRepository.Value.GetAllRequestees(id));   
         }
+        [Authorize]
+        [HttpGet("listings")]
+        public ActionResult<IEnumerable<Listing>> GetAllListingsOfUser()
+        {
+            var userId = this.TryGetUserId();
+            if (userId == null)
+                return Unauthorized();
+            
+            var user = _userService.GetUserById((int) userId);
+            if (user == null)
+                return NotFound();
+            
+            return Ok(_userService.GetAllUserListingsByUserId((int)userId));
+        }
+        [Authorize]
+        [HttpGet("requested_listings")]
+        public ActionResult<IEnumerable<Listing>> GetAllRequestedListingsOfUser()
+        {
+            var userId = this.TryGetUserId();
+            if (userId == null)
+                return Unauthorized();
+            
+            var user = _userService.GetUserById((int) userId);
+            if (user == null)
+                return NotFound();
+            
+            return Ok(_userService.GetAllRequestedListingsByUserId((int)userId));
+        }
+        
     }
 }
