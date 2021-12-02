@@ -10,5 +10,7 @@ namespace Karma.Models
         public int UserTwoId { get; set; }
         [Required]
         public int ListingId { get; set; }
+        [Required]
+        public string GroupId { get; set; }
 	}
 }
