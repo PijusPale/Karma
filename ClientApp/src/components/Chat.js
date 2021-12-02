@@ -1,16 +1,11 @@
 import React, { useEffect, useState, useContext, useRef } from 'react';
 import { HubConnectionBuilder } from '@microsoft/signalr';
 import { UserContext } from '../UserContext';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
-import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
+import styles from '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css'; // do not remove this, it is used
 import { debounce } from '@material-ui/core';
-import { ArrowButton, MessageSeparator, ChatContainer, MessageList, Message, MessageInput, Sidebar, Conversation, ConversationList, Avatar, ConversationHeader, InfoButton, TypingIndicator } from '@chatscope/chat-ui-kit-react';
+import { MessageSeparator, ChatContainer, MessageList, Message, MessageInput, Sidebar, Conversation, ConversationList, Avatar, ConversationHeader, InfoButton, TypingIndicator } from '@chatscope/chat-ui-kit-react';
 import '../chat.css';
 import './chat.css';
-import { data } from 'jquery';
-
-//TODO: Change from IDs to names when we have a Database for easy union of user table and specific messages table
 
 export const Chat = (props) => {
     const inputRef = useRef();
@@ -19,18 +14,17 @@ export const Chat = (props) => {
     const [conversations, setConversations] = useState([]); //array of objects with conversations fetched from server
     const [conversation, setConversation] = useState([]); //current conversation object
     const [hubConnection, setHubConnection] = useState();
-    const [loading, setLoading] = useState(true); // Loading bar while waiting for fetch
+    const [loading, setLoading] = useState(true); // Loading bar while waiting for hub connection and initial fetch
     const [loadingMessages, setLoadingMessages] = useState(false);
-    const [firstLoad, setFirstLoad] = useState(false); //True after the first batch of messages is loaded
     const [allLoaded, setAllLoaded] = useState(false);
     const [isTypingOut, setIsTypingOut] = useState(false);
     const [isTypingIn, setIsTypingIn] = useState(false);
     const [lastActive, setLastActive] = useState('');
     const { user, loggedIn } = useContext(UserContext);
-    const messagesDiv = document.querySelector("#messages") //gets the div of messsages box
 
     useEffect(() => {
         if (loggedIn) {
+            setLoading(true);
             const connection = new HubConnectionBuilder()
                 .withUrl("/ChatHub", { accessTokenFactory: () => localStorage.getItem('token') })
                 .build();
@@ -47,6 +41,7 @@ export const Chat = (props) => {
 
             setHubConnection(connection);
             fetchConversations();
+            setLoading(false);
         }
     }, [loggedIn]);
 
@@ -177,10 +172,6 @@ export const Chat = (props) => {
         fetchConversations();
     }
 
-    function scrollToBottom(div) {
-        div.scrollTop = div.scrollHeight;
-    }
-
     function timeSince(date) { //UTC format
         const rtf = new Intl.RelativeTimeFormat("en", {
             localeMatcher: "best fit",
@@ -210,7 +201,6 @@ export const Chat = (props) => {
         if (interval > 1) {
             return rtf.format(-Math.floor(interval), 'minute');
         }
-        //return rtf.format(-Math.floor(interval), 'second');
         return '';
     }
 
@@ -220,7 +210,7 @@ export const Chat = (props) => {
             {!Object.keys(conversation).length ?
                 <div>
                     <Sidebar position="left" scrollable={true}>
-                        <ConversationList>
+                        <ConversationList loading={loading}>
                             {conversations.map((data, index) =>
                                 data.lastSender === ""
                                     ? <Conversation key={index} name={data.listingName} info={<i>Send a message to start the conversation</i>} onClick={() => onSelectConversation(data)}>

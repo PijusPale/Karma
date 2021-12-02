@@ -29,6 +29,7 @@ export const ListingsComp = ({ url = 'listing'}) => {
             setServerError(true);
         }
     };
+
     useEffect(() => {
         fetchData();
     }, [url]);
@@ -63,7 +64,7 @@ export const ListingsComp = ({ url = 'listing'}) => {
 
     const FilterListings = () => {
         const filteredListings = listingsData.filter((val) => {
-            if (searchTerm == "") {
+            if (searchTerm === "") {
                 return val
             }
             else if (val.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
