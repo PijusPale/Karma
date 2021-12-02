@@ -7,6 +7,7 @@ using System.Linq;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Karma.Controllers
 {
@@ -27,16 +28,14 @@ namespace Karma.Controllers
             _listingRepository = listingRepository;
         }
 
-        [HttpGet("listingId={listingId}/groupId={groupId}&limit={limit}")]
+        [HttpGet("groupId={groupId}&limit={limit}")]
         [Authorize]
-        public IActionResult GetMessages(int listingId, string groupId, int limit)
+        public IActionResult GetMessages(string groupId, int limit)
         {
             var userId = this.TryGetUserId();
-            var listing = _listingRepository.GetById(listingId);
-            if(listing == null)
-                return NoContent();
+            var conversation = _messageService.GetConversation(groupId);
 
-            if (userId == null || (!listing.UserId.Equals(userId) && !listing.recipientId.Equals(userId)))
+            if (userId == null || !(conversation.UserOneId == userId) && !(conversation.UserTwoId == userId) )
                 return Unauthorized();
 
             var result = _messageService.GetByLimit(groupId, limit).ToList();
@@ -47,15 +46,13 @@ namespace Karma.Controllers
         }
 
         [Authorize]
-        [HttpGet("listingId={listingId}/groupId={groupId}&limit={limit}/sinceId={lastMessageId}")]
-        public IActionResult GetMessages(int listingId, string groupId, int limit, string lastMessageId)
+        [HttpGet("groupId={groupId}&limit={limit}/sinceId={lastMessageId}")]
+        public IActionResult GetMessages(string groupId, int limit, string lastMessageId)
         {
             var userId = this.TryGetUserId();
-            var listing = _listingRepository.GetById(listingId);
-            if(listing == null)
-                return NoContent();
+            var conversation = _messageService.GetConversation(groupId);
 
-            if (userId == null || (!listing.UserId.Equals(userId) && !listing.recipientId.Equals(userId)))
+            if (userId == null || !(conversation.UserOneId == userId) && !(conversation.UserTwoId == userId) )
                 return Unauthorized();
    
             var result = _messageService.GetByLimit(groupId, limit, lastMessageId).ToList();
@@ -76,7 +73,7 @@ namespace Karma.Controllers
                 return Unauthorized();
 
             var result = _messageService.GetConversations((int) userId);
-            
+
             return Ok(result);
         }
     }
