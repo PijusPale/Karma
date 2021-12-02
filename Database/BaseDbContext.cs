@@ -1,7 +1,7 @@
 using Karma.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Karma.data.messages
+namespace Karma.Database
 {
     public class BaseDbContext : DbContext
     {
