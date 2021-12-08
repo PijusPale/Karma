@@ -278,7 +278,7 @@ export const Chat = (props) => {
                             return nextAcc;
                         }, [])}
                     </MessageList>
-                    <MessageInput placeholder="Type message" autoFocus={true} value={message} onChange={setMessage} onSend={sendMessage} ref={inputRef} />
+                    <MessageInput placeholder="Type message" attachButton={false} autoFocus={true} value={message} onChange={setMessage} onSend={sendMessage} ref={inputRef} />
                 </ChatContainer>
             }
         </div>
