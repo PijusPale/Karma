@@ -36,7 +36,7 @@ namespace Karma.Repositories
             return await Task.Run(() => listings.ToList());
         }
 
-        public IEnumerable<Listing> GetListingsById(List<int> IdList)
+        public IEnumerable<Listing> GetListingsByIDs(List<int> IdList)
         {
             var listings =  from l in entities
                             where IdList.Contains(l.Id)
