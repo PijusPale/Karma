@@ -25,7 +25,7 @@ export const GardenComp = () => {
         <ambientLight intensity={0.5} />
         <spotLight intensity={0.3} position={[-10, 15, 10]} angle={0.3} />
         {groundCoords.map(pos => 
-            <Block position={pos} plant='tree' />
+            <Block key={pos.join('')} position={pos} plant='tree' />
         )}
         <Flower position={[0, -1, 0]}/>
     </Canvas>);
