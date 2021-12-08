@@ -41,7 +41,7 @@ namespace Karma.Repositories
             var conversation =  from c in _context.Conversations
                                 where c.GroupId == groupId
                                 select c;
-            return conversation.First();
+            return conversation.FirstOrDefault();
         }
 
         public IEnumerable<Message> GetByLimit(string groupId, int limit)

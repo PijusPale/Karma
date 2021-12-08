@@ -35,7 +35,7 @@ namespace Karma.Controllers
             var userId = this.TryGetUserId();
             var conversation = _messageService.GetConversation(groupId);
 
-            if (userId == null || !(conversation.UserOneId == userId) && !(conversation.UserTwoId == userId) )
+            if (userId == null || conversation == null || !(conversation.UserOneId == userId) && !(conversation.UserTwoId == userId) )
                 return Unauthorized();
 
             var result = _messageService.GetByLimit(groupId, limit).ToList();
@@ -52,7 +52,7 @@ namespace Karma.Controllers
             var userId = this.TryGetUserId();
             var conversation = _messageService.GetConversation(groupId);
 
-            if (userId == null || !(conversation.UserOneId == userId) && !(conversation.UserTwoId == userId) )
+            if (userId == null || conversation == null || !(conversation.UserOneId == userId) && !(conversation.UserTwoId == userId) )
                 return Unauthorized();
    
             var result = _messageService.GetByLimit(groupId, limit, lastMessageId).ToList();
