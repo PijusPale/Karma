@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import Grass from './grass';
 import Plants, { gridSize } from './Plants';
 import { Text } from "@react-three/drei";
+import GrowingPlant from './GrowingPlant';
 
 export const Block = (props) => {
   // This reference gives us direct access to the THREE.Mesh object
@@ -9,7 +10,8 @@ export const Block = (props) => {
   const [hoveredGround, hoverGround] = useState(false);
   const [hoveredPlant, hoverPlant] = useState(false);
   const listingId = props.plant && props.plant.split('/')[0];
-  const Plant = props.plant && Plants[props.plant.split('/')[1]];
+  const plantName = props.plant && props.plant.split('/')[1];
+  const Plant = props.plant && Plants[plantName.replace('growing', '')];
   const [listing, setListing] = useState(null);
 
   useEffect(() => {
@@ -46,10 +48,11 @@ export const Block = (props) => {
       {((props.position[0] % 3 === 0 && props.position[2] % 3 === 0) ||
         (Math.abs(props.position[0]) % 2 === 1 && Math.abs(props.position[2]) % 2 === 1))
         && <Grass position={[0, 0.1, 0]} scale={1} />}
-      {props.plant &&
-        <Plant onClick={(e) => { e.stopPropagation(); }}
-          onPointerOver={(e) => { e.stopPropagation(); hoverPlant(true) }}
-          onPointerOut={(e) => { e.stopPropagation(); hoverPlant(false) }} />}
+      {props.plant && (plantName.startsWith('growing') ?
+        <GrowingPlant onPointerOver={(e) => { e.stopPropagation(); hoverPlant(true) }}
+        onPointerOut={(e) => { e.stopPropagation(); hoverPlant(false) }} />
+        : <Plant onPointerOver={(e) => { e.stopPropagation(); hoverPlant(true) }}
+          onPointerOut={(e) => { e.stopPropagation(); hoverPlant(false) }} />)}
         {listing && hoveredPlant && <Text scale={[10, 10, 10]} position={[0, 4, 0]}
           color="black" // default
           anchorX="center" // default

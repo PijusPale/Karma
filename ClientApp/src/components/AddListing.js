@@ -142,7 +142,7 @@ export default function AddListing(props) {
                     <Row>
                         {Object.entries(Plants).map(([key, p], ind) => <Col key={ind}>
                             <Button onClick={() => {
-                                setPlant(key);
+                                setPlant('growing' + key);
                                 setPlantModal(false);
                                 setPlaceModal(true);
                             }} style={{ display: 'flex', justifyContent: 'center', margin: 'auto' }}><DisplayPlant Plant={p} /></Button>
