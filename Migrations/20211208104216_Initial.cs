@@ -144,22 +144,42 @@ namespace Karma.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AvatarPath", "FirstName", "GardenId", "LastActive", "LastName", "Username" },
-                values: new object[] { 1, null, "First", 0, null, "Test", "First" });
+                values: new object[] { 1, null, "First", 1, null, "Test", "First" });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AvatarPath", "FirstName", "GardenId", "LastActive", "LastName", "Username" },
-                values: new object[] { 2, null, "Second", 0, null, "Test", "Second" });
+                values: new object[] { 2, null, "Second", 2, null, "Test", "Second" });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AvatarPath", "FirstName", "GardenId", "LastActive", "LastName", "Username" },
-                values: new object[] { 3, null, "John", 0, null, "Smith", "Third" });
+                values: new object[] { 3, null, "John", 3, null, "Smith", "Third" });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AvatarPath", "FirstName", "GardenId", "LastActive", "LastName", "Username" },
-                values: new object[] { 4, null, "Anna", 0, null, "Smith", "Fourth" });
+                values: new object[] { 4, null, "Anna", 4, null, "Smith", "Fourth" });
+
+            migrationBuilder.InsertData(
+                table: "Garden",
+                columns: new[] { "Id", "Plants", "UserId" },
+                values: new object[] { 1, ";,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,", 1 });
+
+            migrationBuilder.InsertData(
+                table: "Garden",
+                columns: new[] { "Id", "Plants", "UserId" },
+                values: new object[] { 2, ";,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,", 2 });
+
+            migrationBuilder.InsertData(
+                table: "Garden",
+                columns: new[] { "Id", "Plants", "UserId" },
+                values: new object[] { 3, ";,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,", 3 });
+
+            migrationBuilder.InsertData(
+                table: "Garden",
+                columns: new[] { "Id", "Plants", "UserId" },
+                values: new object[] { 4, ";,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,", 4 });
 
             migrationBuilder.InsertData(
                 table: "Listings",

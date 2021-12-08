@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Karma.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    [Migration("20211208101207_Initial")]
+    [Migration("20211208104216_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,6 +78,32 @@ namespace Karma.Migrations
                         .IsUnique();
 
                     b.ToTable("Garden");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Plants = ";,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Plants = ";,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,",
+                            UserId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Plants = ";,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,",
+                            UserId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Plants = ";,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,",
+                            UserId = 4
+                        });
                 });
 
             modelBuilder.Entity("Karma.Models.Listing", b =>
@@ -240,7 +266,7 @@ namespace Karma.Migrations
                         {
                             Id = 1,
                             FirstName = "First",
-                            GardenId = 0,
+                            GardenId = 1,
                             LastName = "Test",
                             Username = "First"
                         },
@@ -248,7 +274,7 @@ namespace Karma.Migrations
                         {
                             Id = 2,
                             FirstName = "Second",
-                            GardenId = 0,
+                            GardenId = 2,
                             LastName = "Test",
                             Username = "Second"
                         },
@@ -256,7 +282,7 @@ namespace Karma.Migrations
                         {
                             Id = 3,
                             FirstName = "John",
-                            GardenId = 0,
+                            GardenId = 3,
                             LastName = "Smith",
                             Username = "Third"
                         },
@@ -264,7 +290,7 @@ namespace Karma.Migrations
                         {
                             Id = 4,
                             FirstName = "Anna",
-                            GardenId = 0,
+                            GardenId = 4,
                             LastName = "Smith",
                             Username = "Fourth"
                         });
