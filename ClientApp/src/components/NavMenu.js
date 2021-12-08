@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
-import { AccountComp } from './AccountComp';
+import { AccountComp } from './Account/AccountComp.jsx';
 import { UserContext } from '../UserContext';
 
 export const NavMenu = (props) => {
