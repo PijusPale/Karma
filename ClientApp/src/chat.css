@@ -110,7 +110,10 @@
 }
 
 .content{
-    margin-top:40px;    
+    margin-top:40px;   
+    position: fixed;
+    bottom: 0px;
+    right: -550px; 
 }
 
 .chat-message2 {

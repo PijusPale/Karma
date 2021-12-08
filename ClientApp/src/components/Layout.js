@@ -1,18 +1,22 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Container } from 'reactstrap';
 import { NavMenu } from './NavMenu';
+import { Chat } from './Chat';
 
-export class Layout extends Component {
-  static displayName = Layout.name;
+export const Layout = (props) => {
+  const [showChat, setShowChat] = useState(false);
 
-  render() {
-    return (
-      <div>
-        <NavMenu />
-        <Container>
-          {this.props.children}
-        </Container>
-      </div>
-    );
+  function toggleChat () {
+    setShowChat(!showChat);
   }
+
+  return(
+    <div>
+      <NavMenu toggleChat={toggleChat} />
+      <Container>
+        {props.children}
+      </Container>
+      {showChat && <Chat />}
+    </div>
+  );
 }

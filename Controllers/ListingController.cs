@@ -23,15 +23,18 @@ namespace Karma.Controllers
 
         private readonly Lazy<IUserService> _userService;
 
+        private readonly IMessageService _messageService;
+
         private readonly IListingNotification _notification;
 
-        public ListingController(ILogger<ListingController> logger, IListingRepository listingRepository, Lazy<IUserService> userService, IListingNotification notification)
+        public ListingController(ILogger<ListingController> logger, IListingRepository listingRepository, Lazy<IUserService> userService, IMessageService messageService, IListingNotification notification)
 
         {
             _logger = logger;
             _listingRepository = listingRepository;
             _userService = userService;
             _notification = notification;
+            _messageService = messageService;
         }
 
         [HttpPost]
@@ -53,7 +56,7 @@ namespace Karma.Controllers
 
         [HttpPost("id={id}/reserve={reserve}/for={receiverId}")]
         [Authorize]
-        public async Task<ActionResult> ReserveListingAsync(int id, bool reserve, string receiverId)
+        public async Task<ActionResult> ReserveListingAsync(int id, bool reserve, int receiverId)
         {
             var userId = this.TryGetUserId();
             var listing = await _listingRepository.GetByIdAsync(id);
@@ -65,7 +68,13 @@ namespace Karma.Controllers
             listing.isReserved = reserve;
             listing.recipientId = receiverId;
 
-            return await _listingRepository.UpdateAsync(listing) ? Ok() : StatusCode(500);
+            if(await _listingRepository.UpdateAsync(listing))
+            {
+                _messageService.CreateConversation((int)userId, receiverId, listing.Id);
+                return Ok();
+            }
+
+            return StatusCode(500);
         }
 
         [HttpGet]

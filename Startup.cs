@@ -116,7 +116,7 @@ namespace Karma
                 .As<IUserRepository>()
                 .InstancePerDependency();
 
-            builder.Register(m => new MessageRepository("temp"))
+            builder.RegisterType<DbMessageRepository>()
                 .As<IMessageRepository>()
                 .InstancePerDependency();
             
@@ -125,7 +125,7 @@ namespace Karma
                 .EnableInterfaceInterceptors().InterceptedBy(typeof(MethodInterceptor))
                 .InstancePerDependency();
 
-            builder.Register(m => new MessageService(new MessageRepository("temp")))
+            builder.RegisterType<MessageService>()
                 .As<IMessageService>()
                 .InstancePerDependency();
 

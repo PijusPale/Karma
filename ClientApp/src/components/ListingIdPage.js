@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { UserContext } from '../UserContext';
 import PageNotFound from './PageNotFound';
 import { Chat } from './Chat';
-import md5 from 'md5';
 
 //TODO: display selected user's name, case when selection value is None.
 
@@ -135,7 +134,7 @@ export const ListingPageLayout = (props) => {
       </div>
     }
 
-    {chatShow && <Chat groupId={md5(props.userId + recipientId + props.id)} listingId={props.id}/>}
+    {chatShow && <Chat/>}
   </div>
   );
 }

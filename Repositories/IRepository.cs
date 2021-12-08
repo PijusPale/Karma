@@ -13,7 +13,7 @@ namespace Karma.Repositories
 
         void DeleteById(int id);
 
-        void Update(TEntity id);
+        void Update(TEntity entity);
 
         Task<IEnumerable<TEntity>> GetAllAsync();
 
