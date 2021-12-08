@@ -84,29 +84,20 @@ namespace Karma.Services
                 var message = _messageRepository.GetByLimit(convo.GroupId, 1);
                 messages.AddRange(message);
             }
-            var query = from c in conversations
+            var result = (from c in conversations
                         join l in listings
                         on c.ListingId equals l.Id
-                        select new  {
-                                    ListingName = l.Name,
-                                    ListingImg = l.ImagePath,
-                                    GroupId = c.GroupId,
-                                    ListingId = l.Id,
-                                    UserOneId = c.UserOneId,
-                                    UserTwoId = c.UserTwoId,
-                                    };
-            var result = (from q in query
                         select new ConversationDto {
-                        ListingName = q.ListingName,
+                        ListingName = l.Name,
                         LastSender = "",
                         LastMessage = "",
-                        UserOneId = q.UserOneId,
-                        UserTwoId = q.UserTwoId,
-                        UserOneName = _userService.GetUserById(q.UserOneId).FirstName,
-                        UserTwoName = _userService.GetUserById(q.UserTwoId).FirstName,
-                        ListingImg = q.ListingImg,
-                        GroupId = q.GroupId,
-                        ListingId = q.ListingId
+                        UserOneId = c.UserOneId,
+                        UserTwoId = c.UserTwoId,
+                        UserOneName = _userService.GetUserById(c.UserOneId).FirstName,
+                        UserTwoName = _userService.GetUserById(c.UserTwoId).FirstName,
+                        ListingImg = l.ImagePath,
+                        GroupId = c.GroupId,
+                        ListingId = l.Id
                         }).ToList();
             
             foreach (var item in result)
