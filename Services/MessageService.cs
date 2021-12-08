@@ -74,7 +74,7 @@ namespace Karma.Services
         public IEnumerable<ConversationDto> GetConversations(int userId)
         {
             var conversations = _messageRepository.GetConversations(userId);
-            var listings = _listingRepository.GetListingsById(
+            var listings = _listingRepository.GetListingsByIDs(
                 (from convo in conversations
                 select convo.ListingId)
                 .ToList());
