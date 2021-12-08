@@ -78,12 +78,6 @@ namespace Karma.Services
                 (from convo in conversations
                 select convo.ListingId)
                 .ToList());
-            var messages = new List<Message>();
-            foreach (var convo in conversations)
-            {
-                var message = _messageRepository.GetByLimit(convo.GroupId, 1);
-                messages.AddRange(message);
-            }
             var result = (from c in conversations
                         join l in listings
                         on c.ListingId equals l.Id
@@ -102,15 +96,14 @@ namespace Karma.Services
             
             foreach (var item in result)
             {
-                var msg = messages.FirstOrDefault(x => x.GroupId == item.GroupId);
-                if(msg != null)
+                var message = _messageRepository.GetByLimit(item.GroupId, 1).FirstOrDefault();
+                if(message != null)
                 {
-                    var user = _userService.GetUserById(msg.FromId);
+                    var user = _userService.GetUserById(message.FromId);
                     item.LastSender = user.FirstName;
-                    item.LastMessage = msg.Content;
-                    item.DateSent = msg.DateSent;
+                    item.LastMessage = message.Content;
+                    item.DateSent = message.DateSent;
                 }
-
             }
             return result.OrderByDescending(c => c.DateSent);     
         }
