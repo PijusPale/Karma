@@ -1,7 +1,7 @@
 ﻿using Castle.DynamicProxy;
-using Newtonsoft.Json;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Text.Json;
 
 namespace Karma.Aspects
 {
@@ -18,13 +18,13 @@ namespace Karma.Aspects
             {
                 invocation.Proceed();
 
-                _logger.LogInformation($"Method {invocation.Method.Name} " +
-                    $"called with these parameters: {JsonConvert.SerializeObject(invocation.Arguments)}" +
-                    $"returned this response: {JsonConvert.SerializeObject(invocation.ReturnValue)}");
+                _logger.LogInformation($"{invocation.Method.Name} " +
+                    $"called with parameters: {JsonSerializer.Serialize(invocation.Arguments)} " +
+                    $"returned this response: {JsonSerializer.Serialize(invocation.ReturnValue)}");
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error in method {invocation.Method} : {JsonConvert.SerializeObject(ex)}");
+                _logger.LogError($"{invocation.Method} : {JsonSerializer.Serialize(ex)}");
                 throw;
             }
         }

@@ -99,7 +99,7 @@ namespace Karma
         {
             /* builder.RegisterGeneric(typeof(Lazy<>))
                 .As(typeof(LazyInstance<>))
-                .InstancePerLifetimeScope(); */
+                .InstancePerLifetimeScope(); */ // removed this, not sure if still needed
 
             var options = new DbContextOptionsBuilder<BaseDbContext>()
                 .UseSqlite(Configuration.GetConnectionString("DefaultConnection")).Options;
@@ -110,6 +110,7 @@ namespace Karma
 
             builder.RegisterType<DbListingRepository>()
                 .As<IListingRepository>()
+                .EnableInterfaceInterceptors().InterceptedBy(typeof(MethodInterceptor))
                 .InstancePerDependency();
 
             builder.RegisterType<DbUserRepository>()
@@ -127,6 +128,7 @@ namespace Karma
 
             builder.RegisterType<MessageService>()
                 .As<IMessageService>()
+                .EnableInterfaceInterceptors().InterceptedBy(typeof(MethodInterceptor))
                 .InstancePerDependency();
 
             builder.Register(l => new ListingNotification(Path.Combine("data", "NotificationData.json")))
@@ -166,7 +168,7 @@ namespace Karma
             app.UseAuthentication();
             app.UseAuthorization();
 
-            /* app.UseMiddleware<StatisticsMiddleware>(); */
+            app.UseMiddleware<StatisticsMiddleware>();
  
             app.UseEndpoints(endpoints =>
             {
