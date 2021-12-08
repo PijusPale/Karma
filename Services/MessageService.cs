@@ -46,7 +46,7 @@ namespace Karma.Services
         {
             var random = new Random();
             string messageId = random.Next(9999).ToString();
-            var message = new Message(id: messageId, content: content, fromId: userId, groupId: groupId, dateSent: DateTime.UtcNow, status: 0);
+            var message = new Message(id: int.Parse(messageId), content: content, fromId: userId, groupId: groupId, dateSent: DateTime.UtcNow, status: 0);
             _messages.Add(message);  
         }
 

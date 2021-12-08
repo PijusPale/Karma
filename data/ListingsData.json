@@ -1,6 +1,6 @@
 [
   {
-    "OwnerId": "448",
+    "UserId": "448",
     "isReserved": true,
     "recipientId": "9909",
     "Name": "Bob",
@@ -22,7 +22,7 @@
     "Id": "1232"
   },
   {
-    "OwnerId": "448",
+    "UserId": "448",
     "isReserved": true,
     "recipientId": "9909",
     "Name": "Bacon",
@@ -45,7 +45,7 @@
     "Id": "2522"
   },
   {
-    "OwnerId": "448",
+    "UserId": "448",
     "isReserved": true,
     "recipientId": "undefined",
     "Name": "Tower",
@@ -67,7 +67,7 @@
     "Id": "3273"
   },
   {
-    "OwnerId": "448",
+    "UserId": "448",
     "isReserved": true,
     "recipientId": "9909",
     "Name": "Kenny",
@@ -89,7 +89,7 @@
     "Id": "4159"
   },
   {
-    "OwnerId": "9909",
+    "UserId": "9909",
     "isReserved": false,
     "recipientId": null,
     "Name": "James",
@@ -111,7 +111,7 @@
     "Id": "5580"
   },
   {
-    "OwnerId": "448",
+    "UserId": "448",
     "isReserved": false,
     "recipientId": null,
     "Name": "dfs",
@@ -131,7 +131,7 @@
     "Id": "7671"
   },
   {
-    "OwnerId": "9909",
+    "UserId": "9909",
     "isReserved": false,
     "recipientId": null,
     "Name": "Kenny",

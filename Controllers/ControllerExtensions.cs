@@ -6,9 +6,13 @@ namespace Karma.Controllers
     public static class ControllerExtensions
     {
         /// <summary>Returns user's id, if user is authenticated or null.</summary>
-        public static string TryGetUserId(this ControllerBase controller)
+        public static int? TryGetUserId(this ControllerBase controller)
         {
-            return controller.User.FindFirst(ClaimTypes.Name)?.Value;
+            int res = 0;
+            if (int.TryParse(controller.User.FindFirst(ClaimTypes.Name)?.Value, out res))
+                return res;
+            else 
+                return null;
         }
     }
 }
