@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 using Karma.Database;
 using Karma.Models;
 
@@ -19,14 +20,29 @@ namespace Karma.Repositories
             return listing.Requestees;
         }
 
-        public Task<IEnumerable<Listing>> GetAllUserListingsAsync(int userId)
+        public async Task<IEnumerable<Listing>> GetAllUserListingsAsync(int userId)
         {
-            throw new System.NotImplementedException();
+            var listings =  from l in entities
+                            where l.UserId == userId
+                            select l;
+            return await Task.Run(() => listings.ToList());
         }
 
-        public Task<IEnumerable<Listing>> GetRequestedListingsAsync(int userId)
+        public async Task<IEnumerable<Listing>> GetRequestedListingsAsync(int userId)
         {
-            throw new System.NotImplementedException();
+            var listings =  from l in entities
+                            where l.RequestedUserIDs.Contains(userId)
+                            select l;
+            return await Task.Run(() => listings.ToList());
+        }
+
+        public IEnumerable<Listing> GetListingsByIDs(List<int> IdList)
+        {
+            var listings =  from l in entities
+                            where IdList.Contains(l.Id)
+                            select l;
+
+            return listings;
         }
     }
 }

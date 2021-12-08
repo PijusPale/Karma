@@ -20,6 +20,7 @@ namespace Karma.Services
         User GetUserById(int id);
         IEnumerable<Listing> GetAllUserListingsByUserId(int userId);
         IEnumerable<Listing> GetAllRequestedListingsByUserId(int userId);
+        void Update(User user);
     }
     public class UserService : IUserService
     {
@@ -73,6 +74,11 @@ namespace Karma.Services
         public IEnumerable<Listing> GetAllRequestedListingsByUserId(int userId)
         {
             return _userRepository.GetAllRequestedListingsByUserId(userId);
+        }
+
+        public void Update(User user)
+        {
+            _userRepository.Update(user);
         }
     }
 }

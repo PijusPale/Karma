@@ -5,7 +5,7 @@ import './NavMenu.css';
 import { AccountComp } from './AccountComp';
 import { UserContext } from '../UserContext';
 
-export const NavMenu = () => {
+export const NavMenu = (props) => {
   const { loggedIn } = useContext(UserContext);
   const [collapsed, setCollapsed] = useState(true);
 
@@ -25,6 +25,9 @@ export const NavMenu = () => {
               {loggedIn && <NavItem>
                 <NavLink tag={Link} className="text-dark" to="/add-listing">Add New Listing</NavLink>
                 <NavLink tag={Link} className="text-dark" to="/user-listings">My Listings</NavLink>
+                <NavLink className="text-dark">
+                  <span className="node-link" onClick={() => props.toggleChat()}>Chat</span>
+                </NavLink>
               </NavItem>}
               <NavItem>
                 <AccountComp />
