@@ -10,8 +10,8 @@ namespace Karma.Models
     {
         public User()
         {
-            this.Listings = new List<Listing>();
-            this.RequestedListings = new List<Listing>();
+            Listings = new List<Listing>();
+            RequestedListings = new List<Listing>();
         }
         [Required]
         public string Username { get; set; }
@@ -35,5 +35,10 @@ namespace Karma.Models
         public string? AvatarPath { get; set; }
         [NotMapped]
         public string Token { get; set; }
+
+        public int GardenId { get; set; }
+
+        [JsonIgnore]
+        public Garden Garden { get; set; }
     }
 }
