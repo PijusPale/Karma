@@ -1,8 +1,12 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Autofac.Extras.DynamicProxy;
 using System;
 using System.IO;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Karma.Aspects;
 using Karma.Helpers;
 using Karma.Repositories;
 using Karma.Services;
@@ -32,18 +36,11 @@ namespace Karma
 
         public IConfiguration Configuration { get; }
 
+        public ILifetimeScope AutofacContainer { get; private set; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         { 
-            services.AddTransient(typeof(Lazy<>), typeof(LazyInstance<>));
-
-            services.AddDbContext<BaseDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddScoped<IListingRepository, DbListingRepository>();
-            services.AddScoped<IUserRepository, DbUserRepository>();
-            services.AddSingleton<IMessageRepository>(new MessageRepository(Path.Combine("data", "messages")));
-            services.AddSingleton<IUserIdProvider, IdBasedUserIdProvider>();
-
-
             services.AddControllersWithViews()
                 .AddJsonOptions(opts => {
                     var enumConverter = new JsonStringEnumConverter();
@@ -96,12 +93,52 @@ namespace Karma
                 configuration.RootPath = "ClientApp/build";
             });
 
-            services.AddScoped<IUserService, UserService>();
+        }
 
-            services.AddSingleton<IListingNotification>(new ListingNotification(Path.Combine("data", "NotificationData.json")));
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            /* builder.RegisterGeneric(typeof(Lazy<>))
+                .As(typeof(LazyInstance<>))
+                .InstancePerLifetimeScope(); */
 
-            services.AddScoped<IMessageService, MessageService>();
+            var options = new DbContextOptionsBuilder<BaseDbContext>()
+                .UseSqlite(Configuration.GetConnectionString("DefaultConnection")).Options;
 
+            builder.RegisterType<BaseDbContext>()
+                .WithParameter("options", options)
+                .InstancePerLifetimeScope();
+
+            builder.RegisterType<DbListingRepository>()
+                .As<IListingRepository>()
+                .InstancePerDependency();
+
+            builder.RegisterType<DbUserRepository>()
+                .As<IUserRepository>()
+                .InstancePerDependency();
+
+            builder.Register(m => new MessageRepository("temp"))
+                .As<IMessageRepository>()
+                .InstancePerDependency();
+            
+            builder.RegisterType<UserService>()
+                .As<IUserService>()
+                .EnableInterfaceInterceptors().InterceptedBy(typeof(MethodInterceptor))
+                .InstancePerDependency();
+
+            builder.Register(m => new MessageService(new MessageRepository("temp")))
+                .As<IMessageService>()
+                .InstancePerDependency();
+
+            builder.Register(l => new ListingNotification(Path.Combine("data", "NotificationData.json")))
+                .As<IListingNotification>()
+                .SingleInstance();
+            
+            builder.RegisterType<IdBasedUserIdProvider>()
+                .As<IUserIdProvider>()
+                .SingleInstance();
+
+            builder.RegisterType<MethodInterceptor>()
+                .SingleInstance();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -118,6 +155,8 @@ namespace Karma
                 app.UseHsts();
             }
 
+            this.AutofacContainer = app.ApplicationServices.GetAutofacRoot();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
@@ -127,8 +166,8 @@ namespace Karma
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseMiddleware<StatisticsMiddleware>();
-
+            /* app.UseMiddleware<StatisticsMiddleware>(); */
+ 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
