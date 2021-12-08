@@ -87,16 +87,17 @@ namespace Karma.Repositories
            }
         }
 
-        public Task<bool> UpdateAsync(TEntity entity)
+        public async Task<bool> UpdateAsync(TEntity entity)
         {
             try
             {
-                _context.SaveChanges();
-                return Task.FromResult(true);
+                _context.Update(entity);
+                await _context.SaveChangesAsync();
+                return true;
             }
             catch
             {
-                return Task.FromResult(false);
+                return false;
             }
         }
     }
