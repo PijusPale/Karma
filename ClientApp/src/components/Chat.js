@@ -80,9 +80,9 @@ export const Chat = (props) => {
     }
 
     const fetchOldMessages = async (limit = 20, lastMessageId) => {
-        let url = `message/groupId=${conversation.groupId}&limit=${limit}`;
+        let url = `message/groupId=${conversation.groupId}/limit=${limit}`;
         if (lastMessageId !== undefined)
-            url = `message/groupId=${conversation.groupId}&limit=${limit}/sinceId=${lastMessageId}`;
+            url = `message/groupId=${conversation.groupId}/limit=${limit}/lastMessageId=${lastMessageId}`;
 
 
         const response = await fetch(url, {

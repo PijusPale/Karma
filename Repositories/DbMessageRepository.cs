@@ -59,7 +59,7 @@ namespace Karma.Repositories
                         orderby m.DateSent descending
                         where m.GroupId == groupId
                         select m;
-            var offset = query.ToList().FindIndex(x => x.Id.ToString() == lastMessageId) + 1;
+            var offset = query.ToList().FindIndex(x => x.Id.ToString().Equals(lastMessageId)) + 1;
             var messages = query.Skip(offset).Take(limit).Reverse();
             return messages;
         }
