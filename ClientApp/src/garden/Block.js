@@ -1,49 +1,60 @@
-import React, { useRef, useState } from 'react';
-import Tree from './tree';
+import React, { useRef, useState, useEffect } from 'react';
 import Grass from './grass';
-import Flower from './flower';
 import Plants, { gridSize } from './Plants';
+import { Text } from "@react-three/drei";
 
 export const Block = (props) => {
   // This reference gives us direct access to the THREE.Mesh object
   const group = useRef();
-  const [hovered, hover] = useState(false);
-  const [clicked, click] = useState(false);
-  const Plant = props.plant && Plants[props.plant.split('/').pop()];
+  const [hoveredGround, hoverGround] = useState(false);
+  const [hoveredPlant, hoverPlant] = useState(false);
+  const listingId = props.plant && props.plant.split('/')[0];
+  const Plant = props.plant && Plants[props.plant.split('/')[1]];
+  const [listing, setListing] = useState(null);
 
-  const onClick = (e) => {
-    click(!clicked);
-    props.onPlaceChosen && props.onPlaceChosen(props.position[0]+Math.floor(gridSize/2), props.position[2]+Math.floor(gridSize/2));
+  useEffect(() => {
+    const fetchData = async () => {
+      if (listingId) {
+        const response = await fetch('listing/' + listingId);
+        if (response.ok) {
+          const data = await response.json();
+          setListing(data);
+        }
+      }
+    }
+    fetchData();
+  }, [listingId]);
+
+
+  const OnGroundClick = () => {
+    props.onPlaceChosen && props.onPlaceChosen(props.position[0] + Math.floor(gridSize / 2), props.position[2] + Math.floor(gridSize / 2));
   };
   return (
     <group ref={group} {...props} dispose={null}>
       <mesh
         scale={1}
-        onClick={(e) => { e.stopPropagation(); onClick(e) }}
-        onPointerOver={(e) => {  e.stopPropagation(); hover(true) }}
-        onPointerOut={(e) => { e.stopPropagation(); hover(false) }}>
+        onClick={(e) => { e.stopPropagation(); OnGroundClick() }}
+        onPointerOver={(e) => { e.stopPropagation(); hoverGround(true) }}
+        onPointerOut={(e) => { e.stopPropagation(); hoverGround(false) }}>
         <boxGeometry args={[1, 0.2, 1]} />
-        <meshStandardMaterial color={(props.onPlaceChosen && hovered) ? 'hotpink' : '#63a844'} />
+        <meshStandardMaterial color={(props.onPlaceChosen && hoveredGround) ? 'hotpink' : '#63a844'} />
       </mesh>
-      <mesh position={[0,-0.5, 0]}>
+      <mesh position={[0, -0.5, 0]}>
         <boxGeometry args={[1, 0.8, 1]} />
         <meshStandardMaterial color='#605139' />
       </mesh>
       {((props.position[0] % 3 === 0 && props.position[2] % 3 === 0) ||
         (Math.abs(props.position[0]) % 2 === 1 && Math.abs(props.position[2]) % 2 === 1))
-         && <Grass position={[0, 0.1, 0]} scale={1}/>}
-      {props.plant && <Plant />}
-      {props.plant && props.plant.endsWith('tree') && <Tree position={[0, 1, 0]}/>}
-      {props.plant && props.plant.endsWith('flower') && <Flower position={[0, 0, 0]}/>}
+        && <Grass position={[0, 0.1, 0]} scale={1} />}
+      {props.plant &&
+        <Plant onClick={(e) => { e.stopPropagation(); }}
+          onPointerOver={(e) => { e.stopPropagation(); hoverPlant(true) }}
+          onPointerOut={(e) => { e.stopPropagation(); hoverPlant(false) }} />}
+        {listing && hoveredPlant && <Text scale={[10, 10, 10]} position={[0, 4, 0]}
+          color="black" // default
+          anchorX="center" // default
+          anchorY="middle" // default
+        >{listing.name}</Text>}
     </group>
   );
 };
-
-/*Make text:
-import { Text } from "@react-three/drei";
-<Text scale={[10, 10, 10]}
-        color="black" // default
-        anchorX="center" // default
-        anchorY="middle" // default
-        >Labas</Text>
-        */
