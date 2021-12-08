@@ -33,6 +33,7 @@ namespace Karma.Models
             set => Comments[index] = value;
         }
         public string? AvatarPath { get; set; }
+        public DateTime? LastActive { get; set; }
         [NotMapped]
         public string Token { get; set; }
 

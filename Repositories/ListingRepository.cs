@@ -34,5 +34,10 @@ namespace Karma.Repositories
                 return null;
             return listings.Where(a => a.RequestedUserIDs.Contains(userId));
         }
+
+        public IEnumerable<Listing> GetListingsById(List<int> IdList)
+        {
+           throw new NotImplementedException();
+        }
     }
 }

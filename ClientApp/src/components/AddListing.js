@@ -40,7 +40,7 @@ export default function AddListing(props) {
             body: JSON.stringify(data),
         }).then(function (response) {
             if (imageAttached && response.ok) {
-                const res = axios.post('image', formData);
+                axios.post('image', formData);
             }
         });
         props.update && props.afterSubmit();

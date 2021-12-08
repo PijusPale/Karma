@@ -1,0 +1,8 @@
+.fixed-container {
+    position: fixed;
+    bottom: 0px;
+    right: 25px; 
+    height: 450px;
+    width: 350px;
+    background-color: white;
+}

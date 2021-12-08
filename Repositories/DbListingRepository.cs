@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 using Karma.Database;
 using Karma.Models;
 
@@ -27,6 +28,15 @@ namespace Karma.Repositories
         public Task<IEnumerable<Listing>> GetRequestedListingsAsync(int userId)
         {
             throw new System.NotImplementedException();
+        }
+
+        public IEnumerable<Listing> GetListingsById(List<int> IdList)
+        {
+            var listings =  from l in entities
+                            where IdList.Contains(l.Id)
+                            select l;
+
+            return listings;
         }
     }
 }

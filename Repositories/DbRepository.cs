@@ -77,9 +77,14 @@ namespace Karma.Repositories
             return await entities.FindAsync(id);
         }
 
-        public void Update(TEntity id)
+        public void Update(TEntity entity)
         {
-            _context.SaveChanges();
+           var DbEntity = entities.Find(entity.Id);
+           if(DbEntity != null)
+           {
+                _context.Entry(DbEntity).CurrentValues.SetValues(entity);
+                _context.SaveChanges();
+           }
         }
 
         public Task<bool> UpdateAsync(TEntity entity)
