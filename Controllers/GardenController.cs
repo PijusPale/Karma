@@ -37,7 +37,7 @@ namespace Karma.Controllers
             var garden = _gardenRepository.GetByUserId((int) userId);
             if (garden == null)
                 return NotFound();
-            garden.Plants[x][z] = $"Id={listingId}/{plant}";
+            garden.Plants[x][z] = $"{listingId}/{plant}";
             await _gardenRepository.UpdateAsync(garden);
             return Ok();
         }

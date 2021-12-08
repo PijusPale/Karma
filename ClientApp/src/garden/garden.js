@@ -18,14 +18,14 @@ const generateGridCoords = (size) => {
 const gridSize = 9; //should be odd
 let groundCoords = generateGridCoords(gridSize);
 
-export const GardenComp = () => {
+export const GardenComp = ({garden}) => {
 
     return (<Canvas style={{ height: "400px" }}>
         <OrbitControls/>
         <ambientLight intensity={0.5} />
         <spotLight intensity={0.3} position={[-10, 15, 10]} angle={0.3} />
-        {groundCoords.map(pos => 
-            <Block key={pos.join('')} position={pos} plant='tree' />
+        {groundCoords.map((pos, ind) => 
+            <Block key={pos.join('')} position={pos} plant={garden !== null && garden[Math.floor(ind/gridSize)][ind%gridSize]} />
         )}
         <Flower position={[0, -1, 0]}/>
     </Canvas>);

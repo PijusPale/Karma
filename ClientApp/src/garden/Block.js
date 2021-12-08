@@ -31,8 +31,8 @@ export const Block = (props) => {
       {((props.position[0] % 3 === 0 && props.position[2] % 3 === 0) ||
         (Math.abs(props.position[0]) % 2 === 1 && Math.abs(props.position[2]) % 2 === 1))
          && <Grass position={[0, 0.1, 0]} scale={1}/>}
-      {props.plant === 'tree' && clicked && <Tree position={[0, 1, 0]}/>}
-      {props.plant === 'flower' && clicked && <Flower position={[0, 0, 0]}/>}
+      {props.plant && props.plant.endsWith('tree') && <Tree position={[0, 1, 0]}/>}
+      {props.plant && props.plant.endsWith('flower') && <Flower position={[0, 0, 0]}/>}
     </group>
   );
 };
