@@ -9,7 +9,9 @@ export const AccountComp = () => {
     const [modal, setModal] = useState(false);
 
     const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
     const [incorrectUsername, setIncorrectUsername] = useState(false);
+    const [incorrectPassword, setIncorrectPassword] = useState(false);
 
     const { loggedIn, setLoggedIn, user: currentUser, setUser: setCurrentUser } = useContext(UserContext);
 
@@ -22,11 +24,12 @@ export const AccountComp = () => {
         const response = await fetch('user/authenticate', {
             method: 'POST',
             headers: { 'Content-type': 'application/json' },
-            body: JSON.stringify({ username }),
+            body: JSON.stringify({ username, password }),
         });
 
         if (response.ok) {
             setIncorrectUsername(false);
+            setIncorrectPassword(false);
             const user = JSON.parse(await response.text());
             setCurrentUser(user);
             setLoggedIn(true);
@@ -60,6 +63,9 @@ export const AccountComp = () => {
                     <Input autoFocus={true} onChange={e => setUsername(e.target.value)}
                         onKeyPress={(t) => t.key === 'Enter' && onLogIn()} type="text" placeholder="Write your username" />
                     <Label hidden={!incorrectUsername}>Username not found</Label>
+                    <Input autoFocus={true} onChange={e => setPassword(e.target.value)}
+                        onKeyPress={(t) => t.key === 'Enter' && onLogIn()} type="text" placeholder="Write your password" />
+                    <Label hidden={!incorrectPassword}>Password not found</Label>
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={onLogIn}>Log in</Button>

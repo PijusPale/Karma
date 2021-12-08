@@ -35,7 +35,8 @@ namespace Karma.Services
 
         public User Authenticate(UserCredentials request)
         {
-            var user = _userRepository.GetAll().SingleOrDefault(u => request.UsernameOrEmail == u.Username || request.UsernameOrEmail == u.Email);
+            var user = _userRepository.GetAll().SingleOrDefault(u => request.UsernameOrEmail == u.Username && request.Password == u.Password || request.UsernameOrEmail == u.Email
+            && request.Password == u.Password);
             if (user == null)
                 return null;
 
