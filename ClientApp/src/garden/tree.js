@@ -6,10 +6,12 @@ import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 
 export default function Tree(props) {
+  const position = (props.position ? props.position : [0, 0, 0]);
+  position[1] += 1;
   const group = useRef()
   const { nodes, materials } = useGLTF('/cypress tree.glb')
   return (
-    <group ref={group} {...props} dispose={null} scale={20}>
+    <group ref={group} {...props} dispose={null} scale={20} position={position}>
       <mesh
         castShadow
         receiveShadow

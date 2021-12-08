@@ -39,7 +39,7 @@ namespace Karma.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult> PostAsync(Listing listing)
+        public async Task<ActionResult<Listing>> PostAsync(Listing listing)
         {
             listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
 
@@ -51,7 +51,7 @@ namespace Karma.Controllers
 
             listing.isReserved = false;
 
-            return await _listingRepository.AddAsync(listing) ? Ok() : StatusCode(500);
+            return await _listingRepository.AddAsync(listing) ? Ok(listing) : StatusCode(500);
         }
 
         [HttpPost("id={id}/reserve={reserve}/for={receiverId}")]
