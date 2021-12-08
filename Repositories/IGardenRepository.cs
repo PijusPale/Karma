@@ -3,8 +3,8 @@ using Karma.Models;
 
 namespace Karma.Repositories
 {
-    public interface IGardenRepository: IRepository<Garden>
+    public interface IGardenRepository : IRepository<Garden>
     {
-        Garden GetByUserId(int userId);         
+        Garden GetByUserId(int userId);
     }
 }
