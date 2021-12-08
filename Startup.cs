@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Karma.Helpers;
 using Karma.Repositories;
 using Karma.Services;
+using Karma.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,7 +34,7 @@ namespace Karma
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+        { 
             services.AddTransient(typeof(Lazy<>), typeof(LazyInstance<>));
 
             services.AddDbContext<BaseDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
@@ -125,6 +126,8 @@ namespace Karma
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseMiddleware<StatisticsMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
