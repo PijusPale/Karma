@@ -59,7 +59,7 @@ namespace Karma.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Garden",
+                name: "Gardens",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -69,9 +69,9 @@ namespace Karma.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Garden", x => x.Id);
+                    table.PrimaryKey("PK_Gardens", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Garden_Users_UserId",
+                        name: "FK_Gardens_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -162,22 +162,22 @@ namespace Karma.Migrations
                 values: new object[] { 4, null, "Anna", 4, null, "Smith", "Fourth" });
 
             migrationBuilder.InsertData(
-                table: "Garden",
+                table: "Gardens",
                 columns: new[] { "Id", "Plants", "UserId" },
                 values: new object[] { 1, ";,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,", 1 });
 
             migrationBuilder.InsertData(
-                table: "Garden",
+                table: "Gardens",
                 columns: new[] { "Id", "Plants", "UserId" },
                 values: new object[] { 2, ";,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,", 2 });
 
             migrationBuilder.InsertData(
-                table: "Garden",
+                table: "Gardens",
                 columns: new[] { "Id", "Plants", "UserId" },
                 values: new object[] { 3, ";,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,", 3 });
 
             migrationBuilder.InsertData(
-                table: "Garden",
+                table: "Gardens",
                 columns: new[] { "Id", "Plants", "UserId" },
                 values: new object[] { 4, ";,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,", 4 });
 
@@ -207,8 +207,8 @@ namespace Karma.Migrations
                 values: new object[] { 3, 1 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Garden_UserId",
-                table: "Garden",
+                name: "IX_Gardens_UserId",
+                table: "Gardens",
                 column: "UserId",
                 unique: true);
 
@@ -229,7 +229,7 @@ namespace Karma.Migrations
                 name: "Conversations");
 
             migrationBuilder.DropTable(
-                name: "Garden");
+                name: "Gardens");
 
             migrationBuilder.DropTable(
                 name: "ListingUser");

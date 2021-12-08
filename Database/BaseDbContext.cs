@@ -19,6 +19,8 @@ namespace Karma.Database
 
         public DbSet<Message> Messages { get; set; }
 
+        public DbSet<Garden> Gardens { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             #region UserSeed    

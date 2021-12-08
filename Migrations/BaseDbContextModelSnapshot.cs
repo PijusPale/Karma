@@ -75,7 +75,7 @@ namespace Karma.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Garden");
+                    b.ToTable("Gardens");
 
                     b.HasData(
                         new

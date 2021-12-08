@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Karma.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    [Migration("20211208104216_Initial")]
+    [Migration("20211208121438_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,7 +77,7 @@ namespace Karma.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Garden");
+                    b.ToTable("Gardens");
 
                     b.HasData(
                         new
