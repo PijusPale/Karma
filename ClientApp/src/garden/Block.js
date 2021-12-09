@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import Grass from './grass';
 import Plants from './Plants';
-import { Text } from "@react-three/drei";
+import { Html } from "@react-three/drei";
 import GrowingPlant from './GrowingPlant';
 
 export const Block = (props) => {
@@ -31,17 +31,20 @@ export const Block = (props) => {
       {((props.position[0] % 3 === 0 && props.position[2] % 3 === 0) ||
         (Math.abs(props.position[0]) % 2 === 1 && Math.abs(props.position[2]) % 2 === 1))
         && <Grass position={[0, 0.1, 0]} scale={1} />}
-      {props.listing && 
-      (true ? /*change to listing is not given away predicate */
-        <GrowingPlant onPointerOver={(e) => { e.stopPropagation(); hoverPlant(true) }}
-        onPointerOut={(e) => { e.stopPropagation(); hoverPlant(false) }} />
-        : <Plant onPointerOver={(e) => { e.stopPropagation(); hoverPlant(true) }}
-      onPointerOut={(e) => { e.stopPropagation(); hoverPlant(false) }} />) }
-        {props.listing && hoveredPlant && <Text scale={[10, 10, 10]} position={[0, 4, 0]}
-          color="black" // default
-          anchorX="center" // default
-          anchorY="middle" // default
-        >{props.listing.name}</Text>}
+      {props.listing &&
+        (true ? /*change to listing is not given away predicate */
+          <GrowingPlant onPointerOver={(e) => { e.stopPropagation(); hoverPlant(true) }}
+            onPointerOut={(e) => { e.stopPropagation(); hoverPlant(false) }} />
+          : <Plant onPointerOver={(e) => { e.stopPropagation(); hoverPlant(true) }}
+            onPointerOut={(e) => { e.stopPropagation(); hoverPlant(false) }} />)}
+      {props.listing && hoveredPlant && <Html><ListingInfo {...props.listing} /></Html>}
     </group>
   );
 };
+
+const ListingInfo = (props) => (
+  <div>
+    <img style={{ width: '90px', height: '67.5px' }} src={props.imagePath} alt="defaultImage" />
+    <h3>{props.name}</h3>
+  </div>
+);
