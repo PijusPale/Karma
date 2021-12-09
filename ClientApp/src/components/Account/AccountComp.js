@@ -38,23 +38,4 @@ export const AccountComp = () => {
             </Modal>
         </div>);
 
-        /*
-        : <div>
-            <Button color="primary" onClick={toggle}>Log in</Button>
-            <Modal autoFocus={false} isOpen={modal} toggle={toggle}>
-                <ModalHeader><Label>Log in</Label></ModalHeader>
-                <ModalBody>
-                    <Input autoFocus={true} onChange={e => setUsername(e.target.value)}
-                        onKeyPress={(t) => t.key === 'Enter' && onLogIn()} type="text" placeholder="Write your username" />
-                    <Input autoFocus={true} onChange={e => setPassword(e.target.value)}
-                        onKeyPress={(t) => t.key === 'Enter' && onLogIn()} type="text" placeholder="Write your password" />
-                    <Label hidden={!incorrectUsernameOrPassword}>Username and Password don't match</Label>
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="primary" onClick={onLogIn}>Log in</Button>
-                    <Button color="secondary" onClick={toggle}>Cancel</Button>
-                </ModalFooter>
-            </Modal>
-        </div>);
-    }*/
 }
