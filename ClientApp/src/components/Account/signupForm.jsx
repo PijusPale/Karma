@@ -9,10 +9,10 @@ import {
   SmallText,
 } from "./common";
 import { Marginer } from "./marginer";
-import { UserContext } from "../../UserContext";
+import { LoginContext } from "./LoginContext";
 
 export function SignupForm(props) {
-  const { switchToSignin } = useContext(UserContext);
+  const { switchToSignin } = useContext(LoginContext);
 
   return (
     <BoxContainer>

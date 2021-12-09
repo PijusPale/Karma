@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { LoginForm } from "./loginForm";
 import { motion } from "framer-motion";
-import { UserContext } from "../../UserContext";
+import { LoginContext } from "./LoginContext";
 import { SignupForm } from "./signupForm";
 
 const BoxContainer = styled.div`
@@ -113,7 +113,7 @@ export function AccountBox(props) {
   const contextValue = { switchToSignup, switchToSignin };
 
   return (
-    <UserContext.Provider value={contextValue}>
+    <LoginContext.Provider value={contextValue}>
       <BoxContainer>
         <TopContainer>
           <BackDrop
@@ -142,6 +142,6 @@ export function AccountBox(props) {
           {active === "signup" && <SignupForm />}
         </InnerContainer>
       </BoxContainer>
-    </UserContext.Provider>
+    </LoginContext.Provider>
   );
 }
