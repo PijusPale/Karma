@@ -8,15 +8,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Karma.Repositories
 {
-    public class DbMessageRepository : IMessageRepository
+    public class DbMessageRepository : DbRepository<Message>, IMessageRepository
     {
-        public readonly BaseDbContext _context;
-
-        public DbSet<Message> entities { get; set; }
-
-        public DbMessageRepository(BaseDbContext context)
+        public DbMessageRepository(BaseDbContext context) : base(context)
         {
-            _context = context;
             entities = _context.Messages;
         }
 
