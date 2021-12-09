@@ -79,12 +79,12 @@ namespace Karma.Repositories
 
         public void Update(TEntity entity)
         {
-           var DbEntity = entities.Find(entity.Id);
-           if(DbEntity != null)
-           {
+            var DbEntity = entities.Find(entity.Id);
+            if (DbEntity != null)
+            {
                 _context.Entry(DbEntity).CurrentValues.SetValues(entity);
                 _context.SaveChanges();
-           }
+            }
         }
 
         public async Task<bool> UpdateAsync(TEntity entity)

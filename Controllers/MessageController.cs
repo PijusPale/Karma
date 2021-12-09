@@ -1,5 +1,6 @@
 ﻿using Karma.Services;
 using Karma.Repositories;
+using Karma.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -28,40 +29,28 @@ namespace Karma.Controllers
             _listingRepository = listingRepository;
         }
 
-        [HttpGet("groupId={groupId}&limit={limit}")]
+        [HttpGet("groupId={groupId}/limit={limit}")]
+        [HttpGet("groupId={groupId}/limit={limit}/lastMessageId={lastMessageId}")]
         [Authorize]
-        public IActionResult GetMessages(string groupId, int limit)
+        public IActionResult GetMessages(string groupId, int limit, string lastMessageId = null)
         {
             var userId = this.TryGetUserId();
             var conversation = _messageService.GetConversation(groupId);
+            IEnumerable<Message> result;
 
-            if (userId == null || !(conversation.UserOneId == userId) && !(conversation.UserTwoId == userId) )
+            if (userId == null || conversation == null || !(conversation.UserOneId == userId) && !(conversation.UserTwoId == userId) )
                 return Unauthorized();
 
-            var result = _messageService.GetByLimit(groupId, limit).ToList();
-            if(result.Count == 0)
+            if(lastMessageId == null)
+                result = _messageService.GetByLimit(groupId, limit).ToList();
+            else
+                result = _messageService.GetByLimit(groupId, limit, lastMessageId).ToList();
+            
+            if(result.Count() == 0)
                 return NoContent();
     
             return Ok(result);
         }
-
-        [Authorize]
-        [HttpGet("groupId={groupId}&limit={limit}/sinceId={lastMessageId}")]
-        public IActionResult GetMessages(string groupId, int limit, string lastMessageId)
-        {
-            var userId = this.TryGetUserId();
-            var conversation = _messageService.GetConversation(groupId);
-
-            if (userId == null || !(conversation.UserOneId == userId) && !(conversation.UserTwoId == userId) )
-                return Unauthorized();
-   
-            var result = _messageService.GetByLimit(groupId, limit, lastMessageId).ToList();
-            if(result.Count == 0)
-                return NoContent();
-
-            return Ok(result);
-        }
-
         
         [HttpGet("conversations")]
         [Authorize]

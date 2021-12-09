@@ -19,7 +19,7 @@ namespace Karma.Services
         private readonly IUserService _userService;
 
         private static List<int> usersOnline = new List<int>();
-        
+
         public ChatHub(IMessageService messageService, IUserService userService)
         {
             _messageService = messageService;
@@ -29,14 +29,15 @@ namespace Karma.Services
         public async override Task OnConnectedAsync()
         {
             await base.OnConnectedAsync();
-            if(Context.UserIdentifier != null)
+            if (Context.UserIdentifier != null)
                 usersOnline.Add(int.Parse(Context.UserIdentifier));
         }
 
         public async override Task OnDisconnectedAsync(Exception ex)
         {
             await base.OnDisconnectedAsync(ex);
-            if(Context.UserIdentifier != null){
+            if (Context.UserIdentifier != null)
+            {
                 var userId = int.Parse(Context.UserIdentifier);
                 usersOnline.Remove(userId);
                 var user = _userService.GetUserById(userId);
@@ -44,7 +45,7 @@ namespace Karma.Services
                 _userService.Update(user);
             }
         }
-    
+
         public Task SendMessageAsync(string user, string message)
         {
             return Clients.All.SendAsync("ReceiveMessage", user, message);
@@ -57,12 +58,19 @@ namespace Karma.Services
 
         public Task LastActiveRequest(int userId)
         {
-            var user = _userService.GetUserById(userId);
-            return Clients.Caller.SendAsync("GetLastActive", user.LastActive);
+            if (usersOnline.Contains(userId))
+            {
+                return Clients.Caller.SendAsync("GetLastActive", DateTime.UtcNow);
+            }
+            else
+            {
+                var user = _userService.GetUserById(userId);
+                return Clients.Caller.SendAsync("GetLastActive", user.LastActive);
+            }
         }
 
         public Task SendGroupMessageAsync(string groupId, int user, string message)
-        {   
+        {
             _messageService.AddMessage(message, Context.UserIdentifier, groupId);
             _messageService.SaveMessages(groupId);
 
