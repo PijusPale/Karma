@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Grass from './grass';
 import Plants from './Plants';
 import { Html } from "@react-three/drei";
@@ -14,6 +14,11 @@ export const Block = (props) => {
   const OnGroundClick = () => {
     props.onPlaceChosen && !props.listing && props.onPlaceChosen(props.position[0], props.position[2]);
   };
+
+  useEffect(() => {
+    document.body.style.cursor = hoveredPlant ? 'pointer' : 'auto'
+  }, [hoveredPlant])
+
   return (
     <group ref={group} {...props} dispose={null}>
       <mesh
@@ -33,18 +38,19 @@ export const Block = (props) => {
         && <Grass position={[0, 0.1, 0]} scale={1} />}
       {props.listing &&
         (true ? /*change to listing is not given away predicate */
-          <GrowingPlant onPointerOver={(e) => { e.stopPropagation(); hoverPlant(true) }}
+          <GrowingPlant onClick={(e) => {e.stopPropagation(); window.appHistory.push(`/details/${props.listing.id}`)}}
+            onPointerOver={(e) => { e.stopPropagation(); hoverPlant(true) }}
             onPointerOut={(e) => { e.stopPropagation(); hoverPlant(false) }} />
           : <Plant onPointerOver={(e) => { e.stopPropagation(); hoverPlant(true) }}
             onPointerOut={(e) => { e.stopPropagation(); hoverPlant(false) }} />)}
-      {props.listing && hoveredPlant && <Html><ListingInfo {...props.listing} /></Html>}
+      {props.listing && hoveredPlant && <Html style={{transform: 'translate(-100%,-100%)'}}><ListingInfo {...props.listing} /></Html>}
     </group>
   );
 };
 
 const ListingInfo = (props) => (
-  <div>
-    <img style={{ width: '90px', height: '67.5px' }} src={props.imagePath} alt="defaultImage" />
+  <div className='bg-secondary text-center rounded'>
+    <img className='image-fluid' style={{marginRight: 'auto'}} src={props.imagePath} alt="defaultImage" />
     <h3>{props.name}</h3>
   </div>
 );
