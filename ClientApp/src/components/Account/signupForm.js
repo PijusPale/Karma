@@ -56,7 +56,7 @@ export function SignupForm(props) {
         <Input type="password" placeholder="Confirm Password" />
       </FormContainer>
       <Marginer direction="vertical" margin={10} />
-      <SubmitButton type="submit">Sign up</SubmitButton>
+      <SubmitButton onClick={onSignUp} type="submit">Sign up</SubmitButton>
       <Marginer direction="vertical" margin="1em" />
       <SmallText>
       Already have an account?

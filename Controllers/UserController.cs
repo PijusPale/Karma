@@ -41,6 +41,7 @@ namespace Karma.Controllers
             return Ok(user);
         }
 
+        [AllowAnonymous]
         [HttpPost("signup")]
         public IActionResult NewUser(User user){
             if (user != null){
