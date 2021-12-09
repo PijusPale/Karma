@@ -1,5 +1,4 @@
-import React, {Suspense} from 'react';
-import { GardenComp } from '../garden/garden';
+import React from 'react';
 import { ListingsComp } from './ListingsComp';
 
 export const Home = () => <div><ListingsComp /></div>;

@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { Redirect, useHistory } from 'react-router';
+import { useHistory } from 'react-router';
 import { Modal, ModalBody, ModalHeader, Label, Row, Col, Button } from "reactstrap";
 import Plants from "../garden/Plants";
 import { DisplayPlant } from "../garden/DisplayPlant";
@@ -28,7 +28,7 @@ export default function AddListing(props) {
             "Location.RadiusKM": (props.location && props.location.radiusKM) || 5,
         }, shouldUseNativeValidation: true
     });
-    const { isSubmitting, isSubmitted } = formState;
+    const { isSubmitting /*, isSubmitted */ } = formState;
     const maxTitleLength = 20, maxDescriptionLength = 200;
 
     const onSubmit = data => {

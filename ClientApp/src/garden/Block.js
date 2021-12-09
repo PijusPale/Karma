@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import Grass from './grass';
-import Plants, { gridSize } from './Plants';
+import Plants from './Plants';
 import { Text } from "@react-three/drei";
 import GrowingPlant from './GrowingPlant';
 
