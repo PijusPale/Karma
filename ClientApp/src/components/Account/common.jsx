@@ -53,7 +53,7 @@ export const Input = styled.input`
   }
   &:focus {
     outline: none;
-    border-bottom: 2px solid rgb(72,166,226);
+    border-bottom: 2px solid rgb(54,212,64);
   }
 `;
 
@@ -67,8 +67,8 @@ export const SubmitButton = styled.button`
   border-radius: 100px 100px 100px 100px;
   cursor: pointer;
   transition: all, 240ms ease-in-out;
-  background: rgb(95,213,244);
-  background: linear-gradient(100deg, rgba(95,213,244,1) 0%, rgba(72,166,226,1) 58%); 
+  background: rgb(101,207,131);
+  background: linear-gradient(100deg, rgba(101,207,131,1) 0%, rgba(68,211,84,1) 100%);
   &:hover {
     filter: brightness(1.03);
   }

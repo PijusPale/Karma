@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Input, Label, NavLink } from 'reactstrap';
+import { Modal, NavLink } from 'reactstrap';
 import { Button } from 'reactstrap';
 import { UserContext } from '../../UserContext';
 import { ConfirmationButton } from '../ConfirmationButton';

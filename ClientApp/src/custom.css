@@ -30,7 +30,7 @@ code {
 }
 
 a {
-  color: #0366d6;
+  color: #15d603;
 }
 
 code {
@@ -39,8 +39,8 @@ code {
 
 .btn-primary {
   color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+  background-color: #278b2e;
+  border-color: #237c29;
 }
 
 li {
@@ -63,4 +63,5 @@ img {
   position: relative;
   overflow: hidden;
   box-shadow: 0 0 2px rgba(15, 15, 15, 0.28);
+  border-color: #278b2e;
 }

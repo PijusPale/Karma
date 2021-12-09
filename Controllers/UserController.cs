@@ -41,6 +41,15 @@ namespace Karma.Controllers
             return Ok(user);
         }
 
+        [HttpPost("signup")]
+        public IActionResult NewUser(User user){
+            if (user != null){
+            _userService.Add(user);
+            return Ok();
+            }
+            else return StatusCode(500);
+        }
+
         [HttpGet]
         public IActionResult GetCurrentUser()
         {

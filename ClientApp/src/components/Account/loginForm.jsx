@@ -4,7 +4,6 @@ import {
   BoxContainer,
   FormContainer,
   Input,
-  MutedLink,
   SubmitButton,
   SmallText,
 } from "./common";
@@ -12,7 +11,7 @@ import { Marginer } from "./marginer";
 import { LoginContext } from "./LoginContext";
 import { UserContext } from '../../UserContext';
 
-export function LoginForm(props) {
+export function LoginForm() {
   const { setLoggedIn, setUser: setCurrentUser } = useContext(UserContext);
   const { switchToSignup } = useContext(LoginContext);
  
