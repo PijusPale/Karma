@@ -33,6 +33,10 @@ export function SignupForm(props) {
   return (
     <BoxContainer onSignUp={handleSubmit(onSignUp)} >
       <FormContainer>
+      <Input type="text" placeholder="Username" {...register("Username", {
+                    required: "Username is required.",
+                    pattern: { value: /^[a-zA-Z0-9]+$/, message: "Please enter only A-Z letters and 0-9 numbers" }
+                })}/>
         <Input type="text" placeholder="First Name" {...register("FirstName", {
                     required: "First Name is required.",
                     pattern: { value: /^[a-zA-Z]+$/, message: "Please enter only A-Z letters" }
