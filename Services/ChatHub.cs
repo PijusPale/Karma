@@ -1,13 +1,8 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
-using System.Linq;
-using Karma.Repositories;
-using System.IO;
 using System;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace Karma.Services
 {

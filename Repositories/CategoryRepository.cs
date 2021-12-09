@@ -1,12 +1,11 @@
-using System.Collections.Generic;
 using Karma.Models;
-using Microsoft.Extensions.Logging;
+using Karma.Database;
 
 namespace Karma.Repositories
 {
-    public class CategoryRepository : Repository<Category>, ICategoryRepository
+    public class CategoryRepository : DbRepository<Category>, ICategoryRepository
     {
-        public CategoryRepository(string filePath, ILogger<CategoryRepository> logger) : base(filePath, logger)
+        public CategoryRepository(BaseDbContext context) : base(context)
         {
         }
     }

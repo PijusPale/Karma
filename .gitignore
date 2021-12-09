@@ -135,6 +135,7 @@ DocProject/Help/html
 # Click-Once directory
 publish/
 
+
 # Publish Web Output
 *.[Pp]ublish.xml
 *.azurePubxml
@@ -233,3 +234,6 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+# Logs
+Logs/
