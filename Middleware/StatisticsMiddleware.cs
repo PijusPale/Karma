@@ -20,14 +20,12 @@ namespace Karma.Middleware
         {
             var timer = new Stopwatch();
             timer.Start();
-            context.Response.OnStarting(() => {
-                timer.Stop();
-                var elapsedMs = timer.ElapsedMilliseconds;
-                _logger.LogInformation($"Request for {context.Request.Path} received ({context.Request.ContentLength ?? 0} bytes), response took {elapsedMs} ms");
-                return Task.CompletedTask;
-            });
 
             await _next(context);
+            
+            timer.Stop();
+            var elapsedMs = timer.ElapsedMilliseconds;
+            _logger.LogInformation($"Request for {context.Request.Path} received ({context.Request.ContentLength ?? 0} bytes), response took {elapsedMs} ms");
         }
     }
 }
