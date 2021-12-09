@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Linq;
 using Karma.Models;
 using Karma.Repositories;
@@ -16,6 +17,8 @@ namespace Karma.Services
         void CreateConversation(int userOneId, int userTwoId, int listingId);
         IEnumerable<ConversationDto> GetConversations(int userId); 
         Conversation GetConversation(string groupId);
+        Conversation GetConversation(int listingId);
+        Task<bool> DeleteConversationAsync(int listingId);
     }
 
     public class MessageService : IMessageService
@@ -108,6 +111,16 @@ namespace Karma.Services
         public Conversation GetConversation(string groupId)
         {
             return _messageRepository.GetConversation(groupId);
+        }
+
+        public Conversation GetConversation(int listingId)
+        {
+            return _messageRepository.GetConversation(listingId);
+        }
+
+        public async Task<bool> DeleteConversationAsync(int listingId)
+        {
+            return await _messageRepository.DeleteConversationAsync(listingId);
         }
     }
 }
