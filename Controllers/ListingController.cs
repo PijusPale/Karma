@@ -184,6 +184,7 @@ namespace Karma.Controllers
             listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
             listing.RequestedUserIDs = old.RequestedUserIDs; // temp fix for saving old requests
             listing.UserId = (int) userId;
+            listing.Id = old.Id;
             if (!await _listingRepository.UpdateAsync(listing))
                 return StatusCode(500);
 

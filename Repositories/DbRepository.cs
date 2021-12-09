@@ -79,26 +79,29 @@ namespace Karma.Repositories
 
         public void Update(TEntity entity)
         {
-            _context.Update(entity);
-            _context.SaveChanges();
-           /*  var DbEntity = entities.Find(entity.Id);
+            var DbEntity = entities.Find(entity.Id);
             if (DbEntity != null)
             {
                 _context.Entry(DbEntity).CurrentValues.SetValues(entity);
                 _context.SaveChanges();
-            } */
+            }
         }
 
-        public Task<bool> UpdateAsync(TEntity entity)
+        public async Task<bool> UpdateAsync(TEntity entity)
         {
             try
             {
-                _context.SaveChanges();
-                return Task.FromResult(true);
+                var DbEntity = await entities.FindAsync(entity.Id);
+                if(DbEntity != null)
+                {
+                    _context.Entry(DbEntity).CurrentValues.SetValues(entity);
+                    await _context.SaveChangesAsync();
+                }
+                return true;
             }
             catch
             {
-                return Task.FromResult(false);
+                return false;
             }
         }
     }
