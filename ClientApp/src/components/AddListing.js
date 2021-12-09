@@ -137,7 +137,7 @@ export default function AddListing(props) {
                 {/* {isSubmitted && <Redirect push to='/' />} */}
             </form>
             <Modal isOpen={plantModal} toggle={togglePlantModal} >
-                <ModalHeader><Label>Choose a plant to add to your garden</Label></ModalHeader>
+                <ModalHeader toggle={togglePlantModal}><Label>Choose a plant to add to your garden</Label></ModalHeader>
                 <ModalBody>
                     <Row>
                         {Object.entries(Plants).map(([key, p], ind) => <Col key={ind}>
@@ -151,7 +151,7 @@ export default function AddListing(props) {
                 </ModalBody>
             </Modal>
             <Modal isOpen={placeModal} toggle={togglePlaceModal} >
-                <ModalHeader><Label>Choose a place to situate your plant</Label></ModalHeader>
+                <ModalHeader toggle={togglePlaceModal}><Label>Choose a place to situate your plant</Label></ModalHeader>
                 <ModalBody>
                     <GardenComp username={user.username} onPlaceChosen={onPlaceChosen} />
                 </ModalBody>
