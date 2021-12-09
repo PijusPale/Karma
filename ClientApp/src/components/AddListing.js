@@ -10,10 +10,11 @@ import { UserContext } from "../UserContext";
 
 export default function AddListing(props) {
     const [plantModal, setPlantModal] = useState(false);
+    const togglePlantModal = () => setPlantModal(!plantModal);
     const [placeModal, setPlaceModal] = useState(false);
-    const [plant, setPlant] = useState();
+    const togglePlaceModal = () => setPlaceModal(!placeModal);
     const { user } = useContext(UserContext);
-    const [listingId, setListingId] = useState();
+    const [Data, setData] = useState();
 
     const history = useHistory();
 
@@ -31,6 +32,16 @@ export default function AddListing(props) {
     const maxTitleLength = 20, maxDescriptionLength = 200;
 
     const onSubmit = data => {
+        if (props.update) {
+            fetchData(data);
+            props.afterSubmit();
+        }
+        else {
+            setData(data);
+            setPlantModal(true);
+        }
+    };
+    const fetchData = (data) => {
         var imageAttached = false;
         data.id = props.id;
         const formData = new FormData();
@@ -55,24 +66,13 @@ export default function AddListing(props) {
             if (imageAttached && response.ok) {
                 axios.post('image', formData);
             }
-            !props.update && response.ok && response.json().then(res => setListingId(res.id));
         });
-        if (props.update)
-            props.afterSubmit();
-        else {
-            setPlantModal(true);
-        }
     };
 
     const onPlaceChosen = (x, z) => {
         setPlaceModal(false);
-        fetch(`garden/x=${x}/z=${z}/plant=${plant}/listingId=${listingId}`, {
-            mode: 'cors',
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            },
-        });
+        const data = Object.assign({ gardenX: x, gardenZ: z }, Data);
+        fetchData(data);
         history.push('/');
     }
 
@@ -136,13 +136,13 @@ export default function AddListing(props) {
                 </button>
                 {/* {isSubmitted && <Redirect push to='/' />} */}
             </form>
-            <Modal isOpen={plantModal} >
+            <Modal isOpen={plantModal} toogle={togglePlantModal} >
                 <ModalHeader><Label>Choose a plant to add to your garden</Label></ModalHeader>
                 <ModalBody>
                     <Row>
                         {Object.entries(Plants).map(([key, p], ind) => <Col key={ind}>
                             <Button onClick={() => {
-                                setPlant('growing' + key);
+                                setData(Object.assign({ gardenPlant: key }, Data));
                                 setPlantModal(false);
                                 setPlaceModal(true);
                             }} style={{ display: 'flex', justifyContent: 'center', margin: 'auto' }}><DisplayPlant Plant={p} /></Button>
@@ -150,7 +150,7 @@ export default function AddListing(props) {
                     </Row>
                 </ModalBody>
             </Modal>
-            <Modal isOpen={placeModal} >
+            <Modal isOpen={placeModal} toggle={togglePlaceModal} >
                 <ModalHeader><Label>Choose a place to situate your plant</Label></ModalHeader>
                 <ModalBody>
                     <GardenComp username={user.username} onPlaceChosen={onPlaceChosen} />

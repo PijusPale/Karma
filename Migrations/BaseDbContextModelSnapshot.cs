@@ -58,52 +58,6 @@ namespace Karma.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Karma.Models.Garden", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Plants")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("Gardens");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Plants = ";,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Plants = ";,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,",
-                            UserId = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Plants = ";,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,",
-                            UserId = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Plants = ";,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,",
-                            UserId = 4
-                        });
-                });
-
             modelBuilder.Entity("Karma.Models.Listing", b =>
                 {
                     b.Property<int>("Id")
@@ -123,6 +77,15 @@ namespace Karma.Migrations
                     b.Property<string>("Description")
                         .HasMaxLength(200)
                         .HasColumnType("TEXT");
+
+                    b.Property<string>("GardenPlant")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("GardenX")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("GardenZ")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ImagePath")
                         .HasColumnType("TEXT");
@@ -161,6 +124,9 @@ namespace Karma.Migrations
                             Condition = 0,
                             DatePublished = new DateTime(2021, 12, 1, 16, 27, 12, 258, DateTimeKind.Unspecified).AddTicks(7492),
                             Description = "",
+                            GardenPlant = "Tree",
+                            GardenX = -2,
+                            GardenZ = 2,
                             ImagePath = "images/default.png",
                             LocationJson = "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}",
                             Name = "First Listing",
@@ -176,6 +142,9 @@ namespace Karma.Migrations
                             Condition = 0,
                             DatePublished = new DateTime(2021, 12, 2, 13, 30, 36, 970, DateTimeKind.Unspecified).AddTicks(8905),
                             Description = "",
+                            GardenPlant = "Flower",
+                            GardenX = 4,
+                            GardenZ = -1,
                             ImagePath = "images/default.png",
                             LocationJson = "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}",
                             Name = "Second Listing",
@@ -190,6 +159,9 @@ namespace Karma.Migrations
                             Condition = 0,
                             DatePublished = new DateTime(2021, 12, 2, 13, 30, 43, 459, DateTimeKind.Unspecified).AddTicks(9796),
                             Description = "",
+                            GardenPlant = "Tree",
+                            GardenX = 0,
+                            GardenZ = -3,
                             ImagePath = "images/default.png",
                             LocationJson = "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}",
                             Name = "Third Listing",
@@ -241,9 +213,6 @@ namespace Karma.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("GardenId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<DateTime?>("LastActive")
                         .HasColumnType("TEXT");
 
@@ -264,7 +233,6 @@ namespace Karma.Migrations
                         {
                             Id = 1,
                             FirstName = "First",
-                            GardenId = 1,
                             LastName = "Test",
                             Username = "First"
                         },
@@ -272,7 +240,6 @@ namespace Karma.Migrations
                         {
                             Id = 2,
                             FirstName = "Second",
-                            GardenId = 2,
                             LastName = "Test",
                             Username = "Second"
                         },
@@ -280,7 +247,6 @@ namespace Karma.Migrations
                         {
                             Id = 3,
                             FirstName = "John",
-                            GardenId = 3,
                             LastName = "Smith",
                             Username = "Third"
                         },
@@ -288,7 +254,6 @@ namespace Karma.Migrations
                         {
                             Id = 4,
                             FirstName = "Anna",
-                            GardenId = 4,
                             LastName = "Smith",
                             Username = "Fourth"
                         });
@@ -321,17 +286,6 @@ namespace Karma.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Karma.Models.Garden", b =>
-                {
-                    b.HasOne("Karma.Models.User", "User")
-                        .WithOne("Garden")
-                        .HasForeignKey("Karma.Models.Garden", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Karma.Models.Listing", b =>
                 {
                     b.HasOne("Karma.Models.User", "User")
@@ -360,8 +314,6 @@ namespace Karma.Migrations
 
             modelBuilder.Entity("Karma.Models.User", b =>
                 {
-                    b.Navigation("Garden");
-
                     b.Navigation("Listings");
                 });
 #pragma warning restore 612, 618

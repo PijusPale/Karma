@@ -17,12 +17,12 @@ const generateGridCoords = (size) => {
 let groundCoords = generateGridCoords(gridSize);
 
 export const GardenComp = ({ username, onPlaceChosen }) => {
-    const [garden, setGarden] = useState(null);
+    const [listings, setListings] = useState(null);
 
     const fetchData = async () => {
-        const response = await fetch(`garden/${username}`);
+        const response = await fetch(`user/listings/${username}`);
         if (response.ok) {
-            setGarden(await response.json());
+            setListings(await response.json());
         }
     }
     useEffect(() => {
@@ -33,9 +33,9 @@ export const GardenComp = ({ username, onPlaceChosen }) => {
         <OrbitControls />
         <ambientLight intensity={0.5} />
         <spotLight intensity={0.3} position={[-10, 15, 10]} angle={0.3} />
-        {groundCoords.map((pos, ind) =>
+        {groundCoords.map(pos =>
             <Block key={pos.join('')} position={pos} onPlaceChosen={onPlaceChosen}
-                plant={garden !== null && garden[Math.floor(ind / gridSize)][ind % gridSize]} />
+                listing={listings !== null && listings.find(l => l.gardenX === pos[0] && l.gardenZ === pos[2])}/>
         )}
     </Canvas>);
 }

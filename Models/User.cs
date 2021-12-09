@@ -36,10 +36,5 @@ namespace Karma.Models
         public DateTime? LastActive { get; set; }
         [NotMapped]
         public string Token { get; set; }
-
-        public int GardenId { get; set; }
-
-        [JsonIgnore]
-        public Garden Garden { get; set; }
     }
 }

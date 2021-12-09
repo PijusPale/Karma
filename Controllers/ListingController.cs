@@ -27,9 +27,7 @@ namespace Karma.Controllers
 
         private readonly IListingNotification _notification;
 
-        private readonly IGardenRepository _gardenRepository;
-
-        public ListingController(ILogger<ListingController> logger, IListingRepository listingRepository, Lazy<IUserService> userService, IMessageService messageService, IListingNotification notification, IGardenRepository gardenRepository)
+        public ListingController(ILogger<ListingController> logger, IListingRepository listingRepository, Lazy<IUserService> userService, IMessageService messageService, IListingNotification notification)
 
         {
             _logger = logger;
@@ -37,7 +35,6 @@ namespace Karma.Controllers
             _userService = userService;
             _notification = notification;
             _messageService = messageService;
-            _gardenRepository = gardenRepository;
         }
 
         [HttpPost]
@@ -169,14 +166,6 @@ namespace Karma.Controllers
             if (!await _listingRepository.DeleteByIdAsync(id))
                 return StatusCode(500);
             _userService.Value.GetUserById((int)userId).RequestedListings.Remove(listing);
-            var garden = _gardenRepository.GetByUserId((int)userId);
-            garden.Plants.ForEach(row =>
-            {
-                var index = row.FindIndex(plant => plant.StartsWith($"{id}/"));
-                if (index != -1)
-                    row[index] = "";
-            });
-            await _gardenRepository.UpdateAsync(garden);
             return Ok();
         }
 
@@ -196,6 +185,9 @@ namespace Karma.Controllers
             listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
             listing.RequestedUserIDs = old.RequestedUserIDs; // temp fix for saving old requests
             listing.UserId = (int)userId;
+            listing.GardenZ = old.GardenZ;
+            listing.GardenX = old.GardenX;
+            listing.GardenPlant = old.GardenPlant;
             if (!await _listingRepository.UpdateAsync(listing))
                 return StatusCode(500);
 

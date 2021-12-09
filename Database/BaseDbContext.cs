@@ -19,18 +19,16 @@ namespace Karma.Database
 
         public DbSet<Message> Messages { get; set; }
 
-        public DbSet<Garden> Gardens { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             #region UserSeed    
             modelBuilder
                 .Entity<User>()
                 .HasData(
-                    new User { Id = 1, Username = "First", FirstName = "First", LastName = "Test", GardenId = 1 },
-                    new User { Id = 2, Username = "Second", FirstName = "Second", LastName = "Test", GardenId = 2 },
-                    new User { Id = 3, Username = "Third", FirstName = "John", LastName = "Smith", GardenId = 3 },
-                    new User { Id = 4, Username = "Fourth", FirstName = "Anna", LastName = "Smith", GardenId = 4 }
+                    new User { Id = 1, Username = "First", FirstName = "First", LastName = "Test" },
+                    new User { Id = 2, Username = "Second", FirstName = "Second", LastName = "Test" },
+                    new User { Id = 3, Username = "Third", FirstName = "John", LastName = "Smith" },
+                    new User { Id = 4, Username = "Fourth", FirstName = "Anna", LastName = "Smith" }
                 );
             #endregion
 
@@ -38,9 +36,9 @@ namespace Karma.Database
             modelBuilder
                 .Entity<Listing>()
                 .HasData(
-                    new Listing { Id = 1, UserId = 1, isReserved = true, recipientId = 2, Name = "First Listing", Description = "", Quantity = 1, LocationJson = "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\u0160iauliai\",\"RadiusKM\":5}", Category = "Vehicles", DatePublished = System.DateTime.Parse("2021-12-01 16:27:12.2587492"), ImagePath = "images/default.png", Condition = 0 },
-                    new Listing { Id = 2, UserId = 3, isReserved = false, recipientId = null, Name = "Second Listing", Description = "", Quantity = 1, LocationJson = "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\u0160iauliai\",\"RadiusKM\":5}", Category = "Vehicles", DatePublished = System.DateTime.Parse("2021-12-02 13:30:36.9708905"), ImagePath = "images/default.png", Condition = 0 },
-                    new Listing { Id = 3, UserId = 4, isReserved = true, recipientId = 1, Name = "Third Listing", Description = "", Quantity = 1, LocationJson = "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\u0160iauliai\",\"RadiusKM\":5}", Category = "Vehicles", DatePublished = System.DateTime.Parse("2021-12-02 13:30:43.4599796"), ImagePath = "images/default.png", Condition = 0 }
+                    new Listing { Id = 1, UserId = 1, isReserved = true, recipientId = 2, Name = "First Listing", Description = "", Quantity = 1, LocationJson = "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\u0160iauliai\",\"RadiusKM\":5}", Category = "Vehicles", DatePublished = System.DateTime.Parse("2021-12-01 16:27:12.2587492"), ImagePath = "images/default.png", Condition = 0, GardenPlant = "Tree", GardenX = -2, GardenZ = 2 },
+                    new Listing { Id = 2, UserId = 3, isReserved = false, recipientId = null, Name = "Second Listing", Description = "", Quantity = 1, LocationJson = "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\u0160iauliai\",\"RadiusKM\":5}", Category = "Vehicles", DatePublished = System.DateTime.Parse("2021-12-02 13:30:36.9708905"), ImagePath = "images/default.png", Condition = 0, GardenPlant = "Flower", GardenX = 4, GardenZ = -1 },
+                    new Listing { Id = 3, UserId = 4, isReserved = true, recipientId = 1, Name = "Third Listing", Description = "", Quantity = 1, LocationJson = "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\u0160iauliai\",\"RadiusKM\":5}", Category = "Vehicles", DatePublished = System.DateTime.Parse("2021-12-02 13:30:43.4599796"), ImagePath = "images/default.png", Condition = 0, GardenPlant = "Tree", GardenX = 0, GardenZ = -3 }
                 );
             #endregion
 
@@ -70,25 +68,6 @@ namespace Karma.Database
                 .Entity<User>()
                 .HasMany<Listing>(u => u.Listings)
                 .WithOne(l => l.User);
-
-            var converter = new ValueConverter<List<List<string>>, string>(
-                v => v.Aggregate("", (res, cur) => res + ';' + string.Join(',', cur)),
-                v => v.Split(';', StringSplitOptions.RemoveEmptyEntries).Select(el => el.Split(',', StringSplitOptions.None).ToList()).ToList()
-            );
-            modelBuilder.Entity<Garden>()
-                .Property(g => g.Plants)
-                .HasConversion(converter);
-
-            #region GardenSeed    
-            modelBuilder
-                .Entity<Garden>()
-                .HasData(
-                    new Garden { Id = 1, UserId = 1 },
-                    new Garden { Id = 2, UserId = 2 },
-                    new Garden { Id = 3, UserId = 3 },
-                    new Garden { Id = 4, UserId = 4 }
-                );
-            #endregion
         }
     }
 }

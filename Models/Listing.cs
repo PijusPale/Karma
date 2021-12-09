@@ -101,5 +101,11 @@ namespace Karma.Models
 
         [JsonIgnore]
         public ICollection<User> Requestees { get; set; }
+
+        public int GardenX { get; set; }
+
+        public int GardenZ { get; set; }
+
+        public string GardenPlant { get; set; }
     }
 }

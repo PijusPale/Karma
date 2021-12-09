@@ -50,32 +50,11 @@ namespace Karma.Migrations
                     FirstName = table.Column<string>(type: "TEXT", nullable: false),
                     LastName = table.Column<string>(type: "TEXT", nullable: false),
                     AvatarPath = table.Column<string>(type: "TEXT", nullable: true),
-                    LastActive = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    GardenId = table.Column<int>(type: "INTEGER", nullable: false)
+                    LastActive = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Gardens",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Plants = table.Column<string>(type: "TEXT", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Gardens", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Gardens_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -94,7 +73,10 @@ namespace Karma.Migrations
                     Category = table.Column<string>(type: "TEXT", nullable: false),
                     DatePublished = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ImagePath = table.Column<string>(type: "TEXT", nullable: true),
-                    Condition = table.Column<int>(type: "INTEGER", nullable: false)
+                    Condition = table.Column<int>(type: "INTEGER", nullable: false),
+                    GardenX = table.Column<int>(type: "INTEGER", nullable: false),
+                    GardenZ = table.Column<int>(type: "INTEGER", nullable: false),
+                    GardenPlant = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -143,58 +125,38 @@ namespace Karma.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AvatarPath", "FirstName", "GardenId", "LastActive", "LastName", "Username" },
-                values: new object[] { 1, null, "First", 1, null, "Test", "First" });
+                columns: new[] { "Id", "AvatarPath", "FirstName", "LastActive", "LastName", "Username" },
+                values: new object[] { 1, null, "First", null, "Test", "First" });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AvatarPath", "FirstName", "GardenId", "LastActive", "LastName", "Username" },
-                values: new object[] { 2, null, "Second", 2, null, "Test", "Second" });
+                columns: new[] { "Id", "AvatarPath", "FirstName", "LastActive", "LastName", "Username" },
+                values: new object[] { 2, null, "Second", null, "Test", "Second" });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AvatarPath", "FirstName", "GardenId", "LastActive", "LastName", "Username" },
-                values: new object[] { 3, null, "John", 3, null, "Smith", "Third" });
+                columns: new[] { "Id", "AvatarPath", "FirstName", "LastActive", "LastName", "Username" },
+                values: new object[] { 3, null, "John", null, "Smith", "Third" });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AvatarPath", "FirstName", "GardenId", "LastActive", "LastName", "Username" },
-                values: new object[] { 4, null, "Anna", 4, null, "Smith", "Fourth" });
-
-            migrationBuilder.InsertData(
-                table: "Gardens",
-                columns: new[] { "Id", "Plants", "UserId" },
-                values: new object[] { 1, ";,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,", 1 });
-
-            migrationBuilder.InsertData(
-                table: "Gardens",
-                columns: new[] { "Id", "Plants", "UserId" },
-                values: new object[] { 2, ";,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,", 2 });
-
-            migrationBuilder.InsertData(
-                table: "Gardens",
-                columns: new[] { "Id", "Plants", "UserId" },
-                values: new object[] { 3, ";,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,", 3 });
-
-            migrationBuilder.InsertData(
-                table: "Gardens",
-                columns: new[] { "Id", "Plants", "UserId" },
-                values: new object[] { 4, ";,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,;,,,,,,,,", 4 });
+                columns: new[] { "Id", "AvatarPath", "FirstName", "LastActive", "LastName", "Username" },
+                values: new object[] { 4, null, "Anna", null, "Smith", "Fourth" });
 
             migrationBuilder.InsertData(
                 table: "Listings",
-                columns: new[] { "Id", "Category", "Condition", "DatePublished", "Description", "ImagePath", "LocationJson", "Name", "Quantity", "UserId", "isReserved", "recipientId" },
-                values: new object[] { 1, "Vehicles", 0, new DateTime(2021, 12, 1, 16, 27, 12, 258, DateTimeKind.Unspecified).AddTicks(7492), "", "images/default.png", "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}", "First Listing", 1, 1, true, 2 });
+                columns: new[] { "Id", "Category", "Condition", "DatePublished", "Description", "GardenPlant", "GardenX", "GardenZ", "ImagePath", "LocationJson", "Name", "Quantity", "UserId", "isReserved", "recipientId" },
+                values: new object[] { 1, "Vehicles", 0, new DateTime(2021, 12, 1, 16, 27, 12, 258, DateTimeKind.Unspecified).AddTicks(7492), "", "Tree", -2, 2, "images/default.png", "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}", "First Listing", 1, 1, true, 2 });
 
             migrationBuilder.InsertData(
                 table: "Listings",
-                columns: new[] { "Id", "Category", "Condition", "DatePublished", "Description", "ImagePath", "LocationJson", "Name", "Quantity", "UserId", "isReserved", "recipientId" },
-                values: new object[] { 2, "Vehicles", 0, new DateTime(2021, 12, 2, 13, 30, 36, 970, DateTimeKind.Unspecified).AddTicks(8905), "", "images/default.png", "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}", "Second Listing", 1, 3, false, null });
+                columns: new[] { "Id", "Category", "Condition", "DatePublished", "Description", "GardenPlant", "GardenX", "GardenZ", "ImagePath", "LocationJson", "Name", "Quantity", "UserId", "isReserved", "recipientId" },
+                values: new object[] { 2, "Vehicles", 0, new DateTime(2021, 12, 2, 13, 30, 36, 970, DateTimeKind.Unspecified).AddTicks(8905), "", "Flower", 4, -1, "images/default.png", "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}", "Second Listing", 1, 3, false, null });
 
             migrationBuilder.InsertData(
                 table: "Listings",
-                columns: new[] { "Id", "Category", "Condition", "DatePublished", "Description", "ImagePath", "LocationJson", "Name", "Quantity", "UserId", "isReserved", "recipientId" },
-                values: new object[] { 3, "Vehicles", 0, new DateTime(2021, 12, 2, 13, 30, 43, 459, DateTimeKind.Unspecified).AddTicks(9796), "", "images/default.png", "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}", "Third Listing", 1, 4, true, 1 });
+                columns: new[] { "Id", "Category", "Condition", "DatePublished", "Description", "GardenPlant", "GardenX", "GardenZ", "ImagePath", "LocationJson", "Name", "Quantity", "UserId", "isReserved", "recipientId" },
+                values: new object[] { 3, "Vehicles", 0, new DateTime(2021, 12, 2, 13, 30, 43, 459, DateTimeKind.Unspecified).AddTicks(9796), "", "Tree", 0, -3, "images/default.png", "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}", "Third Listing", 1, 4, true, 1 });
 
             migrationBuilder.InsertData(
                 table: "ListingUser",
@@ -205,12 +167,6 @@ namespace Karma.Migrations
                 table: "ListingUser",
                 columns: new[] { "RequestedListingsId", "RequesteesId" },
                 values: new object[] { 3, 1 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Gardens_UserId",
-                table: "Gardens",
-                column: "UserId",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Listings_UserId",
@@ -227,9 +183,6 @@ namespace Karma.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Conversations");
-
-            migrationBuilder.DropTable(
-                name: "Gardens");
 
             migrationBuilder.DropTable(
                 name: "ListingUser");
