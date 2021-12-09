@@ -24,6 +24,7 @@ namespace Karma.Models
         public string LastName { get; set; }
         [Required]
         [DataType(DataType.Password)]
+        [JsonIgnore]
         public string Password { get; set; }
         
         [JsonIgnore]
