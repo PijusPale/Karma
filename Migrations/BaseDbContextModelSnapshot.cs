@@ -37,6 +37,14 @@ namespace Karma.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasAlternateKey("GroupId");
+
+                    b.HasIndex("ListingId");
+
+                    b.HasIndex("UserOneId");
+
+                    b.HasIndex("UserTwoId");
+
                     b.ToTable("Conversations");
 
                     b.HasData(
@@ -78,6 +86,15 @@ namespace Karma.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("GardenPlant")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("GardenX")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("GardenZ")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("ImagePath")
                         .HasColumnType("TEXT");
 
@@ -115,6 +132,8 @@ namespace Karma.Migrations
                             Condition = 0,
                             DatePublished = new DateTime(2021, 12, 1, 16, 27, 12, 258, DateTimeKind.Unspecified).AddTicks(7492),
                             Description = "",
+                            GardenX = 0,
+                            GardenZ = 0,
                             ImagePath = "images/default.png",
                             LocationJson = "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}",
                             Name = "First Listing",
@@ -130,6 +149,8 @@ namespace Karma.Migrations
                             Condition = 0,
                             DatePublished = new DateTime(2021, 12, 2, 13, 30, 36, 970, DateTimeKind.Unspecified).AddTicks(8905),
                             Description = "",
+                            GardenX = 0,
+                            GardenZ = 0,
                             ImagePath = "images/default.png",
                             LocationJson = "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}",
                             Name = "Second Listing",
@@ -144,6 +165,8 @@ namespace Karma.Migrations
                             Condition = 0,
                             DatePublished = new DateTime(2021, 12, 2, 13, 30, 43, 459, DateTimeKind.Unspecified).AddTicks(9796),
                             Description = "",
+                            GardenX = 0,
+                            GardenZ = 0,
                             ImagePath = "images/default.png",
                             LocationJson = "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}",
                             Name = "Third Listing",
@@ -164,10 +187,16 @@ namespace Karma.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("ConversationId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("DateSent")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("FromId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("FromUserId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("GroupId")
@@ -178,6 +207,10 @@ namespace Karma.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ConversationId");
+
+                    b.HasIndex("FromUserId");
 
                     b.ToTable("Messages");
                 });
@@ -191,6 +224,10 @@ namespace Karma.Migrations
                     b.Property<string>("AvatarPath")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -199,6 +236,10 @@ namespace Karma.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -214,29 +255,37 @@ namespace Karma.Migrations
                         new
                         {
                             Id = 1,
+                            Email = "first@email.com",
                             FirstName = "First",
                             LastName = "Test",
+                            Password = "First",
                             Username = "First"
                         },
                         new
                         {
                             Id = 2,
+                            Email = "second@email.com",
                             FirstName = "Second",
                             LastName = "Test",
+                            Password = "Second",
                             Username = "Second"
                         },
                         new
                         {
                             Id = 3,
+                            Email = "third@email.com",
                             FirstName = "John",
                             LastName = "Smith",
+                            Password = "Third",
                             Username = "Third"
                         },
                         new
                         {
                             Id = 4,
+                            Email = "fourth@email.com",
                             FirstName = "Anna",
                             LastName = "Smith",
+                            Password = "Fourth",
                             Username = "Fourth"
                         });
                 });
@@ -268,6 +317,33 @@ namespace Karma.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Karma.Models.Conversation", b =>
+                {
+                    b.HasOne("Karma.Models.Listing", "Listing")
+                        .WithMany()
+                        .HasForeignKey("ListingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Karma.Models.User", "UserOne")
+                        .WithMany("StartedConversations")
+                        .HasForeignKey("UserOneId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Karma.Models.User", "UserTwo")
+                        .WithMany("ParticipatingConversations")
+                        .HasForeignKey("UserTwoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Listing");
+
+                    b.Navigation("UserOne");
+
+                    b.Navigation("UserTwo");
+                });
+
             modelBuilder.Entity("Karma.Models.Listing", b =>
                 {
                     b.HasOne("Karma.Models.User", "User")
@@ -277,6 +353,21 @@ namespace Karma.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Karma.Models.Message", b =>
+                {
+                    b.HasOne("Karma.Models.Conversation", "Conversation")
+                        .WithMany("Messages")
+                        .HasForeignKey("ConversationId");
+
+                    b.HasOne("Karma.Models.User", "FromUser")
+                        .WithMany("Messages")
+                        .HasForeignKey("FromUserId");
+
+                    b.Navigation("Conversation");
+
+                    b.Navigation("FromUser");
                 });
 
             modelBuilder.Entity("ListingUser", b =>
@@ -294,9 +385,20 @@ namespace Karma.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Karma.Models.Conversation", b =>
+                {
+                    b.Navigation("Messages");
+                });
+
             modelBuilder.Entity("Karma.Models.User", b =>
                 {
                     b.Navigation("Listings");
+
+                    b.Navigation("Messages");
+
+                    b.Navigation("ParticipatingConversations");
+
+                    b.Navigation("StartedConversations");
                 });
 #pragma warning restore 612, 618
         }

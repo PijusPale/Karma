@@ -1,5 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 
 namespace Karma.Models
@@ -22,9 +24,15 @@ namespace Karma.Models
         [Required]
         public string Content { get; set; }
         [Required]
+        [ForeignKey("UserForeignKey")]
         public int FromId { get; set; }
+        [JsonIgnore]
+        public User FromUser { get; set; }
         [Required]
+        [ForeignKey("ConversationForeignKey")]
         public string GroupId { get; set; }
+        [JsonIgnore]
+        public Conversation Conversation { get; set; }
         [Required]
         public DateTime DateSent { get; set; }
         [Required]
