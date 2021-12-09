@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Karma.Database;
 using Karma.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace Karma.Repositories
 {

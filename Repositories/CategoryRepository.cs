@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using Karma.Models;
 using Karma.Database;
-using Microsoft.Extensions.Logging;
 
 namespace Karma.Repositories
 {

@@ -1,9 +1,6 @@
 using System;
-using System.Text;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using System.Linq;
-using Microsoft.AspNetCore.SignalR;
 using Karma.Models;
 using Karma.Repositories;
 

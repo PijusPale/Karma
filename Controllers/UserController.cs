@@ -3,11 +3,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Karma.Services;
 using Karma.Models.Authentication;
-using System.Security.Claims;
 using Karma.Repositories;
 using System.Collections.Generic;
 using Karma.Models;
-using System.Linq;
 using System;
 
 namespace Karma.Controllers

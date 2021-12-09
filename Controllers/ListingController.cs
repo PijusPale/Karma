@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Karma.Models;
 using Karma.Repositories;
 using Karma.Services;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
 using System.Linq;
 using System.Threading.Tasks;
 
