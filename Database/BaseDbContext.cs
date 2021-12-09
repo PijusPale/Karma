@@ -21,10 +21,10 @@ namespace Karma.Database
             modelBuilder
                 .Entity<User>()
                 .HasData(
-                    new User { Id = 1, Username = "First", FirstName = "First", LastName = "Test" },
-                    new User { Id = 2, Username = "Second", FirstName = "Second", LastName = "Test" },
-                    new User { Id = 3, Username = "Third", FirstName = "John", LastName = "Smith" },
-                    new User { Id = 4, Username = "Fourth", FirstName = "Anna", LastName = "Smith" }
+                    new User { Id = 1, Username = "First", Email = "first@email.com", FirstName = "First", LastName = "Test", Password = "First" },
+                    new User { Id = 2, Username = "Second", Email = "second@email.com", FirstName = "Second", LastName = "Test", Password = "Second" },
+                    new User { Id = 3, Username = "Third", Email = "third@email.com", FirstName = "John", LastName = "Smith", Password = "Third" },
+                    new User { Id = 4, Username = "Fourth", Email = "fourth@email.com", FirstName = "Anna", LastName = "Smith", Password = "Fourth" }
                 );
             #endregion
 
@@ -68,6 +68,33 @@ namespace Karma.Database
                 .Entity<User>()
                 .HasMany<Listing>(u => u.Listings)
                 .WithOne(l => l.User);
+            
+            modelBuilder
+                .Entity<Conversation>()
+                .HasOne(c => c.UserOne)
+                .WithMany(u => u.StartedConversations)
+                .HasForeignKey(c => c.UserOneId);
+            modelBuilder
+                .Entity<Conversation>()
+                .HasOne(c => c.UserTwo)
+                .WithMany(u => u.ParticipatingConversations)
+                .HasForeignKey(c => c.UserTwoId);
+            modelBuilder
+                .Entity<Conversation>()
+                .HasAlternateKey(c => c.GroupId);
+            modelBuilder
+                .Entity<Conversation>()
+                .HasMany<Message>(c => c.Messages)
+                .WithOne(m => m.Conversation);
+            
+            modelBuilder
+                .Entity<Message>()
+                .HasOne<Conversation>(m => m.Conversation)
+                .WithMany(c => c.Messages);
+            modelBuilder
+                .Entity<Message>()
+                .HasOne<User>(m => m.FromUser)
+                .WithMany(u => u.Messages);
         }
     }
 }

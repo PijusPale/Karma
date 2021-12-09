@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -101,5 +100,11 @@ namespace Karma.Models
 
         [JsonIgnore]
         public ICollection<User> Requestees { get; set; }
+
+        public int GardenX { get; set; }
+
+        public int GardenZ { get; set; }
+
+        public string GardenPlant { get; set; }
     }
 }
