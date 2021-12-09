@@ -136,7 +136,7 @@ export default function AddListing(props) {
                 </button>
                 {/* {isSubmitted && <Redirect push to='/' />} */}
             </form>
-            <Modal isOpen={plantModal} toogle={togglePlantModal} >
+            <Modal isOpen={plantModal} toggle={togglePlantModal} >
                 <ModalHeader><Label>Choose a plant to add to your garden</Label></ModalHeader>
                 <ModalBody>
                     <Row>

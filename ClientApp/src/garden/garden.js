@@ -16,18 +16,20 @@ const generateGridCoords = (size) => {
 };
 let groundCoords = generateGridCoords(gridSize);
 
-export const GardenComp = ({ username, onPlaceChosen }) => {
+export const GardenComp = ({ username, onPlaceChosen, onUserNotFound }) => {
     const [listings, setListings] = useState(null);
 
     const fetchData = async () => {
         const response = await fetch(`user/listings/${username}`);
         if (response.ok) {
             setListings(await response.json());
+        } else {
+            onUserNotFound && onUserNotFound();
         }
     }
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [username]);
 
     return (<Canvas style={{ height: "400px" }} camera={{position: [2, 3, 7]}}>
         <OrbitControls />
