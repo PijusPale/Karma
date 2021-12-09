@@ -8,47 +8,16 @@ namespace Karma.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Conversations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    UserOneId = table.Column<int>(type: "INTEGER", nullable: false),
-                    UserTwoId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ListingId = table.Column<int>(type: "INTEGER", nullable: false),
-                    GroupId = table.Column<string>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Conversations", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Messages",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Content = table.Column<string>(type: "TEXT", nullable: false),
-                    FromId = table.Column<int>(type: "INTEGER", nullable: false),
-                    GroupId = table.Column<string>(type: "TEXT", nullable: false),
-                    DateSent = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Status = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Messages", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Username = table.Column<string>(type: "TEXT", nullable: false),
+                    Email = table.Column<string>(type: "TEXT", nullable: false),
                     FirstName = table.Column<string>(type: "TEXT", nullable: false),
                     LastName = table.Column<string>(type: "TEXT", nullable: false),
+                    Password = table.Column<string>(type: "TEXT", nullable: false),
                     AvatarPath = table.Column<string>(type: "TEXT", nullable: true),
                     LastActive = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
@@ -90,6 +59,41 @@ namespace Karma.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Conversations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserOneId = table.Column<int>(type: "INTEGER", nullable: false),
+                    UserTwoId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ListingId = table.Column<int>(type: "INTEGER", nullable: false),
+                    GroupId = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Conversations", x => x.Id);
+                    table.UniqueConstraint("AK_Conversations_GroupId", x => x.GroupId);
+                    table.ForeignKey(
+                        name: "FK_Conversations_Listings_ListingId",
+                        column: x => x.ListingId,
+                        principalTable: "Listings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Conversations_Users_UserOneId",
+                        column: x => x.UserOneId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Conversations_Users_UserTwoId",
+                        column: x => x.UserTwoId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ListingUser",
                 columns: table => new
                 {
@@ -113,35 +117,56 @@ namespace Karma.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "Conversations",
-                columns: new[] { "Id", "GroupId", "ListingId", "UserOneId", "UserTwoId" },
-                values: new object[] { 1, "3e888732f3a04974b3679967f92e1aff", 1, 1, 2 });
-
-            migrationBuilder.InsertData(
-                table: "Conversations",
-                columns: new[] { "Id", "GroupId", "ListingId", "UserOneId", "UserTwoId" },
-                values: new object[] { 2, "2b33bd58fe314cf694f848a593396208", 3, 4, 1 });
+            migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Content = table.Column<string>(type: "TEXT", nullable: false),
+                    FromId = table.Column<int>(type: "INTEGER", nullable: false),
+                    FromUserId = table.Column<int>(type: "INTEGER", nullable: true),
+                    GroupId = table.Column<string>(type: "TEXT", nullable: false),
+                    ConversationId = table.Column<int>(type: "INTEGER", nullable: true),
+                    DateSent = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Status = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Messages_Conversations_ConversationId",
+                        column: x => x.ConversationId,
+                        principalTable: "Conversations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Messages_Users_FromUserId",
+                        column: x => x.FromUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AvatarPath", "FirstName", "LastActive", "LastName", "Username" },
-                values: new object[] { 1, null, "First", null, "Test", "First" });
+                columns: new[] { "Id", "AvatarPath", "Email", "FirstName", "LastActive", "LastName", "Password", "Username" },
+                values: new object[] { 1, null, "first@email.com", "First", null, "Test", "First", "First" });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AvatarPath", "FirstName", "LastActive", "LastName", "Username" },
-                values: new object[] { 2, null, "Second", null, "Test", "Second" });
+                columns: new[] { "Id", "AvatarPath", "Email", "FirstName", "LastActive", "LastName", "Password", "Username" },
+                values: new object[] { 2, null, "second@email.com", "Second", null, "Test", "Second", "Second" });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AvatarPath", "FirstName", "LastActive", "LastName", "Username" },
-                values: new object[] { 3, null, "John", null, "Smith", "Third" });
+                columns: new[] { "Id", "AvatarPath", "Email", "FirstName", "LastActive", "LastName", "Password", "Username" },
+                values: new object[] { 3, null, "third@email.com", "John", null, "Smith", "Third", "Third" });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AvatarPath", "FirstName", "LastActive", "LastName", "Username" },
-                values: new object[] { 4, null, "Anna", null, "Smith", "Fourth" });
+                columns: new[] { "Id", "AvatarPath", "Email", "FirstName", "LastActive", "LastName", "Password", "Username" },
+                values: new object[] { 4, null, "fourth@email.com", "Anna", null, "Smith", "Fourth", "Fourth" });
 
             migrationBuilder.InsertData(
                 table: "Listings",
@@ -159,6 +184,16 @@ namespace Karma.Migrations
                 values: new object[] { 3, "Vehicles", 0, new DateTime(2021, 12, 2, 13, 30, 43, 459, DateTimeKind.Unspecified).AddTicks(9796), "", "Tree", 0, -3, "images/default.png", "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}", "Third Listing", 1, 4, true, 1 });
 
             migrationBuilder.InsertData(
+                table: "Conversations",
+                columns: new[] { "Id", "GroupId", "ListingId", "UserOneId", "UserTwoId" },
+                values: new object[] { 1, "3e888732f3a04974b3679967f92e1aff", 1, 1, 2 });
+
+            migrationBuilder.InsertData(
+                table: "Conversations",
+                columns: new[] { "Id", "GroupId", "ListingId", "UserOneId", "UserTwoId" },
+                values: new object[] { 2, "2b33bd58fe314cf694f848a593396208", 3, 4, 1 });
+
+            migrationBuilder.InsertData(
                 table: "ListingUser",
                 columns: new[] { "RequestedListingsId", "RequesteesId" },
                 values: new object[] { 1, 2 });
@@ -169,6 +204,21 @@ namespace Karma.Migrations
                 values: new object[] { 3, 1 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Conversations_ListingId",
+                table: "Conversations",
+                column: "ListingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Conversations_UserOneId",
+                table: "Conversations",
+                column: "UserOneId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Conversations_UserTwoId",
+                table: "Conversations",
+                column: "UserTwoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Listings_UserId",
                 table: "Listings",
                 column: "UserId");
@@ -177,18 +227,28 @@ namespace Karma.Migrations
                 name: "IX_ListingUser_RequesteesId",
                 table: "ListingUser",
                 column: "RequesteesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_ConversationId",
+                table: "Messages",
+                column: "ConversationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_FromUserId",
+                table: "Messages",
+                column: "FromUserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Conversations");
-
-            migrationBuilder.DropTable(
                 name: "ListingUser");
 
             migrationBuilder.DropTable(
                 name: "Messages");
+
+            migrationBuilder.DropTable(
+                name: "Conversations");
 
             migrationBuilder.DropTable(
                 name: "Listings");
