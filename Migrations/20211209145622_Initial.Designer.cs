@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Karma.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    [Migration("20211202152545_Initial")]
+    [Migration("20211209145622_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -94,10 +94,10 @@ namespace Karma.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("Status")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("isReserved")
+                    b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("recipientId")
@@ -121,8 +121,8 @@ namespace Karma.Migrations
                             LocationJson = "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}",
                             Name = "First Listing",
                             Quantity = 1,
+                            Status = 1,
                             UserId = 1,
-                            isReserved = true,
                             recipientId = 2
                         },
                         new
@@ -136,8 +136,8 @@ namespace Karma.Migrations
                             LocationJson = "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}",
                             Name = "Second Listing",
                             Quantity = 1,
-                            UserId = 3,
-                            isReserved = false
+                            Status = 0,
+                            UserId = 3
                         },
                         new
                         {
@@ -150,8 +150,8 @@ namespace Karma.Migrations
                             LocationJson = "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}",
                             Name = "Third Listing",
                             Quantity = 1,
+                            Status = 1,
                             UserId = 4,
-                            isReserved = true,
                             recipientId = 1
                         });
                 });
