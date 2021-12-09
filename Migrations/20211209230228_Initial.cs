@@ -171,17 +171,17 @@ namespace Karma.Migrations
             migrationBuilder.InsertData(
                 table: "Listings",
                 columns: new[] { "Id", "Category", "Condition", "DatePublished", "Description", "GardenPlant", "GardenX", "GardenZ", "ImagePath", "LocationJson", "Name", "Quantity", "Status", "UserId", "recipientId" },
-                values: new object[] { 1, "Vehicles", 0, new DateTime(2021, 12, 1, 16, 27, 12, 258, DateTimeKind.Unspecified).AddTicks(7492), "", null, 0, 0, "images/default.png", "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}", "First Listing", 1, 1, 1, 2 });
+                values: new object[] { 1, "Vehicles", 0, new DateTime(2021, 12, 1, 16, 27, 12, 258, DateTimeKind.Unspecified).AddTicks(7492), "", "Tree", -2, 2, "images/default.png", "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}", "First Listing", 1, 1, 1, 2 });
 
             migrationBuilder.InsertData(
                 table: "Listings",
                 columns: new[] { "Id", "Category", "Condition", "DatePublished", "Description", "GardenPlant", "GardenX", "GardenZ", "ImagePath", "LocationJson", "Name", "Quantity", "Status", "UserId", "recipientId" },
-                values: new object[] { 2, "Vehicles", 0, new DateTime(2021, 12, 2, 13, 30, 36, 970, DateTimeKind.Unspecified).AddTicks(8905), "", null, 0, 0, "images/default.png", "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}", "Second Listing", 1, 0, 3, null });
+                values: new object[] { 2, "Vehicles", 0, new DateTime(2021, 12, 2, 13, 30, 36, 970, DateTimeKind.Unspecified).AddTicks(8905), "", "Flower", 4, -1, "images/default.png", "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}", "Second Listing", 1, 0, 3, null });
 
             migrationBuilder.InsertData(
                 table: "Listings",
                 columns: new[] { "Id", "Category", "Condition", "DatePublished", "Description", "GardenPlant", "GardenX", "GardenZ", "ImagePath", "LocationJson", "Name", "Quantity", "Status", "UserId", "recipientId" },
-                values: new object[] { 3, "Vehicles", 0, new DateTime(2021, 12, 2, 13, 30, 43, 459, DateTimeKind.Unspecified).AddTicks(9796), "", null, 0, 0, "images/default.png", "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}", "Third Listing", 1, 1, 4, 1 });
+                values: new object[] { 3, "Vehicles", 0, new DateTime(2021, 12, 2, 13, 30, 43, 459, DateTimeKind.Unspecified).AddTicks(9796), "", "Tree", 0, -3, "images/default.png", "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}", "Third Listing", 1, 1, 4, 1 });
 
             migrationBuilder.InsertData(
                 table: "Conversations",

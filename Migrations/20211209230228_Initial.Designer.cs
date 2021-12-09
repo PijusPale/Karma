@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Karma.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    [Migration("20211209221729_Initial")]
+    [Migration("20211209230228_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -134,8 +134,9 @@ namespace Karma.Migrations
                             Condition = 0,
                             DatePublished = new DateTime(2021, 12, 1, 16, 27, 12, 258, DateTimeKind.Unspecified).AddTicks(7492),
                             Description = "",
-                            GardenX = 0,
-                            GardenZ = 0,
+                            GardenPlant = "Tree",
+                            GardenX = -2,
+                            GardenZ = 2,
                             ImagePath = "images/default.png",
                             LocationJson = "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}",
                             Name = "First Listing",
@@ -151,8 +152,9 @@ namespace Karma.Migrations
                             Condition = 0,
                             DatePublished = new DateTime(2021, 12, 2, 13, 30, 36, 970, DateTimeKind.Unspecified).AddTicks(8905),
                             Description = "",
-                            GardenX = 0,
-                            GardenZ = 0,
+                            GardenPlant = "Flower",
+                            GardenX = 4,
+                            GardenZ = -1,
                             ImagePath = "images/default.png",
                             LocationJson = "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}",
                             Name = "Second Listing",
@@ -167,8 +169,9 @@ namespace Karma.Migrations
                             Condition = 0,
                             DatePublished = new DateTime(2021, 12, 2, 13, 30, 43, 459, DateTimeKind.Unspecified).AddTicks(9796),
                             Description = "",
+                            GardenPlant = "Tree",
                             GardenX = 0,
-                            GardenZ = 0,
+                            GardenZ = -3,
                             ImagePath = "images/default.png",
                             LocationJson = "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}",
                             Name = "Third Listing",

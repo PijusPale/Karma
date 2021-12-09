@@ -37,7 +37,7 @@ namespace Karma.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult> PostAsync(Listing listing)
+        public async Task<ActionResult<Listing>> PostAsync(Listing listing)
         {
             listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
 
@@ -45,11 +45,11 @@ namespace Karma.Controllers
             if (!userId.HasValue)
                 return Unauthorized();
 
-            listing.UserId = (int) userId;
+            listing.UserId = (int)userId;
 
             listing.Status = Status.Created;
 
-            return await _listingRepository.AddAsync(listing) ? Ok() : StatusCode(500);
+            return await _listingRepository.AddAsync(listing) ? Ok(listing) : StatusCode(500);
         }
 
         [HttpPost("id={id}/reserve={reserve}/for={receiverId}")]
@@ -66,7 +66,7 @@ namespace Karma.Controllers
             listing.Status = reserve ? Status.Reserved : Status.Created;
             listing.recipientId = receiverId;
 
-            if(await _listingRepository.UpdateAsync(listing))
+            if (await _listingRepository.UpdateAsync(listing))
             {
                 _messageService.CreateConversation((int)userId, receiverId, listing.Id);
                 return Ok();
@@ -128,8 +128,8 @@ namespace Karma.Controllers
             if (listing.UserId == userId)
                 return Forbid();
 
-            var user = _userService.Value.GetUserById((int) userId);
-            var requestedListings = _userService.Value.GetAllRequestedListingsByUserId((int) userId);
+            var user = _userService.Value.GetUserById((int)userId);
+            var requestedListings = _userService.Value.GetAllRequestedListingsByUserId((int)userId);
             if (requestedListings.Contains(listing))
                 return Conflict();
 
@@ -138,7 +138,8 @@ namespace Karma.Controllers
             if (!await _listingRepository.UpdateAsync(listing))
                 return StatusCode(500);
 
-            Notify saveNotificationHandler = delegate {
+            Notify saveNotificationHandler = delegate
+            {
                 _logger.LogInformation("{0} - INFO - ListingController: User {1} requested listing {2}.", DateTime.UtcNow, userId, id);
             };
 
@@ -162,7 +163,7 @@ namespace Karma.Controllers
                 return Unauthorized();
             if (!await _listingRepository.DeleteByIdAsync(id))
                 return StatusCode(500);
-            _userService.Value.GetUserById((int) userId).RequestedListings.Remove(listing);
+            _userService.Value.GetUserById((int)userId).RequestedListings.Remove(listing);
             return Ok();
         }
 
@@ -172,7 +173,7 @@ namespace Karma.Controllers
         {
 
             var old = await _listingRepository.GetByIdAsync(listing.Id);
-            if (old == null) 
+            if (old == null)
                 return NotFound();
 
             var userId = this.TryGetUserId();

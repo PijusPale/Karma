@@ -1,5 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Karma.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Karma.Database
 {
@@ -32,9 +36,9 @@ namespace Karma.Database
             modelBuilder
                 .Entity<Listing>()
                 .HasData(
-                    new Listing { Id = 1, UserId = 1, Status = Status.Reserved, recipientId = 2, Name = "First Listing", Description = "", Quantity = 1, LocationJson="{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\u0160iauliai\",\"RadiusKM\":5}", Category = "Vehicles", DatePublished = System.DateTime.Parse("2021-12-01 16:27:12.2587492"), ImagePath = "images/default.png", Condition = 0 },
-                    new Listing { Id = 2, UserId = 3, Status = Status.Created, recipientId = null, Name = "Second Listing", Description = "", Quantity = 1, LocationJson="{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\u0160iauliai\",\"RadiusKM\":5}", Category = "Vehicles", DatePublished = System.DateTime.Parse("2021-12-02 13:30:36.9708905"), ImagePath = "images/default.png", Condition = 0 },
-                    new Listing { Id = 3, UserId = 4, Status = Status.Reserved, recipientId = 1, Name = "Third Listing", Description = "", Quantity = 1, LocationJson="{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\u0160iauliai\",\"RadiusKM\":5}", Category = "Vehicles", DatePublished = System.DateTime.Parse("2021-12-02 13:30:43.4599796"), ImagePath = "images/default.png", Condition = 0 }
+                    new Listing { Id = 1, UserId = 1, Status = Status.Reserved, recipientId = 2, Name = "First Listing", Description = "", Quantity = 1, LocationJson = "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\u0160iauliai\",\"RadiusKM\":5}", Category = "Vehicles", DatePublished = System.DateTime.Parse("2021-12-01 16:27:12.2587492"), ImagePath = "images/default.png", Condition = 0, GardenPlant = "Tree", GardenX = -2, GardenZ = 2 },
+                    new Listing { Id = 2, UserId = 3, Status = Status.Created, recipientId = null, Name = "Second Listing", Description = "", Quantity = 1, LocationJson = "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\u0160iauliai\",\"RadiusKM\":5}", Category = "Vehicles", DatePublished = System.DateTime.Parse("2021-12-02 13:30:36.9708905"), ImagePath = "images/default.png", Condition = 0, GardenPlant = "Flower", GardenX = 4, GardenZ = -1 },
+                    new Listing { Id = 3, UserId = 4, Status = Status.Reserved, recipientId = 1, Name = "Third Listing", Description = "", Quantity = 1, LocationJson = "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\u0160iauliai\",\"RadiusKM\":5}", Category = "Vehicles", DatePublished = System.DateTime.Parse("2021-12-02 13:30:43.4599796"), ImagePath = "images/default.png", Condition = 0, GardenPlant = "Tree", GardenX = 0, GardenZ = -3 }
                 );
             #endregion
 
@@ -42,8 +46,8 @@ namespace Karma.Database
             modelBuilder
                 .Entity<Conversation>()
                 .HasData(
-                    new Conversation { Id = 1, UserOneId = 1, UserTwoId = 2, ListingId = 1, GroupId = "3e888732f3a04974b3679967f92e1aff"},
-                    new Conversation { Id = 2, UserOneId = 4, UserTwoId = 1, ListingId = 3, GroupId = "2b33bd58fe314cf694f848a593396208"}
+                    new Conversation { Id = 1, UserOneId = 1, UserTwoId = 2, ListingId = 1, GroupId = "3e888732f3a04974b3679967f92e1aff" },
+                    new Conversation { Id = 2, UserOneId = 4, UserTwoId = 1, ListingId = 3, GroupId = "2b33bd58fe314cf694f848a593396208" }
                 );
             #endregion
 
@@ -54,16 +58,12 @@ namespace Karma.Database
                 .WithMany(l => l.Requestees)
                 .UsingEntity(j => j.ToTable("ListingUser")
                     .HasData(
-                    new {RequestedListingsId = 1, RequesteesId = 2},
-                    new {RequestedListingsId = 3, RequesteesId = 1}
+                    new { RequestedListingsId = 1, RequesteesId = 2 },
+                    new { RequestedListingsId = 3, RequesteesId = 1 }
                     )
                 );
             #endregion
 
-            modelBuilder
-                .Entity<User>()
-                .HasMany<Listing>(u => u.RequestedListings)
-                .WithMany(l => l.Requestees);
             modelBuilder
                 .Entity<User>()
                 .HasMany<Listing>(u => u.Listings)

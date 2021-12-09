@@ -7,6 +7,7 @@ using Karma.Repositories;
 using System.Collections.Generic;
 using Karma.Models;
 using System;
+using System.Linq;
 
 namespace Karma.Controllers
 {
@@ -56,15 +57,19 @@ namespace Karma.Controllers
         }
         [Authorize]
         [HttpGet("listings")]
-        public ActionResult<IEnumerable<Listing>> GetAllListingsOfUser()
+        [AllowAnonymous]
+        [HttpGet("listings/{username}")]
+        public ActionResult<IEnumerable<Listing>> GetAllListingsOfUser(string username = null)
         {
-            var userId = this.TryGetUserId();
+            int? userId;
+            if (username == null) {
+                userId = this.TryGetUserId();
+            }
+            else {
+                userId = _userService.GetAll().FirstOrDefault(u => u.Username == username)?.Id;
+            }
             if (userId == null)
                 return Unauthorized();
-            
-            var user = _userService.GetUserById((int) userId);
-            if (user == null)
-                return NotFound();
             
             return Ok(_userService.GetAllUserListingsByUserId((int)userId));
         }

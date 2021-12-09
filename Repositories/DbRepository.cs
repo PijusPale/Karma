@@ -91,12 +91,9 @@ namespace Karma.Repositories
         {
             try
             {
-                var DbEntity = await entities.FindAsync(entity.Id);
-                if(DbEntity != null)
-                {
-                    _context.Entry(DbEntity).CurrentValues.SetValues(entity);
-                    await _context.SaveChangesAsync();
-                }
+                var DbEntity = entities.Find(entity.Id);
+                _context.Entry(DbEntity).CurrentValues.SetValues(entity);
+                await _context.SaveChangesAsync();
                 return true;
             }
             catch
