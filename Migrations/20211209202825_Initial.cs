@@ -33,7 +33,7 @@ namespace Karma.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
-                    isReserved = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Status = table.Column<int>(type: "INTEGER", nullable: false),
                     recipientId = table.Column<int>(type: "INTEGER", nullable: true),
                     Name = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
                     Description = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true),
@@ -170,18 +170,18 @@ namespace Karma.Migrations
 
             migrationBuilder.InsertData(
                 table: "Listings",
-                columns: new[] { "Id", "Category", "Condition", "DatePublished", "Description", "GardenPlant", "GardenX", "GardenZ", "ImagePath", "LocationJson", "Name", "Quantity", "UserId", "isReserved", "recipientId" },
-                values: new object[] { 1, "Vehicles", 0, new DateTime(2021, 12, 1, 16, 27, 12, 258, DateTimeKind.Unspecified).AddTicks(7492), "", "Tree", -2, 2, "images/default.png", "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}", "First Listing", 1, 1, true, 2 });
+                columns: new[] { "Id", "Category", "Condition", "DatePublished", "Description", "GardenPlant", "GardenX", "GardenZ", "ImagePath", "LocationJson", "Name", "Quantity", "Status", "UserId", "recipientId" },
+                values: new object[] { 1, "Vehicles", 0, new DateTime(2021, 12, 1, 16, 27, 12, 258, DateTimeKind.Unspecified).AddTicks(7492), "", "Tree", -2, 2, "images/default.png", "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}", "First Listing", 1, 1, 1, 2 });
 
             migrationBuilder.InsertData(
                 table: "Listings",
-                columns: new[] { "Id", "Category", "Condition", "DatePublished", "Description", "GardenPlant", "GardenX", "GardenZ", "ImagePath", "LocationJson", "Name", "Quantity", "UserId", "isReserved", "recipientId" },
-                values: new object[] { 2, "Vehicles", 0, new DateTime(2021, 12, 2, 13, 30, 36, 970, DateTimeKind.Unspecified).AddTicks(8905), "", "Flower", 4, -1, "images/default.png", "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}", "Second Listing", 1, 3, false, null });
+                columns: new[] { "Id", "Category", "Condition", "DatePublished", "Description", "GardenPlant", "GardenX", "GardenZ", "ImagePath", "LocationJson", "Name", "Quantity", "Status", "UserId", "recipientId" },
+                values: new object[] { 2, "Vehicles", 0, new DateTime(2021, 12, 2, 13, 30, 36, 970, DateTimeKind.Unspecified).AddTicks(8905), "", "Flower", 4, -1, "images/default.png", "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}", "Second Listing", 1, 0, 3, null });
 
             migrationBuilder.InsertData(
                 table: "Listings",
-                columns: new[] { "Id", "Category", "Condition", "DatePublished", "Description", "GardenPlant", "GardenX", "GardenZ", "ImagePath", "LocationJson", "Name", "Quantity", "UserId", "isReserved", "recipientId" },
-                values: new object[] { 3, "Vehicles", 0, new DateTime(2021, 12, 2, 13, 30, 43, 459, DateTimeKind.Unspecified).AddTicks(9796), "", "Tree", 0, -3, "images/default.png", "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}", "Third Listing", 1, 4, true, 1 });
+                columns: new[] { "Id", "Category", "Condition", "DatePublished", "Description", "GardenPlant", "GardenX", "GardenZ", "ImagePath", "LocationJson", "Name", "Quantity", "Status", "UserId", "recipientId" },
+                values: new object[] { 3, "Vehicles", 0, new DateTime(2021, 12, 2, 13, 30, 43, 459, DateTimeKind.Unspecified).AddTicks(9796), "", "Tree", 0, -3, "images/default.png", "{\"Country\":\"Lithuania\",\"District\":\"Zemaitija\",\"City\":\"\\u0160iauliai\",\"RadiusKM\":5}", "Third Listing", 1, 1, 4, 1 });
 
             migrationBuilder.InsertData(
                 table: "Conversations",

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Karma.Models;
 
 namespace Karma.Repositories
@@ -10,6 +11,10 @@ namespace Karma.Repositories
         IEnumerable<Conversation> GetConversations(int userId);
 
         Conversation GetConversation(string groupId);
+
+        Conversation GetConversation(int listingId);
+
+        Task<bool> DeleteConversationAsync(int listingId);
 
         IEnumerable<Message> GetByLimit(string groupId, int limit);
 

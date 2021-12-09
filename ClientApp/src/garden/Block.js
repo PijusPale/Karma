@@ -37,7 +37,7 @@ export const Block = (props) => {
         (Math.abs(props.position[0]) % 2 === 1 && Math.abs(props.position[2]) % 2 === 1))
         && <Grass position={[0, 0.1, 0]} scale={1} />}
       {props.listing &&
-        (true ? /*change to listing is not given away predicate */
+        (props.listing.status !== 'Done' ?
           <GrowingPlant onClick={(e) => {e.stopPropagation(); window.appHistory.push(`/details/${props.listing.id}`)}}
             onPointerOver={(e) => { e.stopPropagation(); hoverPlant(true) }}
             onPointerOut={(e) => { e.stopPropagation(); hoverPlant(false) }} />

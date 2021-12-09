@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Karma.Models;
 using Karma.Repositories;
 using Karma.Services;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -49,7 +47,7 @@ namespace Karma.Controllers
 
             listing.UserId = (int)userId;
 
-            listing.isReserved = false;
+            listing.Status = Status.Created;
 
             return await _listingRepository.AddAsync(listing) ? Ok(listing) : StatusCode(500);
         }
@@ -65,7 +63,7 @@ namespace Karma.Controllers
             if (userId != listing.UserId)
                 return Unauthorized();
 
-            listing.isReserved = reserve;
+            listing.Status = reserve ? Status.Reserved : Status.Created;
             listing.recipientId = receiverId;
 
             if (await _listingRepository.UpdateAsync(listing))
@@ -182,14 +180,60 @@ namespace Karma.Controllers
             if (userId == null || old.UserId != userId)
                 return Unauthorized();
 
-            listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
-            listing.RequestedUserIDs = old.RequestedUserIDs; // temp fix for saving old requests
-            listing.UserId = (int)userId;
-            listing.GardenZ = old.GardenZ;
-            listing.GardenX = old.GardenX;
-            listing.GardenPlant = old.GardenPlant;
-            if (!await _listingRepository.UpdateAsync(listing))
+            old.Name = listing.Name;
+            old.Category = listing.Category;
+            old.Description = listing.Description;
+            old.Condition = listing.Condition;
+            old.Quantity = listing.Quantity;
+            old.Location = listing.Location;
+            old.ImagePath = listing.ImagePath;
+
+            if (!await _listingRepository.UpdateAsync(old))
                 return StatusCode(500);
+
+            return Ok();
+        }
+
+        [HttpPut("id={id}/conclude")]
+        [Authorize]
+        public async Task<ActionResult> ConcludeListingAsync(int id)
+        {
+            var listing = await _listingRepository.GetByIdAsync(id);
+            var userId = this.TryGetUserId();
+            if(userId == null || listing.UserId != userId)
+                return Unauthorized();
+
+            if(listing.Status != Status.Reserved)
+                return Conflict();
+
+            listing.RequestedUserIDs.Clear();
+            listing.Status = Status.Done;
+
+            await _messageService.DeleteConversationAsync(listing.Id);
+            await _listingRepository.UpdateAsync(listing);
+
+            return Ok();
+        }
+
+        [HttpPut("id={id}/cancelReservation")]
+        public async Task<ActionResult> CancelReservationAsync(int id)
+        {
+            var listing = await _listingRepository.GetByIdAsync(id);
+            var userId = this.TryGetUserId();
+            if(userId == null || listing.UserId != userId)
+                return Unauthorized();
+
+            if(listing.Status != Status.Reserved)
+                return Conflict();
+
+            if(listing.recipientId != null)
+                listing.RequestedUserIDs.Remove((int)listing.recipientId);
+            listing.recipientId = null;
+            listing.Status = Status.Created;
+
+            await _messageService.DeleteConversationAsync(listing.Id);
+            await _listingRepository.UpdateAsync(listing);
+            
 
             return Ok();
         }

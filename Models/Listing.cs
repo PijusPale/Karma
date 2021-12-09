@@ -11,6 +11,11 @@ namespace Karma.Models
     {
         New, Used, Broken
     }
+
+    public enum Status
+    {
+        Created, Reserved, Done
+    }
     public struct Location
     {
         public Location(string country, string district, string city, int radiusKM)
@@ -52,8 +57,8 @@ namespace Karma.Models
         [JsonIgnore]
         public User User { get; set; }
 
-        public bool isReserved { get; set; }
-
+        public Status Status { get; set; }
+        
         public int? recipientId { get; set; }
 
         [Required]
