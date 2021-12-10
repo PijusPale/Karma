@@ -15,39 +15,24 @@ export function SignupForm(props) {
   
   const { switchToSignin } = useContext(LoginContext);
   const { register, handleSubmit } = useForm({});
-  const { DuplicateFound, setDuplicateFound } = useState([]);
+  const { usernameDuplicateFound, setUsernameDuplicateFound } = useState([]);
+  const { emailDuplicateFound, setEmailDuplicateFound } = useState([]);
 
   const onSignUp = async(data) => {
-    const response = fetch('user/signup', {
+    const response = await fetch('user/signup', {
         method: 'POST',
         headers: { 'Content-type': 'application/json' },
         body: JSON.stringify(data),
     });
     if (response.status === 403){
-      setDuplicateFound(true);
+      setUsernameDuplicateFound(true);
+    }
+    else if (response.status === 402){
+      setEmailDuplicateFound(true);
     }
 
 
 };
-/*  const onSignUp = data => {
-    const response = fetch('user/Duplicate', {
-      method: 'GET',
-      headers: { 'Content-type': 'application/json' },
-    })
-
-    if (response.ok){
-      setDuplicateFound(false); 
-      fetch('user/signup', {
-        method: 'POST',
-        headers: { 'Content-type': 'application/json' },
-        body: JSON.stringify(data),
-    });
-    }
-
-    if (response.status === 500) {
-      setDuplicateFound(true);
-    }
-};*/
 
   return (
     <BoxContainer onSubmit={handleSubmit(onSignUp)} >
@@ -56,7 +41,7 @@ export function SignupForm(props) {
                     required: "Username is required.",
                     pattern: { value: /^[a-zA-Z0-9]+$/, message: "Please enter only A-Z letters and 0-9 numbers" }
                 })}/>
-        <SmallText hidden={!DuplicateFound}>This username already exists</SmallText>
+        <SmallText hidden={!usernameDuplicateFound}>This username already exists</SmallText>
         <Input type="text" placeholder="First Name" {...register("FirstName", {
                     required: "First Name is required.",
                     pattern: { value: /^[a-zA-Z]+$/, message: "Please enter only A-Z letters" }
@@ -69,6 +54,7 @@ export function SignupForm(props) {
                     required: "Email is required.",
                     pattern: { value: /^[a-zA-Z0-9@.]+$/, message: "Please enter only A-Z letters, 0-9 numbers or @ and . signs." }
                 })}/>
+        <SmallText hidden={!emailDuplicateFound}>This username already exists</SmallText>
         <Input type="password" placeholder="Password" {...register("Password", {
                     required: "Password is required.",
                     pattern: { value: /^[a-zA-Z0-9!]+$/, message: "Please enter only A-Z letters, 0-9 numbers or a ! sign." }
