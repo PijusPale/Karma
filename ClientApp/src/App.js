@@ -9,6 +9,7 @@ import { ListingIdPage } from './components/ListingIdPage';
 import PageNotFound from './components/PageNotFound';
 import { UserListingsComp } from './components/UserListingsComp';
 import { UserContext } from './UserContext';
+import { ProfilePage } from './components/ProfilePage';
 
 import './custom.css'
 
@@ -47,6 +48,7 @@ export default function App() {
            <Route path='/add-listing' component={AddListing} />
            <Route path='/user-listings' component={UserListingsComp} />
            <Route exact path='/details/:id' component={ListingIdPage} />
+           <Route exact path='/profile/:username' component={ProfilePage} />
            <Route component={PageNotFound}/>
           </Switch>
       </Layout>

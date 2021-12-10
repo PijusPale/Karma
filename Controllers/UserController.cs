@@ -3,12 +3,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Karma.Services;
 using Karma.Models.Authentication;
-using System.Security.Claims;
 using Karma.Repositories;
 using System.Collections.Generic;
 using Karma.Models;
-using System.Linq;
 using System;
+using System.Linq;
 
 namespace Karma.Controllers
 {
@@ -45,17 +44,12 @@ namespace Karma.Controllers
         [HttpPost("signup")]
         public IActionResult NewUser(User user){
             if (user != null){
-                if(_userService.DublicateUsername(user.Username))
+                if(_userService.GetAll().Any(u => u.Username == user.Username))
                     return StatusCode(403);
             _userService.Add(user);
             return Ok();
             }
             else return StatusCode(500);
-        }
-
-        [HttpGet("dublicate")]
-        public IActionResult FindDublicate(User user){
-            return _userService.DublicateUsername(user.Username) ? StatusCode(500) : Ok();
         }
 
         [HttpGet]
@@ -75,15 +69,19 @@ namespace Karma.Controllers
         }
         [Authorize]
         [HttpGet("listings")]
-        public ActionResult<IEnumerable<Listing>> GetAllListingsOfUser()
+        [AllowAnonymous]
+        [HttpGet("listings/{username}")]
+        public ActionResult<IEnumerable<Listing>> GetAllListingsOfUser(string username = null)
         {
-            var userId = this.TryGetUserId();
+            int? userId;
+            if (username == null) {
+                userId = this.TryGetUserId();
+            }
+            else {
+                userId = _userService.GetAll().FirstOrDefault(u => u.Username == username)?.Id;
+            }
             if (userId == null)
                 return Unauthorized();
-            
-            var user = _userService.GetUserById((int) userId);
-            if (user == null)
-                return NotFound();
             
             return Ok(_userService.GetAllUserListingsByUserId((int)userId));
         }

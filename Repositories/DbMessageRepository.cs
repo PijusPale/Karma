@@ -1,10 +1,9 @@
 using System;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Karma.Database;
 using Karma.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace Karma.Repositories
 {
@@ -37,6 +36,28 @@ namespace Karma.Repositories
                                 where c.GroupId == groupId
                                 select c;
             return conversation.FirstOrDefault();
+        }
+
+        public Conversation GetConversation(int listingId)
+        {
+            var conversation =  from c in _context.Conversations
+                                where c.ListingId == listingId
+                                select c;
+            return conversation.FirstOrDefault();
+        }
+
+        public async Task<bool> DeleteConversationAsync(int listingId)
+        {
+            try
+            {
+                _context.Conversations.Remove(GetConversation(listingId));
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public IEnumerable<Message> GetByLimit(string groupId, int limit)

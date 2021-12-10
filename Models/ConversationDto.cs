@@ -1,9 +1,8 @@
 using System;
-using System.Collections.Generic;
 
 namespace Karma.Models
 {
-	public class ConversationDto
+    public class ConversationDto
     {
         public string ListingName { get; set; }
         public string LastSender { get; set; }

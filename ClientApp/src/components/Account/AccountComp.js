@@ -25,7 +25,7 @@ export const AccountComp = () => {
 
     return (loggedIn ?
         <div>
-            <NavLink tag={Link} className="text-dark" to="/profile">
+            <NavLink tag={Link} className="text-dark" to={`/profile/${currentUser.username}`}>
                 {`${currentUser.firstName} ${currentUser.lastName}`}
             </NavLink>
             <ConfirmationButton onSubmit={onLogOut} submitLabel={'Log out'}

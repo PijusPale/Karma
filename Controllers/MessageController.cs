@@ -5,10 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Linq;
-using System;
-using System.Threading.Tasks;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace Karma.Controllers
 {

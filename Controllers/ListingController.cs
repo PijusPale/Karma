@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Karma.Models;
 using Karma.Repositories;
 using Karma.Services;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -39,7 +37,7 @@ namespace Karma.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult> PostAsync(Listing listing)
+        public async Task<ActionResult<Listing>> PostAsync(Listing listing)
         {
             listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
 
@@ -47,11 +45,11 @@ namespace Karma.Controllers
             if (!userId.HasValue)
                 return Unauthorized();
 
-            listing.UserId = (int) userId;
+            listing.UserId = (int)userId;
 
-            listing.isReserved = false;
+            listing.Status = Status.Created;
 
-            return await _listingRepository.AddAsync(listing) ? Ok() : StatusCode(500);
+            return await _listingRepository.AddAsync(listing) ? Ok(listing) : StatusCode(500);
         }
 
         [HttpPost("id={id}/reserve={reserve}/for={receiverId}")]
@@ -65,10 +63,10 @@ namespace Karma.Controllers
             if (userId != listing.UserId)
                 return Unauthorized();
 
-            listing.isReserved = reserve;
+            listing.Status = reserve ? Status.Reserved : Status.Created;
             listing.recipientId = receiverId;
 
-            if(await _listingRepository.UpdateAsync(listing))
+            if (await _listingRepository.UpdateAsync(listing))
             {
                 _messageService.CreateConversation((int)userId, receiverId, listing.Id);
                 return Ok();
@@ -130,8 +128,8 @@ namespace Karma.Controllers
             if (listing.UserId == userId)
                 return Forbid();
 
-            var user = _userService.Value.GetUserById((int) userId);
-            var requestedListings = _userService.Value.GetAllRequestedListingsByUserId((int) userId);
+            var user = _userService.Value.GetUserById((int)userId);
+            var requestedListings = _userService.Value.GetAllRequestedListingsByUserId((int)userId);
             if (requestedListings.Contains(listing))
                 return Conflict();
 
@@ -140,7 +138,8 @@ namespace Karma.Controllers
             if (!await _listingRepository.UpdateAsync(listing))
                 return StatusCode(500);
 
-            Notify saveNotificationHandler = delegate {
+            Notify saveNotificationHandler = delegate
+            {
                 _logger.LogInformation("{0} - INFO - ListingController: User {1} requested listing {2}.", DateTime.UtcNow, userId, id);
             };
 
@@ -164,7 +163,7 @@ namespace Karma.Controllers
                 return Unauthorized();
             if (!await _listingRepository.DeleteByIdAsync(id))
                 return StatusCode(500);
-            _userService.Value.GetUserById((int) userId).RequestedListings.Remove(listing);
+            _userService.Value.GetUserById((int)userId).RequestedListings.Remove(listing);
             return Ok();
         }
 
@@ -174,18 +173,67 @@ namespace Karma.Controllers
         {
 
             var old = await _listingRepository.GetByIdAsync(listing.Id);
-            if (old == null) 
+            if (old == null)
                 return NotFound();
 
             var userId = this.TryGetUserId();
             if (userId == null || old.UserId != userId)
                 return Unauthorized();
 
-            listing.DatePublished = DateTime.UtcNow; //temp fix for curr date with form submit
-            listing.RequestedUserIDs = old.RequestedUserIDs; // temp fix for saving old requests
-            listing.UserId = (int) userId;
-            if (!await _listingRepository.UpdateAsync(listing))
+            old.Name = listing.Name;
+            old.Category = listing.Category;
+            old.Description = listing.Description;
+            old.Condition = listing.Condition;
+            old.Quantity = listing.Quantity;
+            old.Location = listing.Location;
+            old.ImagePath = listing.ImagePath;
+
+            if (!await _listingRepository.UpdateAsync(old))
                 return StatusCode(500);
+
+            return Ok();
+        }
+
+        [HttpPut("id={id}/conclude")]
+        [Authorize]
+        public async Task<ActionResult> ConcludeListingAsync(int id)
+        {
+            var listing = await _listingRepository.GetByIdAsync(id);
+            var userId = this.TryGetUserId();
+            if(userId == null || listing.UserId != userId)
+                return Unauthorized();
+
+            if(listing.Status != Status.Reserved)
+                return Conflict();
+
+            listing.RequestedUserIDs.Clear();
+            listing.Status = Status.Done;
+
+            await _messageService.DeleteConversationAsync(listing.Id);
+            await _listingRepository.UpdateAsync(listing);
+
+            return Ok();
+        }
+
+        [HttpPut("id={id}/cancelReservation")]
+        public async Task<ActionResult> CancelReservationAsync(int id)
+        {
+            var listing = await _listingRepository.GetByIdAsync(id);
+            var userId = this.TryGetUserId();
+            if(userId == null || listing.UserId != userId)
+                return Unauthorized();
+
+            if(listing.Status != Status.Reserved)
+                return Conflict();
+
+            if(listing.recipientId != null)
+                listing.RequestedUserIDs.Remove((int)listing.recipientId);
+            listing.recipientId = null;
+            listing.Status = Status.Created;
+
+            await _messageService.DeleteConversationAsync(listing.Id);
+            await _listingRepository.UpdateAsync(listing);
+            
 
             return Ok();
         }

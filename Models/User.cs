@@ -10,8 +10,8 @@ namespace Karma.Models
     {
         public User()
         {
-            this.Listings = new List<Listing>();
-            this.RequestedListings = new List<Listing>();
+            Listings = new List<Listing>();
+            RequestedListings = new List<Listing>();
         }
         [Required]
         public string Username { get; set; }
@@ -24,12 +24,19 @@ namespace Karma.Models
         public string LastName { get; set; }
         [Required]
         [DataType(DataType.Password)]
+        [JsonIgnore]
         public string Password { get; set; }
         
         [JsonIgnore]
         public virtual ICollection<Listing> Listings { get; set; }
         [JsonIgnore]
         public virtual ICollection<Listing> RequestedListings { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<Conversation> StartedConversations { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<Conversation> ParticipatingConversations { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<Message> Messages { get; set; }
         [NotMapped]
         public virtual string[] Comments { get; set; }
 

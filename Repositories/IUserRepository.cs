@@ -7,6 +7,5 @@ namespace Karma.Repositories
     {
         IEnumerable<Listing> GetAllUserListingsByUserId(int userId);
         IEnumerable<Listing> GetAllRequestedListingsByUserId(int userId);
-        bool DublicateUsername(string username);
     }
 }

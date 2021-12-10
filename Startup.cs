@@ -1,29 +1,26 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Autofac.Extras.DynamicProxy;
-using System;
-using System.IO;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using Karma.Aspects;
+using Karma.Database;
 using Karma.Helpers;
+using Karma.Middleware;
 using Karma.Repositories;
 using Karma.Services;
-using Karma.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.EntityFrameworkCore;
-using Karma.Database;
+using System.IO;
+using System.Text;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
 namespace Karma
 {

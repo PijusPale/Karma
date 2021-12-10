@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System;
-
-namespace Karma.Services
+﻿namespace Karma.Services
 {
     public delegate void Notify();
 

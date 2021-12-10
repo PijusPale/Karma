@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,6 +10,11 @@ namespace Karma.Models
     public enum Condition
     {
         New, Used, Broken
+    }
+
+    public enum Status
+    {
+        Created, Reserved, Done
     }
     public struct Location
     {
@@ -53,8 +57,8 @@ namespace Karma.Models
         [JsonIgnore]
         public User User { get; set; }
 
-        public bool isReserved { get; set; }
-
+        public Status Status { get; set; }
+        
         public int? recipientId { get; set; }
 
         [Required]
@@ -101,5 +105,11 @@ namespace Karma.Models
 
         [JsonIgnore]
         public ICollection<User> Requestees { get; set; }
+
+        public int GardenX { get; set; }
+
+        public int GardenZ { get; set; }
+
+        public string GardenPlant { get; set; }
     }
 }

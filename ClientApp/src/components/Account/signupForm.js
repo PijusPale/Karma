@@ -14,32 +14,29 @@ import { useForm } from "react-hook-form";
 export function SignupForm(props) {
   
   const { switchToSignin } = useContext(LoginContext);
-  const { register, handleSubmit } = useForm([]);
-  const { dublicateFound, setDublicateFound } = useState(false);
+  const { register, handleSubmit } = useForm({});
+  const { DuplicateFound, setDuplicateFound } = useState([]);
 
-  const onSignUp = data => {
+  const onSignUp = async(data) => {
     const response = fetch('user/signup', {
         method: 'POST',
         headers: { 'Content-type': 'application/json' },
         body: JSON.stringify(data),
     });
     if (response.status === 403){
-      setDublicateFound(true);
-    }
-    if (response.ok){
-      setDublicateFound(false);
+      setDuplicateFound(true);
     }
 
 
 };
 /*  const onSignUp = data => {
-    const response = fetch('user/dublicate', {
+    const response = fetch('user/Duplicate', {
       method: 'GET',
       headers: { 'Content-type': 'application/json' },
     })
 
     if (response.ok){
-      setDublicateFound(false); 
+      setDuplicateFound(false); 
       fetch('user/signup', {
         method: 'POST',
         headers: { 'Content-type': 'application/json' },
@@ -48,7 +45,7 @@ export function SignupForm(props) {
     }
 
     if (response.status === 500) {
-      setDublicateFound(true);
+      setDuplicateFound(true);
     }
 };*/
 
@@ -59,7 +56,7 @@ export function SignupForm(props) {
                     required: "Username is required.",
                     pattern: { value: /^[a-zA-Z0-9]+$/, message: "Please enter only A-Z letters and 0-9 numbers" }
                 })}/>
-        <SmallText hidden={!dublicateFound}>This username already exists</SmallText>
+        <SmallText hidden={!DuplicateFound}>This username already exists</SmallText>
         <Input type="text" placeholder="First Name" {...register("FirstName", {
                     required: "First Name is required.",
                     pattern: { value: /^[a-zA-Z]+$/, message: "Please enter only A-Z letters" }

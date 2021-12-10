@@ -25,12 +25,5 @@ namespace Karma.Repositories
             return user.RequestedListings;
         }
 
-        public bool DublicateUsername(string username)
-        {
-            var user = entities.Find(username);
-            if (user == null)
-            return false;
-            else return true;
-        }
     }
 }
