@@ -14,29 +14,45 @@ import { useForm } from "react-hook-form";
 export function SignupForm(props) {
   
   const { switchToSignin } = useContext(LoginContext);
-  const { register, handleSubmit } = useForm({});
-  const { missingField, setMissingField } = useState(false);
-
+  const { register, handleSubmit } = useForm([]);
+  const { dublicateFound, setDublicateFound } = useState(false);
 
   const onSignUp = data => {
-    const response = fetch('user/signup', {
+    fetch('user/signup', {
         method: 'POST',
         headers: { 'Content-type': 'application/json' },
         body: JSON.stringify(data),
     });
 
-    if (!response.ok) {
-      setMissingField(true);
-    }
 };
+/*  const onSignUp = data => {
+    const response = fetch('user/dublicate', {
+      method: 'GET',
+      headers: { 'Content-type': 'application/json' },
+    })
+
+    if (response.ok){
+      setDublicateFound(false); 
+      fetch('user/signup', {
+        method: 'POST',
+        headers: { 'Content-type': 'application/json' },
+        body: JSON.stringify(data),
+    });
+    }
+
+    if (response.status === 500) {
+      setDublicateFound(true);
+    }
+};*/
 
   return (
-    <BoxContainer onSignUp={handleSubmit(onSignUp)} >
+    <BoxContainer onSubmit={handleSubmit(onSignUp)} >
       <FormContainer>
       <Input type="text" placeholder="Username" {...register("Username", {
                     required: "Username is required.",
                     pattern: { value: /^[a-zA-Z0-9]+$/, message: "Please enter only A-Z letters and 0-9 numbers" }
                 })}/>
+        <SmallText hidden={!dublicateFound}>This username already exists</SmallText>
         <Input type="text" placeholder="First Name" {...register("FirstName", {
                     required: "First Name is required.",
                     pattern: { value: /^[a-zA-Z]+$/, message: "Please enter only A-Z letters" }
@@ -54,10 +70,11 @@ export function SignupForm(props) {
                     pattern: { value: /^[a-zA-Z0-9!]+$/, message: "Please enter only A-Z letters, 0-9 numbers or a ! sign." }
                 })}/>
         <Input type="password" placeholder="Confirm Password" />
-      </FormContainer>
+
       <Marginer direction="vertical" margin={10} />
-      <SubmitButton onClick={onSignUp} type="submit">Sign up</SubmitButton>
+      <SubmitButton type="submit">Sign up</SubmitButton>
       <Marginer direction="vertical" margin="1em" />
+      </FormContainer>
       <SmallText>
       Already have an account?
       </SmallText>

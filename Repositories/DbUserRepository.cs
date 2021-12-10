@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Karma.Database;
 using Karma.Models;
 
@@ -24,6 +23,14 @@ namespace Karma.Repositories
             var user = entities.Find(userId);
             _context.Entry(user).Collection<Listing>(user => user.RequestedListings).Load();
             return user.RequestedListings;
+        }
+
+        public bool DublicateUsername(string username)
+        {
+            var user = entities.Find(username);
+            if (user == null)
+            return false;
+            else return true;
         }
     }
 }

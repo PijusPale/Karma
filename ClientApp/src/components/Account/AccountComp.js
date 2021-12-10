@@ -30,7 +30,7 @@ export const AccountComp = () => {
             </NavLink>
             <ConfirmationButton onSubmit={onLogOut} submitLabel={'Log out'}
                 prompt={'Are you sure you want to log out?'}>Log out</ConfirmationButton> 
-        </div> // #TODO open homepage when logging out
+        </div> // #TODO open homepage after logging out
         : <div>
             <Button color="primary" onClick={toggle}>Log in</Button>
             <Modal className='Modal' autoFocus={false} isOpen={modal} toggle={toggle} size = "sm">

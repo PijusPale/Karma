@@ -51,6 +51,11 @@ namespace Karma.Controllers
             else return StatusCode(500);
         }
 
+        [HttpGet("dublicate")]
+        public IActionResult FindDublicate(User user){
+            return _userService.DublicateUsername(user.Username) ? StatusCode(500) : Ok();
+        }
+
         [HttpGet]
         public IActionResult GetCurrentUser()
         {

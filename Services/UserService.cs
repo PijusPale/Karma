@@ -22,6 +22,7 @@ namespace Karma.Services
         IEnumerable<Listing> GetAllRequestedListingsByUserId(int userId);
         void Update(User user);
         void Add(User user);
+        bool DublicateUsername(string username);
     }
     public class UserService : IUserService
     {
@@ -85,6 +86,11 @@ namespace Karma.Services
         public void Add(User user)
         {
             _userRepository.Add(user);
+        }
+
+        public bool DublicateUsername(string username)
+        {
+            return _userRepository.DublicateUsername(username);
         }
     }
 }
