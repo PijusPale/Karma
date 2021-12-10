@@ -69,7 +69,6 @@ export function SignupForm(props) {
                     required: "Password is required.",
                     pattern: { value: /^[a-zA-Z0-9!]+$/, message: "Please enter only A-Z letters, 0-9 numbers or a ! sign." }
                 })}/>
-        <Input type="password" placeholder="Confirm Password" />
 
       <Marginer direction="vertical" margin={10} />
       <SubmitButton type="submit">Sign up</SubmitButton>
