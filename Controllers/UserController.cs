@@ -45,6 +45,8 @@ namespace Karma.Controllers
         [HttpPost("signup")]
         public IActionResult NewUser(User user){
             if (user != null){
+                if(_userService.DublicateUsername(user.Username))
+                    return StatusCode(403);
             _userService.Add(user);
             return Ok();
             }

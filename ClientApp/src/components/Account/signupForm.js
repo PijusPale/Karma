@@ -18,11 +18,18 @@ export function SignupForm(props) {
   const { dublicateFound, setDublicateFound } = useState(false);
 
   const onSignUp = data => {
-    fetch('user/signup', {
+    const response = fetch('user/signup', {
         method: 'POST',
         headers: { 'Content-type': 'application/json' },
         body: JSON.stringify(data),
     });
+    if (response.status === 403){
+      setDublicateFound(true);
+    }
+    if (response.ok){
+      setDublicateFound(false);
+    }
+
 
 };
 /*  const onSignUp = data => {
