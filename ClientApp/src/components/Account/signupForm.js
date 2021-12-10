@@ -15,8 +15,8 @@ export function SignupForm(props) {
   
   const { switchToSignin } = useContext(LoginContext);
   const { register, handleSubmit } = useForm({});
-  const { usernameDuplicateFound, setUsernameDuplicateFound } = useState([]);
-  const { emailDuplicateFound, setEmailDuplicateFound } = useState([]);
+  const [usernameDuplicateFound, setUsernameDuplicateFound] = useState(false);
+  const [emailDuplicateFound, setEmailDuplicateFound] = useState(false);
 
   const onSignUp = async(data) => {
     const response = await fetch('user/signup', {
@@ -30,13 +30,11 @@ export function SignupForm(props) {
     else if (response.status === 402){
       setEmailDuplicateFound(true);
     }
-
-
 };
 
   return (
-    <BoxContainer onSubmit={handleSubmit(onSignUp)} >
-      <FormContainer>
+    <BoxContainer >
+      <FormContainer onSubmit={handleSubmit(onSignUp)}>
       <Input type="text" placeholder="Username" {...register("Username", {
                     required: "Username is required.",
                     pattern: { value: /^[a-zA-Z0-9]+$/, message: "Please enter only A-Z letters and 0-9 numbers" }
