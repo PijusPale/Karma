@@ -24,5 +24,6 @@ namespace Karma.Repositories
             _context.Entry(user).Collection<Listing>(user => user.RequestedListings).Load();
             return user.RequestedListings;
         }
+
     }
 }

@@ -21,6 +21,7 @@ namespace Karma.Services
         IEnumerable<Listing> GetAllUserListingsByUserId(int userId);
         IEnumerable<Listing> GetAllRequestedListingsByUserId(int userId);
         void Update(User user);
+        void Add(User user);
     }
     public class UserService : IUserService
     {
@@ -35,7 +36,7 @@ namespace Karma.Services
 
         public User Authenticate(UserCredentials request)
         {
-            var user = _userRepository.GetAll().SingleOrDefault(u => request.Username == u.Username);
+            var user = _userRepository.GetAll().SingleOrDefault(u => request.Password == u.Password && (request.Username == u.Username || request.Username == u.Email));
             if (user == null)
                 return null;
 
@@ -80,5 +81,11 @@ namespace Karma.Services
         {
             _userRepository.Update(user);
         }
+
+        public void Add(User user)
+        {
+            _userRepository.Add(user);
+        }
+
     }
 }

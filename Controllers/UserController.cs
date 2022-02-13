@@ -40,6 +40,20 @@ namespace Karma.Controllers
             return Ok(user);
         }
 
+        [AllowAnonymous]
+        [HttpPost("signup")]
+        public IActionResult NewUser(User user){
+            if (user != null){
+                if(_userService.GetAll().Any(u => u.Username == user.Username))
+                    return StatusCode(403);
+                if(_userService.GetAll().Any(u => u.Email == user.Email))
+                    return StatusCode(402);
+            _userService.Add(user);
+            return Ok();
+            }
+            else return StatusCode(500);
+        }
+
         [HttpGet]
         public IActionResult GetCurrentUser()
         {

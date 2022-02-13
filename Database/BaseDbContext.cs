@@ -25,10 +25,10 @@ namespace Karma.Database
             modelBuilder
                 .Entity<User>()
                 .HasData(
-                    new User { Id = 1, Username = "First", Email = "first@email.com", FirstName = "First", LastName = "Test", Password = "First" },
-                    new User { Id = 2, Username = "Second", Email = "second@email.com", FirstName = "Second", LastName = "Test", Password = "Second" },
-                    new User { Id = 3, Username = "Third", Email = "third@email.com", FirstName = "John", LastName = "Smith", Password = "Third" },
-                    new User { Id = 4, Username = "Fourth", Email = "fourth@email.com", FirstName = "Anna", LastName = "Smith", Password = "Fourth" }
+                    new User { Id = 1, Username = "First", FirstName = "First", LastName = "Test", Email = "first@gmail.com", Password = "password" },
+                    new User { Id = 2, Username = "Second", FirstName = "Second", LastName = "Test", Email = "second@gmail.com", Password = "password" },
+                    new User { Id = 3, Username = "Third", FirstName = "John", LastName = "Smith", Email = "third@gmail.com", Password = "password" },
+                    new User { Id = 4, Username = "Fourth", FirstName = "Anna", LastName = "Smith", Email = "fourth@gmail.com", Password = "password" }
                 );
             #endregion
 
