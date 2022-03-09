@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import './NavMenu.css';
 import { AccountComp } from './Account/AccountComp';
 import { UserContext } from '../UserContext';
+import { ProfilePage } from './ProfilePage';
+import { Profile } from './NewProfile/Profile';
 
 export const NavMenu = (props) => {
   const { loggedIn } = useContext(UserContext);
@@ -32,6 +34,9 @@ export const NavMenu = (props) => {
               <NavItem>
                 <AccountComp />
               </NavItem>
+              {loggedIn &&<NavItem>
+                <NavLink tag={Link} className="text-dark" to="/Profile" > Profile</NavLink>
+              </NavItem>}
             </ul>
           </Collapse>
         </Container>

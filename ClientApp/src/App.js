@@ -12,6 +12,7 @@ import { UserContext } from './UserContext';
 import { ProfilePage } from './components/ProfilePage';
 
 import './custom.css'
+import { Profile } from './components/NewProfile/Profile';
 
 export default function App() {
   const [user, setUser] = useState({});
@@ -49,6 +50,7 @@ export default function App() {
            <Route path='/user-listings' component={UserListingsComp} />
            <Route exact path='/details/:id' component={ListingIdPage} />
            <Route exact path='/profile/:username' component={ProfilePage} />
+           <Route path = '/profile' component= {Profile} />
            <Route component={PageNotFound}/>
           </Switch>
       </Layout>
