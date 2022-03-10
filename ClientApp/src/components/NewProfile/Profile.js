@@ -1,5 +1,14 @@
 import React from "react"
 import './profile.css'
+
+function clickChangeProfile(){
+  alert("You want to change your profile!");
+}
+
+function clickDeleteProfile(){
+  alert("You want to delete your profile!");
+}
+
 export const Profile = () =>{
     return(
 
@@ -13,6 +22,22 @@ export const Profile = () =>{
       </div>
       <div class="job">
         Zemaitija
+      </div>
+      <div>
+        <div class="divider"/>
+      </div>
+      <div>
+        <button class = "buttonChangeProfile" onClick = {clickChangeProfile}>
+          Change profile details
+        </button>
+      </div>
+      <div>
+        <div class="divider"/>
+      </div>
+      <div>
+        <button class = "buttonDeleteProfile" onClick = {clickDeleteProfile}>
+          Delete profile  
+        </button>
       </div>
     </div>
 
