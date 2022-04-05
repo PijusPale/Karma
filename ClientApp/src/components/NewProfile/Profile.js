@@ -1,47 +1,93 @@
-import React from "react"
+import React, { useContext, useState } from 'react';
+import { Button, Modal, NavLink } from 'reactstrap';
+import { UserContext } from "../../UserContext";
+import { UpdateProfileBox } from "../Account/UpdateProfileLayout";
 import './profile.css'
+import { ConfirmationButton } from '../ConfirmationButton';
+import {GardenComp} from "../../garden/garden"
 
-function clickChangeProfile(){
-  alert("You want to change your profile!");
+
+function timeSince(date) { //UTC format
+  const rtf = new Intl.RelativeTimeFormat("en", {
+      localeMatcher: "best fit",
+      numeric: "always",
+      style: "long",
+  });
+  var seconds = Math.floor((new Date() - new Date(date + "Z")) / 1000);
+
+  var interval = seconds / 31536000;
+
+  if (interval > 1) {
+      return rtf.format(-Math.floor(interval), 'year');
+  }
+  interval = seconds / 2592000;
+  if (interval > 1) {
+      return rtf.format(-Math.floor(interval), 'month');
+  }
+  interval = seconds / 86400;
+  if (interval > 1) {
+      return rtf.format(-Math.floor(interval), 'day');
+  }
+  interval = seconds / 3600;
+  if (interval > 1) {
+      return rtf.format(-Math.floor(interval), 'hour');
+  }
+  interval = seconds / 60;
+  if (interval > 1) {
+      return rtf.format(-Math.floor(interval), 'minute');
+  }
+  return 'now';
 }
+export const Profile = () => {
+  const [modal, setModal] = useState(false);
+  const toggle = () => {
+    setModal(!modal);
+  };
+  const { loggedIn, user: currentUser } = useContext(UserContext);
 
-function clickDeleteProfile(){
-  alert("You want to delete your profile!");
-}
-
-export const Profile = () =>{
-    return(
+  const clickDeleteProfile = async () => {
+    alert("You want to delete your profile!");
+    const response = await fetch('user/delete', {
+      method: 'POST',
+      headers: { 'Content-type': 'application/json' },
+      body: JSON.stringify(currentUser),
+    });
+  }
+  
+  return (loggedIn ?
 
     <div>
-    <div class="sidenav">
-    <div class="profile">
-      <img src="https://as2.ftcdn.net/v2/jpg/03/32/59/65/1000_F_332596535_lAdLhf6KzbW6PWXBWeIFTovTii1drkbT.jpg" alt="" width="100" height="100"/>
+      <div class="sidenav">
+        <div class="profile">
+          <img src={currentUser.avatarpath} alt="" width="100" height="100" />
 
-      <div class="name">
-        Jokubas
-      </div>
-      <div class="job">
-        Zemaitija
-      </div>
-      <div>
-        <div class="divider"/>
-      </div>
-      <div>
-        <button class = "buttonChangeProfile" onClick = {clickChangeProfile}>
-          Change profile details
-        </button>
-      </div>
-      <div>
-        <div class="divider"/>
-      </div>
-      <div>
-        <button class = "buttonDeleteProfile" onClick = {clickDeleteProfile}>
-          Delete profile  
-        </button>
-      </div>
-    </div>
+          <div class="name">
+            {loggedIn && currentUser.username}
+          </div>
+          <div class="job">
+            Last active: {timeSince(currentUser.lastActive)}
+          </div>
+          <div>
+            <div class="divider" />
+          </div>
+          <div>
+            <div>
+              <Button outline color="success" onClick={toggle}>Change profile details</Button>
+              <Modal className='Modal' autoFocus={false} isOpen={modal} toggle={toggle} size="sm">
+                <UpdateProfileBox />
+              </Modal>
+            </div>
+          </div>
+          <div>
+            <div class="divider" />
+          </div>
+          <div>
+            <ConfirmationButton color="danger" onSubmit={clickDeleteProfile} submitLabel={'Delete'}
+              prompt={'Are you sure you want to delete your profile?'}>Delete profile</ConfirmationButton>
+          </div>
+        </div>
 
-    {/* <div class="sidenav-url">
+        {/* <div class="sidenav-url">
       <div class="url">
         <a href="#profile" class="active">Profile</a>
         <hr align="center"/>
@@ -51,8 +97,8 @@ export const Profile = () =>{
         <hr align="center"/>
       </div>
     </div> */}
-  </div>
-    <div class="main">
+      </div>
+      <div class="main">
         <h2>IDENTITY</h2>
         <div class="card">
           <div class="card-body">
@@ -62,24 +108,32 @@ export const Profile = () =>{
                 <tr>
                   <td>Name</td>
                   <td>:</td>
-                  <td>Jokubas</td>
+                  <td>{loggedIn && currentUser.firstName}</td>
+                </tr>
+                <tr>
+                  <td>Lastname</td>
+                  <td>:</td>
+                  <td>{loggedIn && currentUser.lastName}</td>
                 </tr>
                 <tr>
                   <td>Email</td>
                   <td>:</td>
-                  <td>jokubas@gmail.com</td>
-                </tr>
-                <tr>
-                  <td>Address</td>
-                  <td>:</td>
-                  <td>Plunge, Lithuania</td>
+                  <td>{loggedIn && currentUser.email}</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
-      </div> 
-    )
+      <div>
+        <GardenComp username={currentUser.username}></GardenComp>
+      </div>
+    </div>
+    :
+    <div>
+      You must log in to review your profile!
+    </div>
+
+  )
 
 }

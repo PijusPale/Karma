@@ -53,7 +53,28 @@ namespace Karma.Controllers
             }
             else return StatusCode(500);
         }
-
+        [AllowAnonymous]
+        [HttpPost("update")]
+        public IActionResult UpdateUser(User user){
+            if (user != null){
+                if(_userService.GetAll().Any(u => (u.Username == user.Username && u.Id != user.Id)))
+                    return StatusCode(403);
+                if(_userService.GetAll().Any(u => (u.Email == user.Email && u.Email != user.Email)))
+                    return StatusCode(402);
+            _userService.Update(user);
+            return Ok();
+            }
+            else return StatusCode(500);
+        }
+        [AllowAnonymous]
+        [HttpPost("delete")]
+        public IActionResult DeleteUser(User user){
+            if (user != null){
+            _userService.Delete(user);
+            return Ok();
+            }
+            else return StatusCode(500);
+        }
         [HttpGet]
         public IActionResult GetCurrentUser()
         {

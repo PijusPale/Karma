@@ -46,6 +46,7 @@ namespace Karma.Models
         }
         public string? AvatarPath { get; set; }
         public DateTime? LastActive { get; set; }
+        public static DateTime RegistrationDate { get; set; }
         [NotMapped]
         public string Token { get; set; }
     }

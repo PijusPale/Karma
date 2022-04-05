@@ -22,6 +22,7 @@ namespace Karma.Services
         IEnumerable<Listing> GetAllRequestedListingsByUserId(int userId);
         void Update(User user);
         void Add(User user);
+        void Delete(User user);
     }
     public class UserService : IUserService
     {
@@ -79,12 +80,16 @@ namespace Karma.Services
 
         public void Update(User user)
         {
-            _userRepository.Update(user);
+            _userRepository.UpdateAsync(user);
         }
 
         public void Add(User user)
         {
             _userRepository.Add(user);
+        }
+        public void Delete(User user)
+        {
+            _userRepository.DeleteById(user.Id);
         }
 
     }

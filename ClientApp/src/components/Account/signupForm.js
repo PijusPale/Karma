@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, Component } from "react";
 import {
   BoldLink,
   BoxContainer,
@@ -10,7 +10,7 @@ import {
 import { Marginer } from "./marginer";
 import { LoginContext } from "./LoginContext";
 import { useForm } from "react-hook-form";
-
+ 
 export function SignupForm(props) {
   
   const { switchToSignin } = useContext(LoginContext);
@@ -24,13 +24,17 @@ export function SignupForm(props) {
         headers: { 'Content-type': 'application/json' },
         body: JSON.stringify(data),
     });
-    if (response.status === 403){
+    if (response.ok){
+      window.alert("Registration successful!");
+      switchToSignin();
+    }
+    else if (response.status === 403){
       setUsernameDuplicateFound(true);
     }
     else if (response.status === 402){
       setEmailDuplicateFound(true);
     }
-};
+  };
 
   return (
     <BoxContainer >

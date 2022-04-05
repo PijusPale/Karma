@@ -31,12 +31,13 @@ export function LoginForm() {
     });
 
     if (response.ok) {
-        setincorrectUsernameOrPassword(false);
-        const user = JSON.parse(await response.text());
-        setCurrentUser(user);
-        setLoggedIn(true);
-        localStorage.setItem('token', user.token);
-        toggle();
+      window.alert("WELCOME!")
+      setincorrectUsernameOrPassword(false);
+      const user = JSON.parse(await response.text());
+      setCurrentUser(user);
+      setLoggedIn(true);
+      localStorage.setItem('token', user.token);
+      toggle();
     }
     else {
         setincorrectUsernameOrPassword(true);

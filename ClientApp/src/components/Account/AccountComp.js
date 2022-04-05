@@ -26,7 +26,7 @@ export const AccountComp = () => {
     return (loggedIn ?
         <div>
             <NavLink tag={Link} className="text-dark" to={`/profile/${currentUser.username}`}>
-                {`${currentUser.firstName} ${currentUser.lastName}`}
+                Garden
             </NavLink>
             <ConfirmationButton onSubmit={onLogOut} submitLabel={'Log out'}
                 prompt={'Are you sure you want to log out?'}>Log out</ConfirmationButton> 
