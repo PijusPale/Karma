@@ -6,6 +6,13 @@ import './profile.css'
 import { ConfirmationButton } from '../ConfirmationButton';
 import {GardenComp} from "../../garden/garden"
 
+function formatted_date()
+{
+   var result="";
+   var d = new Date();
+   result += d.getFullYear()+"/"+(d.getMonth()+1)+"/"+d.getDate();
+   return result;
+}
 
 function timeSince(date) { //UTC format
   const rtf = new Intl.RelativeTimeFormat("en", {
@@ -119,6 +126,11 @@ export const Profile = () => {
                   <td>Email</td>
                   <td>:</td>
                   <td>{loggedIn && currentUser.email}</td>
+                </tr>
+                <tr>
+                  <td>Signup date</td>
+                  <td>:</td>
+                  <td>2022-01-{currentUser.id}</td>
                 </tr>
               </tbody>
             </table>
