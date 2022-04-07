@@ -66,7 +66,7 @@ export const Profile = () => {
     <div>
       <div class="sidenav">
         <div class="profile">
-          <img src={currentUser.avatarpath} alt="" width="100" height="100" />
+          <img src={currentUser.avatarPath} width="100" height="100" />
 
           <div class="name">
             {loggedIn && currentUser.username}

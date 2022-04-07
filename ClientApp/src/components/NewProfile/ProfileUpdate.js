@@ -6,6 +6,7 @@ import {
     SubmitButton,
     SmallText,
 } from "../Account/common";
+import axios from "axios";
 import { Marginer } from "../Account/marginer";
 import { LoginContext } from "../Account/LoginContext";
 import { useForm } from "react-hook-form";
@@ -19,6 +20,7 @@ export function ProfileUpdate(props) {
     const [emailDuplicateFound, setEmailDuplicateFound] = useState(false);
 
     const onSave = async (data) => {
+        fetchData(data)
         const response = await fetch('user/update', {
             method: 'POST',
             headers: { 'Content-type': 'application/json' },
@@ -33,6 +35,28 @@ export function ProfileUpdate(props) {
         else if (response.status === 402) {
             setEmailDuplicateFound(true);
         }
+        // console.log(JSON.stringify(data))
+        
+    };
+    const fetchData = (data) => {
+        var imageAttached = false;
+        data.id = props.id;
+        const formData = new FormData();
+        if (data.AvatarPath.length > 0) {
+            formData.append('FormFile', data.AvatarPath[0]);
+            formData.append('Name', data.AvatarPath[0].name);
+            data.AvatarPath = 'images/' + data.AvatarPath[0].name;
+            imageAttached = true;
+            currentUser.avatarPath= data.AvatarPath
+        }
+        else {
+            data.AvatarPath = props.AvatarPath || 'images/default.png';
+            currentUser.avatarPath= data.AvatarPath
+        }
+
+            if (imageAttached) {
+                axios.post('image', formData);
+            }
     };
 
     return (
@@ -64,6 +88,8 @@ export function ProfileUpdate(props) {
                     required: "ID is required.",
                     pattern: { value: /^[0-9]+$/, message: "Please enter only numbers" },
                 })} />
+                <label>Images</label><br />
+                <input asp-for="FileUpload.FormFile" type="file" accept="image/*"{...register("AvatarPath")} />
 
                 <Marginer direction="vertical" margin={10} />
                 <SubmitButton type="submit">Save</SubmitButton>
